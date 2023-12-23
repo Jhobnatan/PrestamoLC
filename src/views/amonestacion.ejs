@@ -1,0 +1,144 @@
+<%- include('partials/_header') %>
+
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                              
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>LISTADO DE AMONESTACIÓN - RRHH</h5>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-5 d-flex text-right">
+                                          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                                          <input type="text" class="form-control ml-5 mx-2" name="buscarp" id="buscarp" placeholder="Código o Cédula" >
+                                          <% if(accesos.registrar_amonestacion) {%>
+                                            <a href="/empleado"><i class='fas fa-plus mx-3' style='font-size:18px;color:black'> Registrar amonestacion</i></a>
+                                            <% } %>
+                                        </div>
+                                        
+                                        <table class="table table-bordered table-hover mt-5">
+                                            <thead class="bg-dark text-white">
+                                                <tr>
+                                                  <th>No.</th>
+                                                  <th>NOMBRE</th>
+                                                  <th>TIPO</th>
+                                                  <th>ENCARGADO</th>
+                                                  <th>DEPARTAMENTO</th>
+                                                  <th>EMPRESA.</th>
+                                                  <th>FECHA</th>
+                                                  <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla_permiso">
+                                              <% if(amonestaciones_rrhh) {%>
+                                                <% for(var i =0;i < amonestaciones_rrhh.length;i++){ %>
+                                                    <tr> 
+                                                        <td><%= i+1 %></td>
+                                                        <td><%= amonestaciones_rrhh[i].empleado %></td>
+                                                        <td><%= amonestaciones_rrhh[i].tipo %></td>
+                                                        <td><%= amonestaciones_rrhh[i].encargado %></td>
+                                                        <td><%= amonestaciones_rrhh[i].departamento %></td>
+                                                        <td><%= amonestaciones_rrhh[i].empresa %></td>
+                                                        <td><%= (new Date(amonestaciones_rrhh[i].fecha)).toLocaleDateString() %></td>
+                                                        <td><a href="/amonestacion/rrhh/<%= amonestaciones_rrhh[i].id_empleado %>/<%= amonestaciones_rrhh[i].id_amonestacion %>" ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>
+                                                    </tr>
+                            
+                            
+                                                 <% } %>
+                                                <% } %>
+                                               
+                                            </tbody>
+                                        </table>
+                                 
+
+                            
+
+
+
+                        </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<script>
+  
+  function permisoList(e) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    let valor = e.target.value;
+    
+    if(valor ==""){
+      valor ="aaaaaaaaaaaa";
+    }
+    $.get("/form_data/permiso/" + valor, function (data) {
+      
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+                
+                console.log(data[i]);  
+                if(data[i].id_estado ==data[i].id_estado){
+                  html +="<tr class=''>";
+                  html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].fecha_solicitud +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].encargado +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].estado_permiso +"</td>";
+                  html +="<td><a href='/permiso/rrhh/"+ data[i].id_permiso +"'' ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>";
+                  html +="</tr>";        
+                  k++;  
+                }
+                
+          }
+  
+        var elementTabla_empleado = document.getElementById("tabla_permiso");
+        elementTabla_empleado.innerHTML = html;
+        
+    });
+  }
+
+  window.addEventListener('load', function() {
+    
+    document.getElementById("buscarp").onkeyup = function(e) {
+      
+      permisoList(e);
+    };
+
+    document.addEventListener("click", (event) => {
+  const clickedElement = event.target;
+  
+  if (!clickedElement.matches('.ver')) {
+    return;
+  }
+  handlePermiso(clickedElement.value);
+  confirm("Are you sure to EDIT this user?");
+});
+    console.log('no se desplieaga')
+  //document.getElementById('formSolicitud_permiso').style.display = 'none';
+  //document.getElementById("fecha").value = new Date().toISOString();//.toDateString();//.toLocaleDateString();
+  document.getElementById('permiso_enc').style.display = "none";
+  //alert("cargo")
+
+  document.getElementById('ver').addEventListener('click', function(e) {
+    console.log(e)
+  });
+
+  const editButtons = document.querySelectorAll(".ver");
+editButtons.forEach(editBtn => editBtn.addEventListener("click", () => {
+  alert('click')
+}));
+  
+
+});
+</script>
+
+
+<%- include('partials/_footer') %>

@@ -1,0 +1,43 @@
+<%- include('partials/_header') %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="car-body">
+                    <form action="/puesto/update/<%= data.id_puesto %>" method="post">
+                        <div class="col-md-12">
+                          <div class="form-group mt-2">
+                            <label for="inputEmail4" class="form-label text-black">Empresa</label>
+                            <input type="text" name="razon_social" id="razon_social" class="form-control" placeholder="Descripción" value="<%= data.razon_social %>" disabled>
+                            
+                        </div>
+
+                            <label for="inputEmail4" class="form-label text-black">Supervisor</label>
+                            <select class="form-control" name="supervisa" id="supervisa" required>
+                               <option value="0">Seleccione el puesto</option>
+                               <% if(pue) {%>
+                                <% for(var i =0;i < pue.length;i++){
+                                  if(pue[i].id_puesto == data.id_puesto_supervisor){ %>
+                                  <option selected value="<%= pue[i].id_puesto %>"><%= pue[i].descripcion %></option>
+                                  <% }else {%>
+                                    <option value="<%= pue[i].id_puesto %>"><%= pue[i].descripcion %></option>
+                                  <% }
+                                } %>
+                                <% } %>
+                             </select>
+                          </div>
+
+                        <div class="form-group mt-2">
+                            <label for="inputEmail4" class="form-label text-black">Puesto</label>
+                            <input type="text" name="descripcion" class="form-control" placeholder="Descripción" value="<%= data.descripcion %>">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-5">GUARDAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/_footer') %>

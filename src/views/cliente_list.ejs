@@ -1,0 +1,207 @@
+<%- include('partials/_header') %>
+
+
+<div class="containere mx-5">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="checkedEstado" class="row card-header pt-3">
+                      <h5 class="col-md-3">LISTA DE CLIENTES </h5>
+                      
+                        <div class="col-md-2">                                 
+                          <input class="form-check-input " type="radio" value="2" id ="activa" name="estate" checked>
+                          <label class="form-check-label" for="activa"><h5>Activos</h5></label>                                                                  
+                        </div>     
+                        <div class="col-md-2">                                 
+                          <input class="form-check-input " type="radio" value="3" id ="noactiva" name="estate">
+                          <label class="form-check-label" for="noactiva"><h5>Inactivos</h5></label>                                                                  
+                        </div>                           
+                          
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-12 mt-5 d-flex text-right pb-5">
+              <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Ingrese Nombre, Apodo, RNC, Cédula ó Pasaporte" >
+              <% if(accesos.crear_empleado) {%>
+              <a class="btn btn-primary" href="/cliente/new/"><i class='fas fa-plus mx-3' style='font-size:18px;color:white'> Crear cliente</i></a>
+              <% } %>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>CÉDULA / PASAPORTE</th>
+                        <th>NOMBRE</th>
+                        <th>APODO</th>
+                        <th>CARTERA</th>
+                        <th>NACIONALIDAD</th>
+                        <th class="text-center">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_cliente">
+                    
+                </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+<script >
+function clienteListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+      
+
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }        
+        // console.log('veo ',estado,valor,inicio)
+        
+        clienteList(valor,inicio)
+      
+    }
+
+function cargaPaginacion(cantidad_registros,inicio){
+  
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='clienteListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='clienteListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='clienteListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='clienteListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='clienteListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='clienteListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+
+
+  function clienteList(valor, inicio) { // el id que llega es el id del departamento
+
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+   let cartera = 0;
+   let sucursal = 0;
+  //  let estado = 2;:
+    $.get("/cliente/filtro_list/"+sucursal+'/'+cartera+'/'+elestado_cliente+'/'+inicio+'/'+valor, function (data) {
+        console.log('no VEO LA DATA ========>',data[data.length-1].registros[0].total)
+        var html = "";
+        let k = 1;
+        if(data){
+          for(var i =0;i < data.length-1;i++){ 
+
+//console.log(data.length);  
+
+          html +="<tr class=''>";
+      html +="<td>"+k+"</td>";
+      html +="<td>"+ data[i].cedula +" / "+ data[i].pasaporte +"</td>";
+      html +="<td>"+ data[i].nombre_completo +"</td>";
+      html +="<td>"+ data[i].apodo +"</td>";
+      html +="<td>"+ data[i].cartera +"</td>";
+      html +="<td>"+ data[i].gentilicio +"</td>";
+      html +="<td>";
+        if('<%- accesos.crear_amonestacion %>') {
+          html +="<a href='/cliente/amonestacion/"+ data[i].id_cliente +"' ><i class='fas fa-bullhorn' style='font-size:20px;color: red; margin-right:10px'></i></a>";
+          } 
+          if('<%- accesos.crear_licencia %>') {
+          html +="<a href='/cliente/licencia/"+ data[i].id_cliente +"' ><i class='fas fa-ambulance' style='font-size:20px; color: rgb(249, 250, 250); margin-right:10px'></i></a>";
+          }
+          if('<%- accesos.crear_usuario %>') {
+      html +="<a href='/cliente/usuario/"+ data[i].id_cliente +"' ><i class='fas fa-user' style='font-size:20px;color: blue; margin-right:10px'></i></a>";
+      } 
+          if('<%- accesos %>') {
+            html +="<a href='/cliente/update/"+ data[i].id_cliente +"'' ><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>";
+          }
+
+      html +="</td></tr>";  
+          
+      k++;
+}
+        }
+        document.getElementById("tabla_cliente").innerHTML = html;   
+        cargaPaginacion(data[data.length-1].registros[0].total,inicio)     
+    });
+ 
+  }
+  
+  function fechaActual(){
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    return  day + "/" + month + "/" + year;
+    
+  }
+  let elestado_cliente = 2;
+  let paginacion =0;
+  window.addEventListener('load', function() {
+    paginacion ='<%- paginacion %>';
+    const checkedEstado = document.querySelectorAll('#checkedEstado input[type="radio"]');
+  checkedEstado.forEach(checkbox => {
+    checkbox.addEventListener('change', function(event) {
+      elestado_cliente = this.value;
+      let valor = document.getElementById('buscar').value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      clienteList(valor,1)
+  });
+  });
+
+    let buscar = document.getElementById("buscar").value;
+      if(buscar ==""){
+        buscar ="aaaaaaaaaaaa";
+      }
+      clienteList(buscar,1); 
+    //const nacionalidad = document.getElementById("nacionalidad");
+    //$("#fecha").val(fechaActual());
+    //document.getElementById("fecha").value = new Date().toLocaleDateString();
+   
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+      
+      clienteList(valor,1); 
+      // alert(valor);
+    };
+
+  
+  });
+  </script>
+<%- include('partials/_footer') %>

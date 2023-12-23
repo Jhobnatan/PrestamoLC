@@ -1,0 +1,1189 @@
+<%- include('partials/_header') %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="container mb-5">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div class="col-md-12" style="margin:0 auto">
+                            <form class="row g-3" action="/cliente/update/<%= cliente.id_cliente %>/0" enctype="multipart/form-data" method="post">
+                              <div class="col-md-4"></div>
+                                
+                              
+                             
+
+                              <div class="card-header bg-dark text-white d-flex">
+                                <div class="col-9"><h5><strong>Información - Básica - Cliente</strong></h5></div>
+                                
+                                <label for="celular" class="form-label text-white">Fecha:</label>
+                                    <input type="text" class="form-control bg-dark text-white" name="fecha" id="fecha" required readonly>
+                                  
+                            </div>
+                            <div class="col-md-4">
+                              <div class="d-flex justify-content-center">
+                                <div class="image-container">
+                                  <label for="file-input">
+                                    <img id="preview-img" src="/../<%= cliente.path_foto %>" class="img-fluid"  width="300" height="400">
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-8 row">
+                                <div class="col-md-6 pt-2">
+                                    <label for="celular" class="form-label text-black">Nombres <strong style="color: red;">*</strong></label>
+                                    <input type="text" class="form-control" name="nombres" id="nombres" value="<%= cliente.nombres %>" placeholder="Escriba los nombres" required>
+                                  </div>
+                                  <div class="col-md-6 pt-2">
+                                    <label for="celular" class="form-label text-black">Apellidos <strong style="color: red;">*</strong></label>
+                                    <input type="text" class="form-control" name="apellidos" id="apellidos" value="<%= cliente.apellidos %>" placeholder="Escriba los apellidos" required>
+                                  </div>
+                                  <div class="col-md-3 pt-2">
+                                    <label for="celular" class="form-label text-black">Apodo</label>
+                                    <input type="text" class="form-control" name="apodo" id="apodo" value="<%= cliente.apodo %>" placeholder="Escriba el apodo">
+                                  </div>
+                                  <div class="col-md-3 pt-2">
+                                    <label for="celular" class="form-label text-black">RNC</label>
+                                    <input type="text" class="form-control" name="rnc" id="rnc" value="<%= cliente.rnc %>" placeholder="Escriba el rnc">
+                                  </div>
+                                  <div class="col-md-3 pt-2">
+                                    
+                                    <label for="celular" class="form-label text-black">Cédula <strong style="color: red;">*</strong></label>
+                                    <input type="text" class="form-control" name="cedula" id="cedula" value="<%= cliente.cedula %>" onkeypress="handleMask(event, '999-9999999-9')" size=13 placeholder="000-0000000-0" required>
+                                  </div>
+
+                                  <div class="col-md-3 pt-2">
+                                    
+                                    <label for="celular" class="form-label text-black">Pasaporte</label>
+                                    <input type="text" class="form-control" name="pasaporte" id="pasaporte" value="<%= cliente.pasaporte %>" size=13 placeholder="Escriba el numero de pasaporte">
+                                  </div>
+                               
+                               <div class="col-md-3 pt-2">
+                                <label for="celular" class="form-label text-black">Sexo <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="sexo" id="sexo" required>
+                                  <option value="0">Seleccione el Sexo</option>
+                                  <% if (cliente.sexo == "M"){%>
+                                  <option value="M" selected >Masculino</option>
+                                  <option value="F">Femenino</option>
+                                  <% }else{%>
+                                   <option value="M" >Masculino</option>
+                                  <option value="F" selected>Femenino</option>
+                                   <%}%>
+                                </select>
+                              </div>
+
+                              <div class="col-md-3 pt-2">
+                                <label for="celular" class="form-label text-black">Fecha Nacimiento</label>
+                                <input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento" value="<%= cliente.fechadenacimiento %>" required>
+                              </div>
+
+                              
+
+                              <div class="col-md-3 pt-2">
+                                <label for="celular" class="form-label text-black">Estado Civil <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="estado_civil" id="estado_civil" required>
+                                   <option value="0">Seleccione el Estado Civil</option>
+                                   <% if (cliente.estado_civil == "soltero"){%>
+                                    <option selected value="soltero">Soltero</option>
+                                    <option value="casado">Casado</option>
+                                    <option value="union libre">Unión Libre</option>
+                                    <option value="separado">Separado</option>
+                                    <option value="divorciado">Divorciado</option>
+                                    <option value="viudo">Viudo</option>
+                                    <% }else if (cliente.estado_civil == "casado"){%>
+                                      <option value="soltero">Soltero</option>
+                                      <option selected value="casado">Casado</option>
+                                      <option value="union libre">Unión Libre</option>
+                                      <option value="separado">Separado</option>
+                                      <option value="divorciado">Divorciado</option>
+                                      <option value="viudo">Viudo</option>
+                                     
+                                     <% }else if (cliente.estado_civil == "union libre"){%>
+                                      <option value="soltero">Soltero</option>
+                                      <option value="casado">Casado</option>
+                                      <option selected value="union libre">Unión Libre</option>
+                                      <option value="separado">Separado</option>
+                                      <option value="divorciado">Divorciado</option>
+                                      <option value="viudo">Viudo</option>
+                              
+                                     <% }else if (cliente.estado_civil == "separado"){%>
+                                      <option value="soltero">Soltero</option>
+                                      <option value="casado">Casado</option>
+                                      <option value="union libre">Unión Libre</option>
+                                      <option selected value="separado">Separado</option>
+                                      <option value="divorciado">Divorciado</option>
+                                      <option value="viudo">Viudo</option>
+                                    
+                                     <% }else if (cliente.estado_civil == "divorciado"){%>
+                                      <option value="soltero">Soltero</option>
+                                      <option value="casado">Casado</option>
+                                      <option value="union libre">Unión Libre</option>
+                                      <option value="separado">Separado</option>
+                                      <option selected value="divorciado">Divorciado</option>
+                                      <option value="viudo">Viudo</option>
+                                    
+                                     <% }else if (cliente.estado_civil == "viudo"){%>
+                                      <option value="soltero">Soltero</option>
+                                      <option value="casado">Casado</option>
+                                      <option value="union libre">Unión Libre</option>
+                                      <option value="separado">Separado</option>
+                                      <option value="divorciado">Divorciado</option>
+                                      <option selected value="viudo">Viudo</option>
+
+                                      <% }else if (cliente.estado_civil == ""){%>
+                                        <option value="soltero">Soltero</option>
+                                        <option value="casado">Casado</option>
+                                        <option value="union libre">Unión Libre</option>
+                                        <option value="separado">Separado</option>
+                                        <option value="divorciado">Divorciado</option>
+                                        <option value="viudo">Viudo</option>
+                                       <%}%>
+                                 </select>
+                              </div>
+
+                              
+
+                               <div class="col-md-3 pt-2">
+                                 <label for="celular" class="form-label text-black"># Dependientes <strong style="color: red;">*</strong></label>
+                                 <input type="number" class="form-control" name="ndependientes" id="ndependientes" value="<%= cliente.ndependientes %>" placeholder="00" required>
+                               </div>     
+
+                               <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Nacionalidad <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="nacionalidad" id="nacionalidad" required>
+                                  <option value="">Seleccione la Nacionalidad</option>
+                                    <% if(nac) {%>
+                                      <% for(var i =0;i < nac.length;i++){ 
+                                        if(nac[i].id_nacionalidad == cliente.id_nacionalidad){%>
+                                        <option selected value="<%= nac[i].id_nacionalidad %>"><%= nac[i].gentilicio %></option>
+                                        <% }else { %>
+                                          <option value="<%= nac[i].id_nacionalidad %>"><%= nac[i].gentilicio %></option>
+                                         
+                                       <% }
+                                      } %>
+                                      <% } %>
+                                   
+                                 </select>
+                              </div>
+                               
+                               <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Provincia <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="provincia" id="provincia" required>
+                                   <option value="0">Seleccione la Provincia</option>
+                                   <% if(prov) {%>
+                                    <% for(var i =0;i < prov.length;i++){
+                                      
+                                      if(prov[i].id_provincia == cliente.id_provincia){%>
+                                        <option selected value="<%= prov[i].id_provincia %>"><%= prov[i].provincia %></option>
+                                        <% }else { %>
+                                          <option value="<%= prov[i].id_provincia %>"><%= prov[i].provincia %></option>
+                                         
+                                       <% }
+                                       
+                                     } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Municipio <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="municipio" id="municipio" required>
+                                  <option value="0">Seleccione el Municipio</option>
+                                  <% if(mun) {%>
+                                    <% for(var i =0;i < mun.length;i++){
+                                      
+                                      if(mun[i].id_municipio == cliente.id_municipio){%>
+                                        <option selected value="<%= mun[i].id_municipio %>"><%= mun[i].municipio %></option>
+                                        <% }else { %>
+                                          <option value="<%= mun[i].id_municipio %>"><%= mun[i].municipio %></option>
+                                         
+                                       <% }
+                                       
+                                     } %>
+                                    <% } %> 
+                                 </select>
+                              </div>
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Sector <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="sector" id="sector" required>
+                                  <option value="">Seleccione el Sector</option>
+                                  <% if(sec) {%>
+                                    <% for(var i =0;i < sec.length;i++){ 
+                                      if(sec[i].id_sector == cliente.id_sector){%>
+                                      <option selected value="<%= sec[i].id_sector %>"><%= sec[i].sector %></option>
+                                      <% }else{ %>
+                                        <option value="<%= sec[i].id_sector %>"><%= sec[i].sector %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Dirección <strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="direccion" id="direccion" value="<%= cliente.direccion %>" placeholder="Ejemplo: C/principal #22" required>
+                              </div>  
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Geo localización</label>
+                                <input type="text" class="form-control" onclick="funcionInit(this)" value="<%= cliente.georeferencia %>" name="geo" id="geo" onkeypress="handleMask(event, '|||||')" placeholder="Click aqui para agregar ubicación">
+                              </div>
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Celular <strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="celular" id="celular" value="<%= cliente.celular %>" placeholder="" required>
+                              </div> 
+
+                              <div class="col-md-6 pt-2">
+                                <label for="celular" class="form-label text-black">Correo <strong style="color: red;">*</strong></label>
+                                <input type="email" class="form-control" name="correo" id="correo" value="<%= cliente.correo %>" placeholder="" required>
+                              </div> 
+
+                            </div>
+                              
+                              <div class="card-header mt-5 bg-dark text-white">
+                                <h5><strong>Información Académica  </strong></h5>
+                            </div>
+                              
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Grado Académico</label>
+                              <select class="form-control" name="grado_ac" id="grado_ac" required>
+                                 <option value="0">Seleccione el grado académico</option>
+                                 <% if(graac) {%>
+                                  <% for(var i =0;i < graac.length;i++){ 
+                                    if(graac[i].id_grado_ac == cliente.id_grado_ac){%>
+                                    <option selected value="<%= graac[i].id_grado_ac %>"><%= graac[i].descripcion %></option>
+                                    <% }else { %>
+                                      <option value="<%= graac[i].id_grado_ac %>"><%= graac[i].descripcion %></option>
+                                     
+                                   <% }
+                                  } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Nivel</label>
+                              <select class="form-control" name="nivel" id="nivel" required>
+                                 <option value="0">Seleccione el nivel</option>
+                                 <% if(niv) {%>
+                                  <% for(var i =0;i < niv.length;i++){ 
+                                    if(niv[i].id_nivel == cliente.id_nivel){%>
+                                    <option selected value="<%= niv[i].id_nivel %>"><%= niv[i].descripcion %></option>
+                                    <% }else { %>
+                                      <option value="<%= niv[i].id_nivel %>"><%= niv[i].descripcion %></option>
+                                     
+                                   <% }
+                                  } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Ocupación</label>
+                              <select class="form-control" name="ocupacion" id="ocupacion" required>
+                                <option value="">Seleccione</option>
+                                                                
+                                  <% if(ocu) {%>
+                                    <% for(var i =0;i < ocu.length;i++){ 
+                                      if(ocu[i].id_ocupacion == cliente.id_ocupacion){%>
+                                      <option selected value="<%= ocu[i].id_ocupacion %>"><%= ocu[i].descripcion %></option>
+                                      <% }else { %>
+                                        <option value="<%= ocu[i].id_ocupacion %>"><%= ocu[i].descripcion %></option>
+                                       
+                                     <% }
+                                    } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                              
+                              <div class=" mt-2" id="contactos">
+                              <div class="row">
+                                <div class="card-header mt-5 mb-3 bg-dark text-white">
+                                  <h5><strong>Contactos</strong></h5>
+                              </div>
+                            </div>  
+                            <% if(contact) {%>
+                              <% for(var i =0;i < contact.length;i++){ %>
+                                <div class="row">
+                                  <div class="col-md-4">
+                                    <label for="celular" class="form-label text-black">Tipo de contacto<strong style="color: red;">*</strong></label>
+                                    <select class="form-control" name="tipo_contacto" id="tipo_contacto"> 
+                                      <option value="0">Seleccione</option>
+                                      <% if(tcon) {%>
+                                        <% for(var k =0;k < tcon.length;k++){ %>
+                                          <% if(tcon[k].idtipo_contacto == contact[i].idtipo_contacto) {%>
+                                              <option selected value="<%= tcon[k].idtipo_contacto %>"><%= tcon[k].descripcion %></option>
+                                          <%}else{%>
+                                            <option value="<%= tcon[k].idtipo_contacto %>"><%= tcon[k].descripcion %></option>
+                                        <% } %>
+                                        <% } %>
+                                        <% } %>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-8 col-md-4 ">
+                                    <input type="hidden" class="form-control" name="id_contacto" id="id_contacto" value="<%= contact[i].idcontacto %>">
+                                  <label for="celular" class="form-label text-black">Contacto<strong style="color: red;">*</strong></label>
+                                  <input type="text" class="form-control" name="contacto" id="contacto" maxlength="100" value="<%= contact[i].contacto %>" placeholder="Nombre y apellido" required>
+
+                                  </div>
+                              
+                                  <a class="text-end" onclick="eliminar_elemento(this);">X</a></div>
+                               <% } %>
+                              <% } %>
+                            </div>
+
+                          <div class="col-12 pt-4 text-center">
+                            <button type="button" id="contactoBtn" class="btn btn-primary col-4">Agregar contacto</button>
+                            
+                          </div>
+                              
+                            <div class=" mt-2" id="referencias">
+                                  <div class="row">
+                                    <div class="card-header mt-5 bg-dark text-white">
+                                      <h5><strong>Referencias personales</strong></h5>
+                                  </div>
+                                    
+                                </div>
+                                <% if(refe) {%>
+                                  <% for(var i =0;i < refe.length;i++){ %>
+                                    <div class="row">
+                                      <a class="text-end bg-secondary mt-4 text-white" onclick="eliminar_elemento(this);">X</a>
+                                      <div class="col-md-12 col-md-4 ">
+                                                                  <label for="celular" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label>
+                                                                  <input type="text" class="form-control" name="nombre_referencia" id="nombre_referencia" value="<%= refe[i].nombre %>" maxlength="100" placeholder="Nombre y apellido" required>
+                                                                  <input type="hidden" class="form-control" name="idrefefencia" id="idrefefencia" value="<%= refe[i].id_referencia %>">
+                                                                  </div>
+                                                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                    <label for="celular" class="form-label text-black">Empresa</label>
+                                                                    <input type="text" class="form-control" name="empresa_referencia" id="empresa_referencia" value="<%= refe[i].empresa %>" maxlength="100" placeholder="Nombre de la empresa" >
+                                                                    </div> 
+                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                  <label for="celular" class="form-label text-black">Teléfono</label>
+                                                                  <input type="text" class="form-control" name="telefono_referencia" id="telefono_referencia" value="<%= refe[i].telefono %>" maxlength="50" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000">
+                                                                  </div> 
+                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                  <label for="celular" class="form-label text-black">Extensión</label>
+                                                                  <input type="text" class="form-control" name="extension" id="extension" value="<%= refe[i].extension %>" maxlength="6" placeholder="extensión">
+                                                                  </div> 
+                                                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                  <label for="celular" class="form-label text-black">Celular</label>
+                                                                  <input type="text" class="form-control" name="celular_referencia" id="celular_referencia" value="<%= refe[i].celular %>" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000" required>
+                                                                  </div>
+                                                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                  <label for="celular" class="form-label text-black">Correo</label>
+                                                                  <input type="email" class="form-control" name="correo_referencia" id="correo_referencia" value="<%= refe[i].correo %>" maxlength="100" placeholder="ingrese correo">
+                                                                  </div>
+                                
+                                                                  <div class="col-md-4 mt-2">
+                                                                    <label for="celular" class="form-label text-black">Relación <strong style="color: red;">*</strong></label>
+                                                                    <select class="form-control" name="relacion" id="relacion" required>
+                                                                      <option value="">Seleccione</option>
+                                                                      <% if(rel) {%>
+                                                                       <% for(var k =0;k < rel.length;k++){ %>
+                                                                        <% if(rel[k].id_relacion == refe[i].id_relacion) {%>
+                                                                            <option selected value="<%= rel[k].id_relacion %>"><%= rel[k].relacion %></option>
+                                                                          <%}else{%>
+                                                                            <option value="<%= rel[k].id_relacion %>"><%= rel[k].relacion %></option>
+                                                                        <% } %>
+
+                                                                           
+                                                                        <% } %>
+                                                                       <% } %>
+                                                                     </select>
+                                                                  </div>
+                                                              </div>
+                                   <% } %>
+                                  <% } %>  
+                              </div>
+  
+                              <div class="col-12 pt-4 text-center">
+                                <button type="button" id="referenciaBtn" class="btn btn-primary col-4">Agregar referencia</button>
+                                
+                              </div>
+
+                              <div class=" mt-2" id="ingresos">
+                              
+                                <div class="row"> 
+                                  <div class="card-header mt-5 bg-dark text-white">
+                                    <h5><strong>Ingresos</strong></h5>
+                                </div>
+                              </div>
+                              <% if(ingre) {%>
+                                <% for(var i =0;i < ingre.length;i++){ %>
+                                  <div class="row">
+      <a class="text-end bg-secondary mt-4 text-white" onclick="eliminar_elemento(this);">X</a>
+      <div class="col-md-8 ">
+        
+                                <label for="celular" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="nombre_ingreso" id="nombre_ingreso" value="<%= ingre[i].nombre %>" maxlength="100" placeholder="De donde proviene el ingreso" required>
+                                <input type="hidden" class="form-control" name="id_ingreso" id="id_ingreso" value="<%= ingre[i].idingreso %>" placeholder="Ingrese el nombre de la sucursal" required>
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono_ingreso" id="telefono_ingreso" value="<%= ingre[i].telefono %>" maxlength="50" placeholder="Teléfono">
+                                </div> 
+                              
+                                <div class="col-md-4 mt-2 ">
+                                <label for="celular" class="form-label text-black">Actividad económica</label>
+                                <input type="text" class="form-control" name="actividad_economica" id="actividad_economica" value="<%= ingre[i].actividadeconomica %>"  placeholder="Actividad económica">
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Posición que Ocupa</label>
+                                <input type="text" class="form-control" name="posicion_ocupada" id="posicion_ocupada" value="<%= ingre[i].posicionqueocupa %>" placeholder="Posición que Ocupa">
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Tiempo laborando</label>
+                                <input type="text" class="form-control" name="tiempo_laborando" id="tiempo_laborando" value="<%= ingre[i].tiempolaborando %>" maxlength="150" placeholder="Tiempo laborando">
+                                </div>
+
+                             
+
+                                  <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Moneda<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="moneda" id="moneda" required>
+                                 <option value="">Seleccione la moneda</option>
+                                                                  
+                                  <% if(moneda) {%>
+                                    <% for(var k =0;k < moneda.length;k++){ %>
+                                     <% if(moneda[k].id_moneda == ingre[i].id_moneda) {%>
+                                         <option selected value="<%= moneda[k].id_moneda %>"><%= moneda[k].descripcion %></option>
+                                       <%}else{%>
+                                         <option value="<%= moneda[k].id_moneda %>"><%= moneda[k].descripcion %></option>
+                                     <% } %>
+
+                                        
+                                     <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                                <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Monto<strong style="color: red;">*</strong></label>
+                                  <input type="text" class="form-control" name="monto_ingreso" id="monto_ingreso" value="<%= ingre[i].monto %>" maxlength="50" placeholder="Ingrese monto" required>
+                                  </div> 
+
+                                <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Tipo de ingreso <strong style="color: red;">*</strong></label>
+                                  <select class="form-control" name="tipo_ingreso" id="tipo_ingreso" required>
+                                    <option value="">Seleccione</option>
+                                     <% if(tingre) {%>
+                                      <% for(var k =0;k < tingre.length;k++){ %>
+                                       <% if(tingre[k].id_tipo_ingreso == ingre[i].id_tipo_ingreso) {%>
+                                           <option selected value="<%= tingre[k].id_tipo_ingreso %>"><%= tingre[k].descripcion %></option>
+                                         <%}else{%>
+                                           <option value="<%= tingre[k].id_tipo_ingreso %>"><%= tingre[k].descripcion %></option>
+                                       <% } %>                                          
+                                       <% } %>
+                                      <% } %>
+                                   </select>
+                                </div>
+                              </div>
+                                 <% } %>
+                                <% } %> 
+                            </div>
+
+                            <div class="col-12 pt-4 text-center">
+                              <button type="button" id="ingresoBtn" class="btn btn-primary col-4">Agregar ingreso</button>
+                              
+                            </div>
+
+                          <div class="card-header mt-5 bg-dark text-white">
+                            <h5><strong>Documentos</strong></h5>
+                        </div>
+                            <div class="col-md-12">
+                              <% if(docs) {%>
+                                <% for(var i =0;i < docs.length;i++){ %>
+                                    <a class="btn btn-outline-primary" href="/../<%= docs[i].path %>" target="_blank" style='font-size:16px;'><%= docs[i].descripcion %></a>
+                                  
+                                  <% 
+                                } %>
+                                <% } %>
+                            </div> 
+                            
+                            <div class="col-8">
+                              <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="cliente" required>
+                              <label for="celular" class="form-label text-black">Descripción del documento</label>
+                              <input type="text" class="form-control" name="descripcion" id="descripcion">
+                            </div>
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Subir documento</label>
+                              <input type="file" class="form-control" name="file" id="file" >
+                            </div> 
+
+                          <div class="card-header mt-5 bg-dark text-white">
+                            <h5><strong>Información - Empresa  </strong></h5>
+                        </div>
+                          <% if(accesos.master) {%>
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Empresa<strong style="color: red;">*</strong></label>
+                              <input type="hidden" class="form-control" name="id_empresa" id="id_empresa" value="<%= empresa %>">
+                              <select class="form-control" name="empresa" id="empresa" required>
+                                 <option value="">Seleccione la empresa</option>
+                                 <% if(emp) {%>
+                                  <% for(var i =0;i < emp.length;i++){ %>
+                                    <option value="<%= emp[i].id_negocio %>"><%= emp[i].razon_social %></option>
+                                     
+                                   <% } %>
+                                  <% } %>
+                               </select>
+                            </div>
+                            <% } else{ %>
+                              <div class="col-md-4">
+                                <label for="celular" class="form-label text-black">Empresa<strong style="color: red;">*</strong></label>
+                                <input type="hidden" class="form-control" name="id_empresa" id="id_empresa" value="<%= empresa %>">
+                                <% if(emp) {%>
+                                  <% for(var i =0;i < emp.length;i++){ 
+                                    if(emp[i].id_negocio == empresa){%>
+                                      <input type="text" class="form-control" name="empresa" id="empresa" value="<%= emp[i].razon_social %>" disabled>
+                                    <% }else{ %>
+                                      
+                                      <% } %>
+                                   <% } %>
+                                  <% } %>
+                              </div> 
+                              <% } %>
+
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Sucursal <strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="sucursal" id="sucursal" required>
+                                 <option value="0">Seleccione la sucursal</option>
+                                 <% if(suc) {%>
+                                  <% for(var i =0;i < suc.length;i++){ 
+                                    if(suc[i].id_sucursal == cliente.id_sucursal){%>
+                                    <option selected value="<%= suc[i].id_sucursal %>"><%= suc[i].nombre_sucursal %></option>
+                                    <% }else { %>
+                                      <option value="<%= suc[i].id_sucursal %>"><%= suc[i].nombre_sucursal %></option>
+                                     
+                                   <% }
+                                  } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Cartera <strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="cartera" id="cartera" required>
+                                 <option value="">Seleccione la cartera</option>
+                                  <% if(cartera) {%>
+                                    <% for(var i =0;i < cartera.length;i++){ 
+                                      if(cartera[i].id_cartera == cliente.id_cartera){%>
+                                      <option selected value="<%= cartera[i].id_cartera %>"><%= cartera[i].nombre %></option>
+                                      <% }else { %>
+                                        <option value="<%= cartera[i].id_cartera %>"><%= cartera[i].nombre %></option>
+                                       
+                                     <% }
+                                    } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-12">
+                              <label for="celular" class="form-label text-black">Comentario</label>
+                              <textarea class="col-md-12" name="comentario" id="comentario" cols="auto" rows="3"><%= cliente.comentario %></textarea >                                
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Estado <strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="estado" id="estado" required>
+                                 <option value="">Seleccione el Estado</option>
+                                  <% if(est) {%>
+                                    <% for(var i =0;i < est.length;i++){ 
+                                      if(est[i].id_estado == cliente.id_estado){%>
+                                      <option selected value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                      <% }else { %>
+                                        <option value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                       
+                                     <% }
+                                    } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                               <div class="col-12 text-center py-5">
+                                 <button type="submit" class="btn btn-primary col-4">GUARDAR</button>
+                               </div>
+
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<!-- Modal para cambiar la imagen del cliente-->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <img id="modal-img" class="img-fluid">
+        <form id="modal-form" action="/cliente/foto/<%= cliente.id_cliente %>/0" enctype="multipart/form-data" method="post" >
+          <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="cliente_foto" required>
+          <input id="modal-file-input" name="file" id="file" type="file" style="display: none;">
+          
+          <button class="btn btn-outline-primary col-12" id="select-button" type="button">Seleccionar imagen</button>
+          <div class="text-center pt-2">
+            <button class="btn btn-primary col-4" id="submit-button" type="submit">Cambiar</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<script >
+var previewImg = document.getElementById('preview-img');
+  var modal = document.getElementById('myModal');
+  var modalImg = document.getElementById('modal-img');
+  var modalForm = document.getElementById('modal-form');
+  var modalFileInput = document.getElementById('modal-file-input');
+  var selectButton = document.getElementById('select-button');
+
+  // Agregar evento 'click' al elemento previewImg
+  previewImg.addEventListener('click', function() {
+    modal.style.display = "block";
+    modalImg.src = previewImg.src;
+  });
+
+  // Agregar evento 'change' al elemento modalFileInput
+  modalFileInput.addEventListener('change', function() {
+    const file = this.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', function() {
+      modalImg.setAttribute('src', reader.result);
+    });
+
+    reader.readAsDataURL(file);
+  });
+
+  // Agregar evento 'submit' al formulario modalForm
+  modalForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/upload-image');
+    xhr.send(new FormData(modalForm));
+    modal.style.display = "none";
+  });
+
+  // Agregar evento 'click' al botón selectButton
+  selectButton.addEventListener('click', function() {
+    modalFileInput.click();
+  });
+
+  // Agregar evento 'click' al botón submit-button
+  var submitButton = document.getElementById('submit-button');
+  submitButton.addEventListener('click', function() {
+    modalForm.submit();
+  });
+
+  // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  });
+
+
+//////////////////////////////////////////////////////////////////////
+const funcionInit = (e) => {
+  console.log('entrando...')
+	if (!"geolocation" in navigator) {
+		return alert("Tu navegador no soporta el acceso a la ubicación. Intenta con otro");
+	}
+
+	onUbicacionConcedida = ubicacion => {
+		// console.log("Tengo la ubicación: ", ubicacion);
+		const coordenadas = ubicacion.coords;
+    
+    var date = new Date(ubicacion.timestamp).toLocaleString(); // create Date object console">console.log(date.toString());
+    // console.log(date) let valor = e.target.value;
+    let newubi = confirm("¿Deseas cambiar la ubicación?");
+    if(newubi){
+      // let valor = e.target.value;
+      e.value= coordenadas.latitude+","+coordenadas.longitude;
+      e.readOnly = true;
+      // document.querySelector("#geo").value = coordenadas.latitude+","+coordenadas.longitude;
+    document.querySelector("#geo").setAttribute("readonly", "true");
+    }
+		
+		// $longitud.innerText = coordenadas.longitude;
+		// $enlace.href = `https://www.google.com/maps/@${coordenadas.latitude},${coordenadas.longitude},20z`;
+	}
+	const onErrorDeUbicacion = err => {
+    alert("Error obteniendo ubicación: " + err.message)
+	}
+
+	const opcionesDeSolicitud = {
+		enableHighAccuracy: true, // Alta precisión
+		maximumAge: 0, // No queremos caché
+		timeout: 5000 // Esperar solo 5 segundos
+	};
+
+	// document.querySelector("#geo").value = "Cargando...";
+	navigator.geolocation.getCurrentPosition(onUbicacionConcedida, onErrorDeUbicacion, opcionesDeSolicitud);
+
+};
+
+function handleNacionalidad() {
+  console.log("ID: ");
+  
+  $.get("/empleado", function (data) {
+      var municipios = data.municipios;
+
+  });
+
+}
+
+function handleProvincia(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form-data/municipios?provincia=" + e.target.value, function (data) {
+      var municipios = data.municipios;
+
+     console.log(municipios)
+  });
+}
+
+function handleMunicipio(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/municipio/" + e.target.value, function (data) {
+      console.log(data)
+      var municipio = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el municipio</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_municipio+">"+data[i].municipio+"</option>";
+              console.log(data[i]);                    
+        }
+
+      var elementMunicipio = document.getElementById("municipio");
+      elementMunicipio.innerHTML = html;
+
+
+      
+  });
+}
+
+function handleSector(e) {
+  //console.log("ID: ", e.target.value);
+
+  $.get("/form_data/sector/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el sector</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_sector+">"+data[i].sector+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementSector = document.getElementById("sector");
+      elementSector.innerHTML = html;
+
+
+      
+  });
+}
+
+function handleEncargado(e) { // el id que llega es el id del departamento
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/encargado/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el encargado</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_empleado+">"+data[i].nombres+" "+data[i].apellidos+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementEncargado = document.getElementById("encargado");
+      elementEncargado.innerHTML = html;
+      
+  });
+}
+
+function fechaActual(){
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  return  day + "/" + month + "/" + year;
+  
+}
+
+function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+
+// function puestoList(empresa) { // el id que llega es el id del departamento
+//     //console.log("ID: ", e.target.value);
+
+//     const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+//     var accesos = JSON.parse(jsonAccesos);
+
+   
+//     $.get("/form_data/puesto/" + empresa, function (data) {
+//         // console.log(data)
+        
+//       html = "";
+//       html +="<option value=0>Seleccione el puesto</option>";
+//       for(var j =0;j < data[0].length;j++){ 
+//               html +="<option value="+data[0][j].id_puesto+">"+data[0][j].descripcion+"</option>";
+//               // console.log(data[i]);                    
+//         }
+
+//       var elementPuesto = document.getElementById("puesto");
+//       elementPuesto.innerHTML = html;
+        
+//     });
+ 
+//   }
+
+  
+  // function departamentoList(empresa) { // el id que llega es el id del departamento
+  //   //console.log("ID: ", e.target.value);
+
+  //   const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+  //   var accesos = JSON.parse(jsonAccesos);
+
+   
+  //   $.get("/form_data/departamento/" + empresa, function (data) {
+  //       // console.log(data)  
+        
+  //       html = "";
+  //     html +="<option value=0>Seleccione el departamento</option>";
+  //     for(var j =0;j < data[0].length;j++){ 
+  //             html +="<option value="+data[0][j].id_departamento+">"+data[0][j].descripcion+"</option>";
+  //             // console.log(data[i]);                    
+  //       }
+
+  //     var elementPuesto = document.getElementById("departamento");
+  //     elementPuesto.innerHTML = html;
+  //   });
+ 
+  // }
+  function sucursalList(empresa) { // el id que llega es el id del departamento
+    // console.log("ID: ", empresa);
+
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+
+   
+    $.get("/form_data/sucursal/" + empresa, function (data) {
+        // console.log('Muestra data ========',data)
+        
+        html = "";
+      html +="<option value=0>Seleccione la sucursal</option>";
+      for(var j =0;j < data[0].length;j++){ 
+              html +="<option value="+data[0][j].id_sucursal+">"+data[0][j].nombre_sucursal+"</option>";
+              // console.log(data[i]);                    
+        }
+
+      var elementPuesto = document.getElementById("sucursal");
+      elementPuesto.innerHTML = html;
+    });
+ 
+  }
+
+  function eliminar_elemento(e){
+    // console.log(e.parentNode)
+//     let contacto = e.parentNode.querySelector('#idrefefencia').value;
+// console.log(contacto);
+
+    let del = confirm("¿Deseas eliminar éste registro?");
+    if(del){
+      if(e.parentNode.querySelector('#id_contacto')){
+        if(e.parentNode.querySelector('#id_contacto').value !='0'){
+          let ht =` 
+          <input type="hidden" class="form-control" name="id_contacto_eliminar" id="id_contacto_eliminar" value="${e.parentNode.querySelector('#id_contacto').value}">`;
+          document.getElementById('contactos').insertAdjacentHTML("beforeend",ht); 
+        }
+      }
+      /////////////////////////////////////////////////////////////////
+      if(e.parentNode.querySelector('#idrefefencia')){
+        if(e.parentNode.querySelector('#idrefefencia').value !='0'){
+          let ht =` 
+          <input type="hidden" class="form-control" name="id_referencia_eliminar" id="id_referencia_eliminar" value="${e.parentNode.querySelector('#idrefefencia').value}">`;
+          document.getElementById('referencias').insertAdjacentHTML("beforeend",ht); 
+        }
+      }
+      /////////////////////////////////////////////////////////////////
+      if(e.parentNode.querySelector('#id_ingreso')){
+        if(e.parentNode.querySelector('#id_ingreso').value !='0'){
+          let ht =` 
+          <input type="hidden" class="form-control" name="id_ingreso_eliminar" id="id_ingreso_eliminar" value="${e.parentNode.querySelector('#id_ingreso').value}">`;
+          document.getElementById('ingresos').insertAdjacentHTML("beforeend",ht); 
+        }
+      }
+      e.parentNode.parentNode.removeChild(e.parentNode);
+    }
+}
+window.addEventListener('load', function() {
+  const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    
+    if(!accesos.master){
+      const empre = '<%= empresa %>';
+      // puestoList(empre);
+      // departamentoList(empre);
+      // sucursalList(empre);
+    }
+
+
+    const jsonTipoContacto = '<%- JSON.stringify(tcon) %>';
+    var tipos_contacto = JSON.parse(jsonTipoContacto);
+
+    let cont = document.getElementById("contactoBtn"); // Encuentra el elemento "p" en el sitio
+  cont.onclick = contactoAdd; // Agrega función onclick al elemento
+    
+  function contactoAdd(evento) {
+    evento.preventDefault();
+    let ht =`<div class="row">
+      <div class="col-md-4">  
+        <input type="hidden" class="form-control" name="id_contacto" id="id_contacto" value="0">
+                                <label for="celular" class="form-label text-black">Tipo de contacto <strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="tipo_contacto" id="tipo_contacto">
+                                  <option value="0">Seleccione</option>
+                                  <% if(tcon) {%>
+                                   <% for(var i =0;i < tcon.length;i++){ %>
+                                       <option value="<%= tcon[i].idtipo_contacto %>"><%= tcon[i].descripcion %></option>
+                                    <% } %>
+                                   <% } %>
+                                 </select>
+                              </div>
+                              <div class="col-md-8 col-md-4 ">
+                              <label for="celular" class="form-label text-black">Contacto<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="contacto" id="contacto" value="" maxlength="100" placeholder="Nombre y apellido" required>
+                              </div>
+                          
+                              <a class="text-end" onclick="eliminar_elemento(this);">X</a></div>`
+    
+    //let boton = '<div class="col-2 pt-2 delete"><label for="celular" class="form-label text-black">Afiliado<a style="color: red;padding-left: 1em;" onclick="eliminar_elemento(this);">&times;</a></label><input type="number" class="form-control" name="afiliado" id="afiliado" placeholder="0" required></li></div>';
+    document.getElementById('contactos').insertAdjacentHTML("beforeend",ht); 
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+  
+  const jsonTipoIngreso = '<%- JSON.stringify(tingre) %>';
+    var tipo_ingreso = JSON.parse(jsonTipoIngreso);
+
+    let ingre = document.getElementById("ingresoBtn"); // Encuentra el elemento "p" en el sitio
+    ingre.onclick = ingresoAdd; // Agrega función onclick al elemento
+    
+  function ingresoAdd(evento) {
+    // alert("ingreso")
+    evento.preventDefault();
+    let ht =`<div class="row">
+      <a class="text-end bg-secondary mt-4 text-white" onclick="eliminar_elemento(this);">X</a>
+      <div class="col-md-8">
+        
+                                <label for="celular" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="nombre_ingreso" id="nombre_ingreso" value="" maxlength="100" placeholder="De donde proviene el ingreso" required>
+                                <input type="hidden" class="form-control" name="id_ingreso" id="id_ingreso" value="0" placeholder="Ingrese el nombre de la sucursal" required>
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono_ingreso" id="telefono_ingreso" value="" maxlength="50" placeholder="Teléfono">
+                                </div> 
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Actividad económica</label>
+                                <input type="text" class="form-control" name="actividad_economica" id="actividad_economica" value=""  placeholder="Actividad económica">
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Posición que Ocupa</label>
+                                <input type="text" class="form-control" name="posicion_ocupada" id="posicion_ocupada" value="" placeholder="Posición que Ocupa">
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="celular" class="form-label text-black">Tiempo laborando</label>
+                                <input type="text" class="form-control" name="tiempo_laborando" id="tiempo_laborando" value="" maxlength="150" placeholder="Tiempo laborando">
+                                </div>
+
+                                  <div class="col-md-4">
+                              <label for="celular" class="form-label text-black">Moneda<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="moneda" id="moneda" required>
+                                 <option value="">Seleccione la moneda</option>
+                                 <% if(moneda) {%>
+                                  <% for(var i =0;i < moneda.length;i++){ %>
+                                    <option value="<%= moneda[i].id_moneda %>"><%= moneda[i].descripcion %></option>
+                                     
+                                   <% } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                                <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Monto<strong style="color: red;">*</strong></label>
+                                  <input type="text" class="form-control" name="monto_ingreso" id="monto_ingreso" value="" maxlength="50" placeholder="Ingrese monto" required>
+                                  </div> 
+
+                                <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Tipo de ingreso <strong style="color: red;">*</strong></label>
+                                  <select class="form-control" name="tipo_ingreso" id="tipo_ingreso" required>
+                                    <option value="">Seleccione</option>
+                                    <% if(tingre) {%>
+                                     <% for(var i =0;i < tingre.length;i++){ %>
+                                         <option value="<%= tingre[i].id_tipo_ingreso %>"><%= tingre[i].descripcion %></option>
+                                      <% } %>
+                                     <% } %>
+                                   </select>
+                                </div>
+                              </div>`
+    
+    //let boton = '<div class="col-2 pt-2 delete"><label for="celular" class="form-label text-black">Afiliado<a style="color: red;padding-left: 1em;" onclick="eliminar_elemento(this);">&times;</a></label><input type="number" class="form-control" name="afiliado" id="afiliado" placeholder="0" required></li></div>';
+    document.getElementById('ingresos').insertAdjacentHTML("beforeend",ht); 
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+  const jsonRelacion = '<%- JSON.stringify(rel) %>';
+    var rel = JSON.parse(jsonRelacion);
+
+    let refer = document.getElementById("referenciaBtn"); // Encuentra el elemento "p" en el sitio
+    refer.onclick = relacionAdd; // Agrega función onclick al elemento
+    
+  function relacionAdd(evento) {
+    // alert("ingreso")
+    evento.preventDefault();
+    let ht =`<div class="row">
+      <a class="text-end bg-secondary mt-4 text-white" onclick="eliminar_elemento(this);">X</a>
+      <div class="col-md-12 col-md-4 ">
+                                  <label for="celular" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label>
+                                  <input type="text" class="form-control" name="nombre_referencia" id="nombre_referencia" value="" maxlength="100" placeholder="Nombre y apellido" required>
+                                  <input type="hidden" class="form-control" name="idrefefencia" id="idrefefencia" value="0">
+                                  </div>
+                                
+                                  <div class="col-md-4 mt-2">
+                                    <label for="celular" class="form-label text-black">Empresa</label>
+                                    <input type="text" class="form-control" name="empresa_referencia" id="empresa_referencia" value="" maxlength="100" placeholder="Nombre de la empresa" >
+                                    </div> 
+
+                                  <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Teléfono</label>
+                                  <input type="text" class="form-control" name="telefono_referencia" id="telefono_referencia" value="" maxlength="50" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000">
+                                  </div> 
+
+                                  <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Extensión</label>
+                                  <input type="text" class="form-control" name="extension" id="extension" value="" maxlength="6" placeholder="extensión">
+                                  </div> 
+                                
+                                  <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Celular</label>
+                                  <input type="text" class="form-control" name="celular_referencia" id="celular_referencia" value="" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000" required>
+                                  </div>
+                                
+                                  <div class="col-md-4 mt-2">
+                                  <label for="celular" class="form-label text-black">Correo</label>
+                                  <input type="email" class="form-control" name="correo_referencia" id="correo_referencia" value="" maxlength="100" placeholder="ingrese correo">
+                                  </div>
+
+                                  <div class="col-md-4 mt-2">
+                                    <label for="celular" class="form-label text-black">Relación <strong style="color: red;">*</strong></label>
+                                    <select class="form-control" name="relacion" id="relacion" required>
+                                      <option value="">Seleccione</option>
+                                      <% if(rel) {%>
+                                       <% for(var i =0;i < rel.length;i++){ %>
+                                           <option value="<%= rel[i].id_relacion %>"><%= rel[i].relacion %></option>
+                                        <% } %>
+                                       <% } %>
+                                     </select>
+                                  </div>
+                              </div>`
+    
+    //let boton = '<div class="col-2 pt-2 delete"><label for="celular" class="form-label text-black">Afiliado<a style="color: red;padding-left: 1em;" onclick="eliminar_elemento(this);">&times;</a></label><input type="number" class="form-control" name="afiliado" id="afiliado" placeholder="0" required></li></div>';
+    document.getElementById('referencias').insertAdjacentHTML("beforeend",ht); 
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+  
+  document.getElementById("empresa").onchange = function(e) {
+      let valor = e.target.value;
+      puestoList(valor);
+      departamentoList(valor);
+      // sucursalList(valor);
+      // document.getElementById("empresa").value = this.value;
+    };
+  
+   
+  // $(":input").inputmask();
+  //const nacionalidad = document.getElementById("nacionalidad");
+  //$("#fecha").val(fechaActual());
+  document.getElementById("fecha").value = new Date().toLocaleDateString();
+ 
+  document.getElementById("provincia").onchange = function(e) {
+    handleMunicipio(e);
+  };
+
+  document.getElementById("municipio").onchange = function(e) {
+    handleSector(e);
+  };
+
+  // document.getElementById("puesto").onchange = function(e) {
+  //   handleEncargado(e);
+  // };
+
+});
+</script>
+
+
+
+<%- include('partials/_footer') %>

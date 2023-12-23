@@ -1,0 +1,197 @@
+<%- include('partials/_header') %>
+<%empleado.id_encargado %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div id="form_empleado" class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3"  action="/empleado/licencia/<%= empleado.id_empleado %>" method="post">
+                              <div class="card-header bg-dark text-white d-flex">
+                                <div class="col-9"><h5>Licencia - RRHH</h5></div>
+                                
+                                <label for="inputAddress2" class="form-label">Fecha:</label>
+                                    <input type="text" class="form-control bg-dark text-black" name="fecha" id="fecha" disabled readonly>
+                                  
+                            </div>
+                                <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Nombre</label>
+                                    <input type="hidden" class="form-control" name="id_emp" id="id_emp" placeholder="Mel Patsy" value="<%= empleado.id_empleado %>" required>
+                                    <input type="text" class="form-control" name="nombres" id="nombres" placeholder="Mel Patsy" value="<%= empleado.nombres +' '+ empleado.apellidos%>" disabled>
+                                  </div>
+                                  
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Cédula</label>
+                                    <input type="text" class="form-control" name="cedula" id="cedula" placeholder="00000000000" value="<%= empleado.cedula %>" disabled>
+                                  </div>
+                               
+                              
+                              <div class="col-md-4">
+                                <label for="inputPassword4" class="form-label text-black">Celular</label>
+                                <input type="text" class="form-control" name="celular" id="celular" placeholder="000-000-0000" value="<%= empleado.cel %>" disabled>
+                              </div>  
+                              
+                              
+                             
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Empresa</label>
+                                <select class="form-control" name="empresa" id="empresa" disabled>
+                                   <option value="0">Seleccione la empresa</option>
+                                   <% if(emp) {%>
+                                    <% for(var i =0;i < emp.length;i++){ 
+                                      if(emp[i].id_empresa == empleado.id_empresa){%>
+                                      <option selected value="<%= emp[i].id_empresa %>"><%= emp[i].nombre_empresa %></option>
+                                      <% }else{ %>
+                                        <option value="<%= emp[i].id_empresa %>"><%= emp[i].nombre_empresa %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Departamento</label>
+                                <select class="form-control" name="departamento" id="departamento" disabled>
+                                   <option value="0">Seleccione el departamento</option>
+                                   <% if(dep) {%>
+                                    <% for(var i =0;i < dep.length;i++){ 
+                                      if(dep[i].id_departamento == empleado.id_departamento){%>
+                                      <option selected value="<%= dep[i].id_departamento %>"><%= dep[i].descripcion %></option>
+                                       <% }else {%>
+                                        <option value="<%= dep[i].id_departamento %>"><%= dep[i].descripcion %></option>
+                                     <% }
+                                    } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Puesto</label>
+                                <select class="form-control" name="puesto" id="puesto" disabled>
+                                   <option value="0">Seleccione el puesto</option>
+                                   <% if(pue) {%>
+                                    <% for(var i =0;i < pue.length;i++){
+                                      if(pue[i].id_puesto == empleado.id_puesto){ %>
+                                      <option selected value="<%= pue[i].id_puesto %>"><%= pue[i].descripcion %></option>
+                                      <% }else {%>
+                                        <option value="<%= pue[i].id_puesto %>"><%= pue[i].descripcion %></option>
+                                      <% }
+                                    } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Encargado</label>
+                                <select class="form-control" name="encargado" id="encargado" disabled>
+                                   <option value="0">Seleccione el encargado</option>
+                                   <% if(enc) {%>
+                                    <% for(var i =0;i < enc.length;i++){ 
+                                      if(enc[i].id_empleado == empleado.id_encargado){%>
+                                      <option selected value="<%= enc[i].id_empleado %>"><%= enc[i].nombres+" "+enc[i].apellidos %></option>
+                                      <% }else { %>
+                                        <option value="<%= enc[i].id_empleado %>"><%= enc[i].nombres+" "+enc[i].apellidos %></option>
+                                       
+                                     <% }
+                                    } %>
+                                    <% } %>
+
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputPassword4" class="form-label text-black">Código</label>
+                                <input type="text" class="form-control" name="codigo" id="codigo" value="<%= empleado.codigo %>" disabled>
+                              </div>  
+
+                              <div class="col-md-4">
+                                <label for="inputPassword4" class="form-label text-black">Corre de la Empresa</label>
+                                <input type="text" class="form-control" name="email_institucional" id="email_institucional"  value="<%= empleado.email_institucional %>" disabled>
+                              </div>  
+
+                              <div class="card-header mt-5 bg-dark text-white">
+                                <h5><strong>Información - Licencia</strong></h5>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="inputEmail4" class="form-label text-black">Tipo de licencia</label>
+                              <select class="form-control" name="tipo_lic" id="tipo_lic" required>
+                                 <option value="0">Seleccione </option>
+                                 <% if(tipo_lic) {%>
+                                  <% for(var i =0;i < tipo_lic.length;i++){ %>
+                                    <option value="<%= tipo_lic[i].id_tipo_licencia %>"><%= tipo_lic[i].descripcion %></option>
+                                     
+                                   <% } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-3">
+                              <label for="inputAddress2" class="form-label text-black">Fecha de salida</label>
+                              <input type="date" class="form-control" name="fecha_salida" id="fecha_salida" placeholder="000-0000000-0" required>
+                            </div>
+
+                            <div class="col-md-3">
+                              <label for="inputAddress2" class="form-label text-black">Fecha de entrada</label>
+                              <input type="date" class="form-control" name="fecha_entrada" id="fecha_entrada" required>
+                            </div>
+
+                            <div class="col-md-3">
+                              <label for="inputAddress2" class="form-label text-black">Trajo constancia</label>
+                              <select class="form-control" name="constancia" id="constancia" required>
+                                <option value="">Seleccione</option>
+                                  <option value="si" >Si</option>
+                                  <option value="no">No</option>
+                               </select>
+                               
+                            </div>
+                            <div class="col-md-12">
+                              <label for="inputPassword4" class="form-label text-black">Motivo</label>
+                              <textarea class="col-md-12" name="motivo_lic" id="motivo_lic" cols="auto" rows="3" required></textarea >                                
+                            </div>
+
+                            <div class="col-md-4"> 
+                              <label for="inputEmail4" class="form-label text-black">Estado</label>
+                              <select class="form-control" name="estado_lic" id="estado_lic" required>
+                                 <option value="">Seleccione el Estado</option>
+                                 <option value="En Proceso">En Proceso</option>
+                                 <option value="Aprovado">Aprovado</option>
+                                 <option value="Reconsiderado">Reconsiderado</option>
+
+                               </select>
+                            </div>
+                                                          
+                               <div id="guardar_empleado" class="col-12">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+
+                             </form>
+                            
+                          
+                           </div>
+                           
+                           
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script >
+
+
+
+window.addEventListener('load', function() {});
+</script>
+
+
+
+<%- include('partials/_footer') %>

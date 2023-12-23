@@ -1,0 +1,285 @@
+<%- include('partials/_header') %>
+
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                          <% if(dedonde == 1){%>
+                            <div class="card">
+                                
+                                      <% if(tiene == 0){%>
+                                        <form id="formSolicitud_permiso" class="row g-3" action="/permiso/add" method="post">
+                                              <div class="card-header bg-dark text-white d-flex">
+                                                <div class="col-9"><h5>Solicitud de permiso - Empleado</h5></div>
+                                                
+                                                <label for="inputAddress2" class="form-label text-white">Fecha:</label>
+                                                    <input type="text" class="form-control bg-dark text-white" name="fecha" id="fecha" required readonly>
+                                                  
+                                            </div>
+                                            <div class="col-md-4">
+                                              <input type="hidden" class="form-control" name="encargado" id="encargado" value="<%= emp.id_encargado %>" required readonly>
+                                                <label for="inputEmail4" class="form-label text-black">Tipo de permiso</label>
+                                                <select class="form-control" name="tipo_permiso" id="tipo_permiso" required>
+                                                   <option value="">Seleccione</option>
+                                                   <% if(tipopermiso) {%>
+                                                    <% for(var i =0;i < tipopermiso.length;i++){ %>
+                                                      <option value="<%= tipopermiso[i].id_tipo_permiso %>"><%= tipopermiso[i].tipo_permiso %></option>
+                                                       
+                                                     <% } %>
+                                                    <% } %>
+                                                   
+                                                   
+                                                 </select>
+                                              </div>
+                                                <div class="col-4">
+                                                    <label for="inputAddress2" class="form-label text-black">Fecha de Salida</label>
+                                                    <input type="datetime-local" class="form-control" name="fecha_salida_e" id="fecha_salida_e" required>
+                                                  </div>
+
+                                                  <div class="col-4">
+                                                    <label for="inputAddress2" class="form-label text-black">Fecha de Entrada</label>
+                                                    <input type="datetime-local" class="form-control" name="fecha_entrada_e" id="fecha_entrada_e" required>
+                                                  </div>
+
+                                                  <div class="col-md-12">
+                                                    <label for="inputPassword4" class="form-label text-black" required>Motivo</label>
+                                                    <textarea class="col-md-12" name="motivo_e" id="motivo_e" cols="auto" rows="3"></textarea>                                
+                                                  </div>
+
+                                                  <div class="col-md-12">
+                                                    <label for="inputPassword4" class="form-label text-black">Las solicitudes de permiso se deben presentar por lo menos 24 Hrs antes del día en que se estará ausente,
+                                                        a excepción del permiso por enfermedad o por alguna emergencia.</label>  
+                                                    <label for="inputPassword4" class="form-label text-black">Las solicitudes de vacaciones se deben presentar por lo menos 7 días antes.</label>  
+
+                                                  </div>
+                                              
+                                           <div class="col-12">
+                                             <button type="submit" class="btn btn-primary">ENVIAR</button>
+                                           </div>
+                                         </form>
+                                         <% } else { %>
+                                         <form class="row g-3" action="/permiso/cancel/<%= permiso.id_permiso %>" method="post">
+                                            <div class="col-2">
+                                                <label for="inputAddress2" class="form-label text-black">Solicitud No.</label>
+                                                <input type="text" class="form-control" name="solicitud_no" id="solicitud_no" value="<%= permiso.id_permiso %>" readonly required>
+                                              </div>
+                                              
+                                              <div class="col-md-4">
+                                                <label for="inputEmail4" class="form-label text-black">Estado</label>
+                                                <select class="form-control" name="estado_solicitud" id="estado_solicitud" required disabled>
+                                                   <option value="0">Seleccione</option>
+                                                   <% if(est) {%>
+                                                    <% for(var i =0;i < est.length;i++){ 
+                                                      if(est[i].id_estado == permiso.id_estado){%>
+                                                      <option selected value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                                      <% }else { %>
+                                                        <option value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                                     <% }
+                                                    } %>
+                                                    <% } %>
+                                                 </select>
+                                              </div>
+                                            
+                                              <div class="col-md-12">
+                                                <label for="inputPassword4" class="form-label text-black">Motivo</label>
+                                                <textarea class="col-md-12" name="comentario_supervisor" id="comentario_supervisor" cols="auto" rows="3" readonly><%= permiso.motivo %></textarea>                                
+                                              </div>
+                                              <div class="col-md-12">
+                                                <label for="inputPassword4" class="form-label text-black">Motivo de cancelación</label>
+                                                <textarea class="col-md-12" name="comentario_emp" value="<%= est[0].descripcion %>" id="comentario_emp" cols="auto" rows="3" required></textarea>                                
+                                              </div>
+                                              <div class="col-6">
+                                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                              </div>
+
+                                         </form>
+                                         <% } %>
+                                       
+                               
+                            </div>
+                            <%} if(dedonde == 2){ %>
+
+
+
+                           
+                            <div class="container">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>LISTA DE PERSMISOS - ENCARGADO</h5>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                        
+                                        <table class="table table-bordered table-hover mt-5">
+                                            <thead class="bg-dark text-white">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>FECHA</th>
+                                                    <th>SOLICITANTE</th>
+                                                    <th>ESTADO</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla_empleado">
+                                              <% if(permisos) {%>
+                                                <% for(var i =0;i < permisos.length;i++){ %>
+                                                    <tr> 
+                                                        <td><%= i+1 %></td>
+                                                        <td><%= (new Date( permisos[i].fecha_solicitud )).toLocaleDateString() %></td>
+                                                        <td><%= permisos[i].solicitante %></td>
+                                                        <td><%= permisos[i].estado_permiso %></td>
+                                                        <td class="text-center"><a href="/permiso/ver/<%= permisos[i].id_permiso %>" ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>
+                                                    </tr>
+                            
+                            
+                                                 <% } %>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    
+                            </div>
+
+                            <%} if(dedonde == 3){ %>    
+                              
+                              
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>LISTA DE PERSMISOS - RRHH</h5>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-5 d-flex text-right">
+                                          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                                          <input type="text" class="form-control ml-5 mx-2" name="buscarp" id="buscarp" placeholder="Código o Cédula" >
+                                      
+                                        </div>
+                                        
+                                        <table class="table table-bordered table-hover mt-5">
+                                            <thead class="bg-dark text-white">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>FECHA</th>
+                                                    <th>SOLICITANTE</th>
+                                                    <th>SUPERVISOR</th>
+                                                    <th>DEPARTAMENTO</th>
+                                                    <th>EMPRESA</th>
+                                                    <th>ESTADO</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla_permiso">
+                                              <% if(rrhh) {%>
+                                                <% for(var i =0;i < rrhh.length;i++){ %>
+                                                    <tr> 
+                                                        <td><%= i+1 %></td>
+                                                        <td><%= (new Date(rrhh[i].fecha_solicitud)).toLocaleDateString() %></td>
+                                                        <td><%= rrhh[i].solicitante %></td>
+                                                        <td><%= rrhh[i].encargado %></td>
+                                                        <td><%= rrhh[i].departamento %></td>
+                                                        <td><%= rrhh[i].empresa %></td>
+                                                        <td><%= rrhh[i].estado_permiso %></td>
+                                                        <td class="text-center"><a href="/permiso/rrhh/<%= rrhh[i].id_permiso %>" ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>
+                                                    </tr>
+                            
+                            
+                                                 <% } %>
+                                                <% } %>
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                               
+
+                            
+                            <% } %>
+
+
+
+                        </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<script>
+  
+  function permisoList(e) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    let valor = e.target.value;
+    
+    if(valor ==""){
+      valor ="aaaaaaaaaaaa";
+    }
+    $.get("/form_data/permiso/" + valor, function (data) {
+      
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+                
+                console.log(data[i]);  
+                if(data[i].id_estado ==data[i].id_estado){
+                  html +="<tr class=''>";
+                  html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].fecha_solicitud +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].encargado +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].estado_permiso +"</td>";
+                  html +="<td><a href='/permiso/rrhh/"+ data[i].id_permiso +"'' ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>";
+                  html +="</tr>";        
+                  k++;  
+                }
+                
+          }
+  
+        var elementTabla_empleado = document.getElementById("tabla_permiso");
+        elementTabla_empleado.innerHTML = html;
+        
+    });
+  }
+
+  window.addEventListener('load', function() {
+    
+    document.getElementById("buscarp").onkeyup = function(e) {
+      
+      permisoList(e);
+    };
+
+    document.addEventListener("click", (event) => {
+  const clickedElement = event.target;
+  
+  if (!clickedElement.matches('.ver')) {
+    return;
+  }
+  handlePermiso(clickedElement.value);
+  confirm("Are you sure to EDIT this user?");
+});
+    console.log('no se desplieaga')
+  //document.getElementById('formSolicitud_permiso').style.display = 'none';
+  //document.getElementById("fecha").value = new Date().toISOString();//.toDateString();//.toLocaleDateString();
+  document.getElementById('permiso_enc').style.display = "none";
+  //alert("cargo")
+
+  document.getElementById('ver').addEventListener('click', function(e) {
+    console.log(e)
+  });
+
+  const editButtons = document.querySelectorAll(".ver");
+editButtons.forEach(editBtn => editBtn.addEventListener("click", () => {
+  alert('click')
+}));
+  
+
+});
+</script>
+
+
+<%- include('partials/_footer') %>

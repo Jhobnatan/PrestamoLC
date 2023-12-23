@@ -1,0 +1,234 @@
+<%- include('partials/_header') %>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-black">
+                        <h5>LISTADO DE AJUSTE EMPLEADO</h5>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 mt-5 d-flex text-right">
+              <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Código de empleado" >
+              <% if(accesos.crear_empleado) {%>
+              <a class="btn btn-primary" href="/ajuste_empleado/new/"><i class='fas fa-plus mx-3' style='font-size:18px;color:white'> Crear Ajuste</i></a>
+              <% } %>
+            </div>
+
+            <div class="btn-group  mt-4 fs-4" role="group" aria-label="bs-component">
+                   
+              <% if(accesos.empleados_afg) {%>
+              <div class="form-check mx-4">
+                <input class="form-check-input" type="radio" name="optionsRadios" value="" id="Prospecto" checked>
+                <label class="form-check-label" for="Prospecto">
+                  EN PROCESO
+                </label>
+              </div>
+              <% } %>
+              <% if(accesos.empleados_awm) {%>
+              <div class="form-check mx-4">
+                <input class="form-check-input" type="radio" name="optionsRadios" value="" id="Afiliado" >
+                <label class="form-check-label" for="Afiliado">
+                  APROBADO
+                </label>
+              </div>
+              <% } %>
+              <% if(accesos.otras_empresas) {%>
+                <div class="form-check mx-4">
+                  <input class="form-check-input" type="radio" value="" name="optionsRadios" id="Descartado" >
+                  <label class="form-check-label" for="Descartado">
+                    DESCARTADO
+                  </label>
+                </div>
+                <% } %>
+        
+            </div>
+
+
+            <div class="col-12 mt-3 d-flex text-right">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-dark text-white">
+                    <tr>
+                      <th>NO.</th>
+                        <th>CÓDIGO</th>
+                        <th>NOMBRE</th>
+                        <th>FECHA EFECTIVA DE CAMBIO</th>
+                        <th>ESTADO</th>
+                        <th class="text-center">ACCIÓN</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_negocio">
+                    
+                </tbody>
+            </table>
+            </div>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script >
+
+
+  function negocioList(estado,valor,inicio) { // el id que llega es el id del departamento
+ 
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+   
+    $.get("/form_data/negocio/" + valor+'/'+estado+'/'+inicio, function (data) {
+        // console.log(data[data.length-1].registros[0].total)
+        
+        var html = "";
+        for(var i =0;i < data.length-1;i++){ 
+
+            //console.log(data.length);                              
+               
+                                
+          }
+        var elementTabla_empleado = document.getElementById("tabla_negocio");
+        elementTabla_empleado.innerHTML = html;
+        // console.log('No se cuantos son: ',data[data.length-1].registros[0].total)
+// console.log('No se cuantos son: ',)
+cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+    });
+ 
+  }
+  function negocioListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }
+        let estado = 'Prospecto'
+        const radioButtons = document.querySelectorAll('input[name="optionsRadios"]');
+        for (const radioButton of radioButtons) {
+          if(radioButton.checked){
+
+            estado = radioButton.id;
+          }
+        }
+        // console.log('veo ',estado,valor,inicio)
+        negocioList(estado,valor,inicio)
+      
+    }
+  function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='negocioListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='negocioListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='negocioListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='negocioListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='negocioListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='negocioListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+  
+  function fechaActual(){
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    return  day + "/" + month + "/" + year;
+    
+  }
+  
+  window.addEventListener('load', function() {
+    
+    //const nacionalidad = document.getElementById("nacionalidad");
+    //$("#fecha").val(fechaActual());
+    //document.getElementById("fecha").value = new Date().toLocaleDateString();
+    const radioButtons = document.querySelectorAll('input[name="optionsRadios"]');
+    for (const radioButton of radioButtons) {
+      radioButton.addEventListener('change', showSelected);
+    }
+    let radioSelected = 'Prospecto'
+    function showSelected(e) {
+      let valor = document.getElementById('buscar').value;
+      if (this.checked) {
+
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }
+        // alert(`You selected ${this.id}`);
+        radioSelected = this.id;
+        negocioList(this.id,valor,1)
+      }
+    }
+
+
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+      
+      negocioList(radioSelected,valor,1); 
+      // alert(valor);
+    };
+    negocioList('Prospecto','aaaaaaaaaaaa',1)
+    // document.getElementById("inactivos").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("otros").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("afg").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("awm").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+  
+  });
+  </script>
+<%- include('partials/_footer') %>

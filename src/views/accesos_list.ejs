@@ -1,0 +1,185 @@
+<%- include('partials/_header') %>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-black">
+                        <h5>LISTA DE ACCESOS - <%- gru %></h5>
+                    </div>
+                    <div class="card-body col-md-12">
+                      <div class="col-md-10" style="margin:0 auto">
+                          <form class="row g-3" action="/grupo_acceso/accesos/<%= id_acc %>" method="post">
+                              
+                             <% if(acc) {%>
+                              
+                              <% for(var i =0,a=1,b=0;i < acc.length;i++){ %>
+                                <% if(acc[i].id_area == a) { a++;%> <label class="col-md-12" for=""><%= %></label> <label class="col-md-12 text-black" for=""><%= (acc[i].id_area+' - '+ar[b].descripcion).toUpperCase(); %></label>    <%b++; }%>
+                                <div class="col-md-4">
+                                  
+                                  <% if(gacc.findIndex(object => { return object.id_acceso === acc[i].id_acceso; }) > -1) {%>
+                                    <% if(acc[i].descripcion != 'master') {%>
+                                  <input class="form-check-input col-md-4" type="checkbox" value="<%= acc[i].id_acceso %>" id="<%= acc[i].id_acceso %>" name="<%= acc[i].id_acceso %>" checked>
+                                  <label class="form-check-label" for="<%= acc[i].id_acceso %>"><%= acc[i].descripcion %></label>
+                                  <% } else {%>   
+                                    <% if(accesos.master) {%>
+                                      
+                                      <% }%>
+                                    <% }%>
+                                  <% } else {%>
+                                    <% if(acc[i].descripcion != 'master') {%>
+                                    <input class="form-check-input col-md-4" type="checkbox" value="<%= acc[i].id_acceso %>" id="<%= acc[i].id_acceso %>" name="<%= acc[i].id_acceso %>">
+                                    <label class="form-check-label" for="<%= acc[i].id_acceso %>"><%= acc[i].descripcion %></label>
+                                    <% }%>
+                                  <% }%>
+                                  
+                                </div>
+                                 
+                               <% } %>
+                              
+                              <% } %>
+                              <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-primary">GUARDAR</button>
+                              </div>
+                           </form>
+                          </div>
+                         </div>
+                  </div>
+
+                </div>
+            </div>
+            
+            <!-- <div class="col-12 mt-5 d-flex text-right">
+              <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Ingrese Nombre, Código o Cédula" >
+              <% if(accesos.crear_empleado) {%>
+              <a href="reclutamiento/new/"><i class='fas fa-plus mx-3' style='font-size:18px;color:black'> Crear Solicitud</i></a>
+              <% } %>
+            </div> -->
+
+
+        </div>
+        
+    </div>
+</div>
+
+
+<script >
+
+
+  function reclutamientoList(valor) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    ////////
+   //alert(valor)
+
+    let afg = document.getElementById('afg').checked;
+    let awm = document.getElementById('awm').checked;
+    // alert(activos+"activos")
+ 
+    // var datai = JSON.parse(jsondata);
+ 
+    
+    // var data = datai.filter(function(e){
+    //   if(e['cedula'].includes(valor)){
+    //     return e['cedula'].includes(valor);
+    //   }
+    // });
+    console.log("El valor es..."+valor)
+    ///////////
+
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+   
+    $.get("/form_data/reclutamiento/" + valor+'/'+afg+'/'+awm, function (data) {
+        console.log(data)
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+
+            //console.log(data.length);  
+              if(data[i].id_empresa==3) {
+                  if(accesos.awm){ 
+                  html +="<tr class='table-success'>";
+                  html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].motivo +"</td>";
+                
+                  html +="<td>";
+                    html +="<a href='/reclutamiento/update/"+data[i].id_reclutamiento+"'><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+                   html +="</td></tr>";  
+                  
+              k++;  
+                  }
+                //console.log('AWM')
+              }else{
+                //console.log('AFG')
+                
+                if(accesos.afg){ 
+                  html +="<tr class='table-info'>";
+                    html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].motivo +"</td>";
+            
+                  html +="<td>";
+                    html +="<a href='/reclutamiento/update/"+data[i].id_reclutamiento+"' ><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+                   html +="</td></tr>";  
+                  
+              k++;
+                  }
+                }     
+                
+            }
+            var elementTabla_empleado = document.getElementById("tabla_empleado");
+            elementTabla_empleado.innerHTML = html;
+  });
+}
+  function fechaActual(){
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    return  day + "/" + month + "/" + year;
+    
+  }
+  
+  window.addEventListener('load', function() {
+    //const nacionalidad = document.getElementById("nacionalidad");
+    //$("#fecha").val(fechaActual());
+    //document.getElementById("fecha").value = new Date().toLocaleDateString();
+   
+    // document.getElementById("buscar").onkeyup = function(e) {
+    //   let valor = e.target.value;
+    //   if(valor ==""){
+    //     valor ="aaaaaaaaaaaa";
+    //   }
+      
+    //   reclutamientoList(valor); 
+    //   // alert(valor);
+    // };
+
+    // document.getElementById("afg").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   reclutamientoList(buscar); 
+    // };
+    // document.getElementById("awm").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   reclutamientoList(buscar); 
+    // };
+  
+  });
+  </script>
+<%- include('partials/_footer') %>

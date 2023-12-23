@@ -1,0 +1,2749 @@
+<%- include('partials/_header_facturacion') %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+
+
+  <div class="containere mx-5 pt-4">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card">
+          <div class="card-header text-black">
+            <h5>LISTA DE PRODUCTOS</h5>
+          </div>
+          <div class="card-body">
+
+            <div class="col-12 mt-3 d-flex text-right">
+              <label for="buscar" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar"
+                placeholder="Ingrese código, descripción ó referencia">
+              <% if(accesos.crear_empleado) {%>
+                <button class="btn btn-primary col-md-2 py-3 mx-2" id="btnCrearProducto" type="button">Crear
+                  producto</button>
+                <% } %>
+            </div>
+            <div class="col-12 mt-2 text-right">
+              <label for="buscar" class="form-label text-black" style="color: black; font-size: 20px;">Total de
+                registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+            </div>
+            <table class="table table-bordered table-hover">
+              <thead class="bg-dark text-white">
+                <tr>
+
+                  <th>No.</th>
+                  <th>CÓDIGO</th>
+                  <th>DESCRIPCIÓN</th>
+                  <th>REFERENCIA</th>
+                  <th>EXISTENCIA</th>
+                  <th>PRECIO DETALLE</th>
+                  <th>PRECIO AL POR MAYOR</th>
+                  <th>PRECIO ESPECIAL</th>
+                  <th>ITBIS</th>
+                  <th>DESCUENTO</th>
+                  <th>UBICACIÓN</th>
+                  <th>ACCIÓN</th>
+                </tr>
+              </thead>
+              <tbody id="tabla_producto">
+
+              </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Modal para cambiar la imagen del cliente-->
+        <div class="modal fade" id="modalProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered ancho" role="document">
+            <div class="modal-content ">
+
+              <!-- Modal body -->
+
+              <div class="card">
+                <div class="modal-header bg-dark text-white">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Producto</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="card-body col-md-12">
+                  <div class="col-md-12" style="margin:0 auto">
+                    <form class="row g-3" action="producto/add" method="post">
+
+                      <div class="col-md-4">
+                        <input type="text" class="form-control d-none" name="no_producto" id="no_producto" value="0"
+                          placeholder="">
+                        <label for="codigo" class="form-label text-black">Código</label>
+                        <input type="text" class="form-control" name="codigo" id="codigo" maxlength="100"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-8">
+                        <label for="descripcion" class="form-label text-black">Descripción</label>
+                        <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="100"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="referencia" class="form-label text-black">Referencia</label>
+                        <input type="text" class="form-control" name="referencia" id="referencia" value=""
+                          placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="factor_conversion" class="form-label text-black">Factor de Conversión</label>
+                        <input type="text" class="form-control" name="factor_conversion" id="factor_conversion"
+                          maxlength="6" value="" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="existencia" class="form-label text-black">Existencia</label>
+                        <input type="text" class="form-control" name="existencia" id="existencia" maxlength="100"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="precio_compra" class="form-label text-black">Precio de compra</label>
+                        <input type="text" class="form-control" name="precio_compra" id="precio_compra" maxlength="100"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="precio_detalle" class="form-label text-black">Precio de detalle</label>
+                        <input type="text" class="form-control" name="precio_detalle" id="precio_detalle"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="precio_al_por_mayor" class="form-label text-black">Precio al por mayor</label>
+                        <input type="text" class="form-control" name="precio_al_por_mayor" id="precio_al_por_mayor"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="precio_especial" class="form-label text-black">Precio especial</label>
+                        <input type="text" class="form-control" name="precio_especial" id="precio_especial"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="itbis" class="form-label text-black">Itbis</label>
+                        <input type="checkbox" class="form-check-input" name="con_itbis" id="con_itbis" maxlength="100"
+                          placeholder="">
+                        <input type="text" class="form-control" name="itbis" id="itbis" maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="con_descuento" class="form-label text-black">Descuento</label>
+                        <input type="checkbox" class="form-check-input" name="con_descuento" id="con_descuento"
+                          maxlength="100" placeholder="">
+                        <input type="text" class="form-control" name="descuento" id="descuento" maxlength="100"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="margen_ganancia" class="form-label text-black">Margen de ganancia</label>
+                        <input type="text" class="form-control" name="margen_ganancia" id="margen_ganancia"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="cantidad_minima" class="form-label text-black">Cantidad mínima</label>
+                        <input type="text" class="form-control" name="cantidad_minima" id="cantidad_minima"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="cantidad_maxima" class="form-label text-black">Cantidad máxima</label>
+                        <input type="text" class="form-control" name="cantidad_maxima" id="cantidad_maxima"
+                          maxlength="100" placeholder="">
+                      </div>
+
+                      <div class="col-md-4 d-none">
+                        <label for="ubicacion" class="form-label text-black">Ubicación</label>
+                        <input type="text" class="form-control" name="ubicacion" id="ubicacion" maxlength="200"
+                          placeholder="Dónde colocaste el producto">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="marca" class="form-label text-black">Marca <strong
+                            style="color: red;">*</strong></label>
+                        <select class="form-control" name="marca" id="marca" required>
+                          <option value="">Seleccione</option>
+                          <% if(marca) {%>
+                            <% for(var i=0;i < marca.length;i++){ %>
+                              <option value="<%= marca[i].id_marca %>">
+                                <%= marca[i].nombre %>
+                              </option>
+
+                              <% } %>
+                                <% } %>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="categoria" class="form-label text-black">Categoría <strong
+                            style="color: red;">*</strong></label>
+                        <select class="form-control" name="categoria" id="categoria" required>
+                          <option value="">Seleccione</option>
+                          <% if(categoria) {%>
+                            <% for(var i=0;i < categoria.length;i++){ %>
+                              <option value="<%= categoria[i].id_categoria %>">
+                                <%= categoria[i].nombre %>
+                              </option>
+
+                              <% } %>
+                                <% } %>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="clase" class="form-label text-black">Clase <strong
+                            style="color: red;">*</strong></label>
+                        <select class="form-control" name="clase" id="clase" required>
+                          <option value="0">Seleccione</option>
+                          <% if(clase) {%>
+                            <% for(var i=0;i < clase.length;i++){ %>
+                              <option value="<%= clase[i].id_clase %>">
+                                <%= clase[i].nombre %>
+                              </option>
+
+                              <% } %>
+                                <% } %>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="estado" class="form-label text-black">Estado <strong
+                            style="color: red;">*</strong></label>
+                        <select class="form-control" name="estado" id="estado" required>
+                          <option value="">Seleccione el Estado</option>
+                          <% if(est) {%>
+                            <% for(var i=0;i < est.length;i++){ %>
+                              <option value="<%= est[i].id_estado %>">
+                                <%= est[i].descripcion %>
+                              </option>
+
+                              <% } %>
+                                <% } %>
+                        </select>
+                      </div>
+
+                      <div class="col-md-12 text-center py-3">
+                        <button type="button" id="btnGuardarProducto" class="btn btn-primary col-4 ">GUARDAR</button>
+                      </div>
+
+
+
+
+
+                      <div class="modal-header bg-dark text-white blockUnidades">
+                        Generar e Imprimir Código de Barras
+                      </div>
+                      <div class="col-md-4">
+                        <label for="estado" class="form-label text-black">Formato de Código de Barras:<strong
+                            style="color: red;">*</strong></label>
+                        <select id="barcodeFormat" class="form-control">
+                          <option value="CODE128">CODE128</option>
+                          <option value="EAN13">EAN13</option>
+                          <option value="UPC">UPC</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="estado" class="form-label text-black">Cantidad de Impresiones:<strong
+                            style="color: red;">*</strong></label>
+                        <input type="number" id="printQuantity" class="form-control"
+                          placeholder="Cantidad de impresiones">
+                      </div>
+                      <div class="col-md-4 text-center mt-5">
+                        <button type="button" onclick="generarEImprimir()" class="btn btn-primary col-md-12">Generar y
+                          Imprimir
+                          Código de Barras</button>
+                      </div>
+
+                      <div class="col-md-12 text-center py-3">
+                        <div id="barcodePreview" class="col-md-4"></div>
+                      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <div class="modal-header bg-dark text-white blockUnidades">
+                        Clasificación del producto
+                      </div>
+                      <table class="table table-bordered table-hover mt-2 blockUnidades">
+                        <thead class="bg-primary text-white">
+                          <tr>
+                            <th>ID</th>
+                            <th>UNIDAD</th>
+                            <th>FACTOR DE CONVERSIÓN</th>
+                            <th>CODIGO DE BARRAS</th>
+                            <th onclick='agregarUnidadAlProducto()'> <i class='fas fa-plus'
+                                style='font-size:18px;color:green'></i></th>
+                          </tr>
+                        </thead>
+                        <tbody id="tabla_unidad_producto">
+
+                        </tbody>
+                      </table>
+
+
+                    </form>
+                  </div>
+
+                  <div class="col-md-12" style="margin:0 auto">
+                    <div class="modal-header bg-dark text-white col-md-12 blockUnidades">
+                      Almacenes
+                    </div>
+                    <table class="table table-bordered table-hover mt-2 blockUnidades">
+                      <thead class="bg-primary text-white bg-dark">
+                        <tr>
+                          <th>ID</th>
+                          <th>ALMACEN</th>
+                          <th>UBICACIÓN</th>
+                          <th>EXISTENCIA</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabla_almacen_producto">
+
+                      </tbody>
+                    </table>
+
+
+                    </form>
+                    <div class="col-md-12">
+
+
+                      <div class="modal-header bg-dark text-white col-md-12 blockUnidades">
+                        <h5><strong>Galeria</strong></h5>
+                      </div>
+                      <div id="galeriaContainer" class="col-md-12 blockUnidades">
+
+
+                        <div class="gallery">
+                          <div class="thumbnail-container">
+
+                            <img class="thumbnail"
+                              src="https://media.istockphoto.com/id/513920379/es/foto/l%C3%A1mparas-de-cebolla.jpg?s=612x612&w=0&k=20&c=Rb3mq1i6rCUUIzVtKVQkciKarVF_C4JWJLoz3Cfnr_E=">
+                            <img class="thumbnail"
+                              src="https://agroactivocol.com/wp-content/uploads/2020/07/cebolla-yellow-1.jpg">
+                            <img class="thumbnail"
+                              src="data:image/jpeg;base64,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">
+
+                          </div>
+                          <div
+                            class="main-image-container position-relative d-flex justify-content-center align-items-center"
+                            style="width: 60vw; height: 600px;">
+                            <div class="text-center col-md-12 laimagen">
+                              <img id="main-image" class="img-fluid mx-5"
+                                src="https://media.istockphoto.com/id/513920379/es/foto/l%C3%A1mparas-de-cebolla.jpg?s=612x612&w=0&k=20&c=Rb3mq1i6rCUUIzVtKVQkciKarVF_C4JWJLoz3Cfnr_E=">
+                            </div>
+                            <div id="zoom-container" class="position-absolute top-50 start-50 translate-middle">
+                              <button class="btn btn-outline-primary" id="zoom-in">Zoom +</button>
+                              <button class="btn btn-outline-primary" id="zoom-reset">Reset</button>
+                              <button class="btn btn-outline-primary" id="zoom-out">Zoom -</button>
+                            </div>
+                          </div>
+
+                        </div>
+
+
+
+                        <!-- Modal Buscar Producto -->
+                        <div class="modal fade" id="modalUnidadProducto" tabindex="-1" role="dialog"
+                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary">
+                                <h5 class="modal-title text-white" id="exampleModalCenterTitle">Agregar Unidad Al
+                                  Producto
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body row g-3">
+
+                                <div class="col-md-12 mt-2">
+                                  <label for="inputEmail4" class="form-label text-black">Unidad <i class='fas fa-plus'
+                                      onclick='agregarUnidad()' style='font-size:18px;color:green'></i></label>
+                                  <select class="form-control" name="unidad" id="unidad" required>
+                                    <option value="0">Seleccione</option>
+
+                                  </select>
+                                </div>
+
+                                <div class="col-md-12 mt-2">
+                                  <label for="inputEmail4" class="form-label text-black">Factor de Conversión</label>
+                                  <input type="text" class="form-control" placeholder="Cuantas unidades tiene"
+                                    id="factorDeConversion">
+                                </div>
+
+                                <div class="col-md-12 mt-2">
+                                  <label for="inputEmail4" class="form-label text-black">Código de barras</label>
+                                  <input type="text" class="form-control" placeholder="Código para esta unidad"
+                                    id="codigoDeBarras">
+                                </div>
+                                <div class="col-md-12 text-center pt-1">
+                                  <button type="button" id="btnAgregarUnidadProducto"
+                                    class="btn btn-primary col-md-4 my-3">Agregar</button>
+                                </div>
+
+                                <script>
+
+                                  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                  var conexionEstablecida = false;
+                                  var printer;
+
+                                  function generarEImprimir() {
+                                    var barcodeFormat = document.getElementById("barcodeFormat").value;
+                                    var barcodeValue = document.getElementById("codigo").value;
+                                    var printQuantity = parseInt(document.getElementById("printQuantity").value) || 1;
+
+                                    var barcodeOptions = {
+                                      format: barcodeFormat,
+                                      displayValue: true,
+                                      textMargin: 0,
+                                      fontOptions: "bold"
+                                    };
+
+                                    var barcodePreview = document.getElementById("barcodePreview");
+                                    barcodePreview.innerHTML = "";
+
+                                    var barcodeSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                    barcodeSVG.classList.add("barcode");
+                                    barcodeSVG.setAttribute("jsbarcode-format", barcodeOptions.format);
+                                    barcodeSVG.setAttribute("jsbarcode-value", barcodeValue);
+                                    barcodeSVG.setAttribute("jsbarcode-textmargin", barcodeOptions.textMargin);
+                                    barcodeSVG.setAttribute("jsbarcode-fontoptions", barcodeOptions.fontOptions);
+
+                                    JsBarcode(barcodeSVG, barcodeValue, barcodeOptions);
+                                    barcodePreview.appendChild(barcodeSVG);
+
+                                    if (!conexionEstablecida) {
+                                      qz.websocket.connect().then(function () {
+                                        conexionEstablecida = true;
+                                        return qz.printers.find("Brother QL-700");
+                                      }).then(function (foundPrinter) {
+                                        printer = foundPrinter;
+
+                                        var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                        var img = new Image();
+                                        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                        var url = URL.createObjectURL(svgBlob);
+
+                                        img.onload = function () {
+                                          var canvas = document.createElement("canvas");
+                                          canvas.width = img.width;
+                                          canvas.height = img.height;
+                                          var ctx = canvas.getContext("2d");
+                                          ctx.drawImage(img, 0, 0);
+                                          var pngData = canvas.toDataURL("image/png");
+
+                                          var config = qz.configs.create(printer);
+                                          var data = [{
+                                            type: "pixel",
+                                            format: "image",
+                                            data: pngData,
+                                            options: {
+                                              language: "raw",
+                                              dotDensity: "double",
+                                              media: "auto"
+                                            }
+                                          }];
+
+                                          var printPromises = [];
+
+                                          for (var i = 0; i < printQuantity; i++) {
+                                            printPromises.push(qz.print(config, data));
+                                          }
+
+                                          Promise.all(printPromises).then(function () {
+                                            console.log("Impresión exitosa");
+                                          }).catch(function (error) {
+                                            console.error("Error al imprimir", error);
+                                          });
+                                        };
+
+                                        img.src = url;
+                                      }).catch(function (error) {
+                                        alert("Error al conectar con QZ Tray");
+                                      });
+                                    } else {
+                                      var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                      var img = new Image();
+                                      var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                      var url = URL.createObjectURL(svgBlob);
+
+                                      img.onload = function () {
+                                        var canvas = document.createElement("canvas");
+                                        canvas.width = img.width;
+                                        canvas.height = img.height;
+                                        var ctx = canvas.getContext("2d");
+                                        ctx.drawImage(img, 0, 0);
+                                        var pngData = canvas.toDataURL("image/png");
+
+                                        var config = qz.configs.create(printer);
+                                        var data = [{
+                                          type: "pixel",
+                                          format: "image",
+                                          data: pngData,
+                                          options: {
+                                            language: "raw",
+                                            dotDensity: "double",
+                                            media: "auto"
+                                          }
+                                        }];
+
+                                        var printPromises = [];
+
+                                        for (var i = 0; i < printQuantity; i++) {
+                                          printPromises.push(qz.print(config, data));
+                                        }
+
+                                        Promise.all(printPromises).then(function () {
+                                          console.log("Impresión exitosa");
+                                        }).catch(function (error) {
+                                          console.error("Error al imprimir", error);
+                                        });
+                                      };
+
+                                      img.src = url;
+                                    }
+                                  }
+
+                                  function mostrarAlerta(formato, longitud, caracteresPermitidos) {
+                                    var mensaje = "El valor del código de barras debe tener el formato " + formato + ", una longitud de " + longitud + " caracteres y solo puede contener los siguientes caracteres: " + caracteresPermitidos;
+                                    alert(mensaje);
+                                  }
+
+                                  function validateBarcodeValue(formato, valor) {
+                                    switch (formato) {
+                                      case "CODE128":
+                                        // Validar si el valor solo contiene caracteres alfanuméricos y tiene una longitud de 8 a 12 caracteres
+                                        return /^[a-zA-Z0-9]{8,12}$/.test(valor);
+                                      case "EAN13":
+                                        // Validar si el valor es numérico y tiene una longitud de 13 caracteres
+                                        return /^\d{13}$/.test(valor);
+                                      case "UPC":
+                                        // Validar si el valor es numérico y tiene una longitud de 12 caracteres
+                                        return /^\d{12}$/.test(valor);
+                                      default:
+                                        return false; // Formato no válido
+                                    }
+                                  }
+
+                                  function generarEImprimir() {
+                                    var barcodeFormat = document.getElementById("barcodeFormat").value;
+                                    var barcodeValue = document.getElementById("codigo").value;
+                                    var printQuantity = parseInt(document.getElementById("printQuantity").value) || 1;
+
+                                    var barcodeOptions = {
+                                      format: barcodeFormat,
+                                      displayValue: true,
+                                      textMargin: 0,
+                                      fontOptions: "bold"
+                                    };
+
+                                    var barcodePreview = document.getElementById("barcodePreview");
+                                    barcodePreview.innerHTML = "";
+
+                                    var barcodeSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                    barcodeSVG.classList.add("barcode");
+                                    barcodeSVG.setAttribute("jsbarcode-format", barcodeOptions.format);
+                                    barcodeSVG.setAttribute("jsbarcode-value", barcodeValue);
+                                    barcodeSVG.setAttribute("jsbarcode-textmargin", barcodeOptions.textMargin);
+                                    barcodeSVG.setAttribute("jsbarcode-fontoptions", barcodeOptions.fontOptions);
+
+                                    JsBarcode(barcodeSVG, barcodeValue, barcodeOptions);
+                                    barcodePreview.appendChild(barcodeSVG);
+
+                                    if (!conexionEstablecida) {
+                                      qz.websocket.connect().then(function () {
+                                        conexionEstablecida = true;
+                                        return qz.printers.find("Brother QL-700");
+                                      }).then(function (foundPrinter) {
+                                        printer = foundPrinter;
+
+                                        var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                        var img = new Image();
+                                        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                        var url = URL.createObjectURL(svgBlob);
+
+                                        img.onload = function () {
+                                          var canvas = document.createElement("canvas");
+                                          canvas.width = img.width;
+                                          canvas.height = img.height;
+                                          var ctx = canvas.getContext("2d");
+                                          ctx.drawImage(img, 0, 0);
+                                          var pngData = canvas.toDataURL("image/png");
+
+                                          var config = qz.configs.create(printer);
+                                          var data = [{
+                                            type: "pixel",
+                                            format: "image",
+                                            data: pngData,
+                                            options: {
+                                              language: "raw",
+                                              dotDensity: "double",
+                                              media: "auto"
+                                            }
+                                          }];
+
+                                          var printPromises = [];
+
+                                          for (var i = 0; i < printQuantity; i++) {
+                                            printPromises.push(qz.print(config, data));
+                                          }
+
+                                          Promise.all(printPromises).then(function () {
+                                            console.log("Impresión exitosa");
+                                          }).catch(function (error) {
+                                            alert("Error al imprimir");
+                                          });
+                                        };
+
+                                        img.src = url;
+                                      }).catch(function (error) {
+                                        alert("Error al conectar con QZ Tray");
+                                      });
+                                    } else {
+                                      var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                      var img = new Image();
+                                      var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                      var url = URL.createObjectURL(svgBlob);
+
+                                      img.onload = function () {
+                                        var canvas = document.createElement("canvas");
+                                        canvas.width = img.width;
+                                        canvas.height = img.height;
+                                        var ctx = canvas.getContext("2d");
+                                        ctx.drawImage(img, 0, 0);
+                                        var pngData = canvas.toDataURL("image/png");
+
+                                        var config = qz.configs.create(printer);
+                                        var data = [{
+                                          type: "pixel",
+                                          format: "image",
+                                          data: pngData,
+                                          options: {
+                                            language: "raw",
+                                            dotDensity: "double",
+                                            media: "auto"
+                                          }
+                                        }];
+
+                                        var printPromises = [];
+
+                                        for (var i = 0; i < printQuantity; i++) {
+                                          printPromises.push(qz.print(config, data));
+                                        }
+
+                                        Promise.all(printPromises).then(function () {
+                                          console.log("Impresión exitosa");
+                                        }).catch(function (error) {
+                                          console.error("Error al imprimir", error);
+                                        });
+                                      };
+
+                                      img.src = url;
+                                    }
+                                  }
+
+                                  function validateBarcodeValue(formato, valor) {
+                                    switch (formato) {
+                                      case "CODE128":
+                                        // Validar si el valor solo contiene caracteres alfanuméricos y tiene una longitud de 8 a 12 caracteres
+                                        return /^[a-zA-Z0-9]{8,12}$/.test(valor);
+                                      case "EAN13":
+                                        // Validar si el valor es numérico y tiene una longitud de 13 caracteres
+                                        return /^\d{13}$/.test(valor);
+                                      case "UPC":
+                                        // Validar si el valor es numérico y tiene una longitud de 12 caracteres
+                                        return /^\d{12}$/.test(valor);
+                                      default:
+                                        return false; // Formato no válido
+                                    }
+                                  }
+
+                                  function generarEImprimir() {
+                                    var barcodeFormat = document.getElementById("barcodeFormat").value;
+                                    var barcodeValue = document.getElementById("codigo").value;
+                                    var printQuantity = parseInt(document.getElementById("printQuantity").value) || 1;
+
+                                    var isValidBarcodeValue = validateBarcodeValue(barcodeFormat, barcodeValue);
+
+                                    if (!isValidBarcodeValue) {
+                                      switch (barcodeFormat) {
+                                        case "CODE128":
+                                          mostrarAlerta("CODE128", "8 a 12", "caracteres alfanuméricos");
+                                          break;
+                                        case "EAN13":
+                                          mostrarAlerta("EAN13", "13", "caracteres numéricos");
+                                          break;
+                                        case "UPC":
+                                          mostrarAlerta("UPC", "12", "caracteres numéricos");
+                                          break;
+                                        default:
+                                          console.error("Formato de código de barras no válido");
+                                          break;
+                                      }
+                                      return;
+                                    }
+
+                                    var barcodeOptions = {
+                                      format: barcodeFormat,
+                                      displayValue: true,
+                                      textMargin: 0,
+                                      fontOptions: "bold"
+                                    };
+
+                                    var barcodePreview = document.getElementById("barcodePreview");
+                                    barcodePreview.innerHTML = "";
+
+                                    var barcodeSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                    barcodeSVG.classList.add("barcode");
+                                    barcodeSVG.setAttribute("jsbarcode-format", barcodeOptions.format);
+                                    barcodeSVG.setAttribute("jsbarcode-value", barcodeValue);
+                                    barcodeSVG.setAttribute("jsbarcode-textmargin", barcodeOptions.textMargin);
+                                    barcodeSVG.setAttribute("jsbarcode-fontoptions", barcodeOptions.fontOptions);
+
+                                    JsBarcode(barcodeSVG, barcodeValue, barcodeOptions);
+                                    barcodePreview.appendChild(barcodeSVG);
+
+                                    if (!conexionEstablecida) {
+                                      qz.websocket.connect().then(function () {
+                                        conexionEstablecida = true;
+                                        return qz.printers.find("Brother QL-700");
+                                      }).then(function (foundPrinter) {
+                                        printer = foundPrinter;
+
+                                        var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                        var img = new Image();
+                                        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                        var url = URL.createObjectURL(svgBlob);
+
+                                        img.onload = function () {
+                                          var canvas = document.createElement("canvas");
+                                          canvas.width = img.width;
+                                          canvas.height = img.height;
+                                          var ctx = canvas.getContext("2d");
+                                          ctx.drawImage(img, 0, 0);
+                                          var pngData = canvas.toDataURL("image/png");
+
+                                          var config = qz.configs.create(printer);
+                                          var data = [{
+                                            type: "pixel",
+                                            format: "image",
+                                            data: pngData,
+                                            options: {
+                                              language: "raw",
+                                              dotDensity: "double",
+                                              media: "auto"
+                                            }
+                                          }];
+
+                                          var printPromises = [];
+
+                                          for (var i = 0; i < printQuantity; i++) {
+                                            printPromises.push(qz.print(config, data));
+                                          }
+
+                                          Promise.all(printPromises).then(function () {
+                                            console.log("Impresión exitosa");
+                                          }).catch(function (error) {
+                                            alert("Error al imprimir");
+                                          });
+                                        };
+
+                                        img.src = url;
+                                      }).catch(function (error) {
+                                        alert("Error al conectar con QZ Tray");
+                                      });
+                                    } else {
+                                      var svgData = new XMLSerializer().serializeToString(barcodeSVG);
+                                      var img = new Image();
+                                      var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+                                      var url = URL.createObjectURL(svgBlob);
+
+                                      img.onload = function () {
+                                        var canvas = document.createElement("canvas");
+                                        canvas.width = img.width;
+                                        canvas.height = img.height;
+                                        var ctx = canvas.getContext("2d");
+                                        ctx.drawImage(img, 0, 0);
+                                        var pngData = canvas.toDataURL("image/png");
+
+                                        var config = qz.configs.create(printer);
+                                        var data = [{
+                                          type: "pixel",
+                                          format: "image",
+                                          data: pngData,
+                                          options: {
+                                            language: "raw",
+                                            dotDensity: "double",
+                                            media: "auto"
+                                          }
+                                        }];
+
+                                        var printPromises = [];
+
+                                        for (var i = 0; i < printQuantity; i++) {
+                                          printPromises.push(qz.print(config, data));
+                                        }
+
+                                        Promise.all(printPromises).then(function () {
+                                          console.log("Impresión exitosa");
+                                        }).catch(function (error) {
+                                          console.error("Error al imprimir", error);
+                                        });
+                                      };
+
+                                      img.src = url;
+                                    }
+                                  }
+
+                                  function mostrarAlerta(formato, longitud, caracteresPermitidos) {
+                                    var mensaje = "El valor del código de barras debe tener el formato " + formato + ", una longitud de " + longitud + " caracteres y solo puede contener los siguientes caracteres: " + caracteresPermitidos;
+                                    alert(mensaje);
+                                  }
+
+                                  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                  function seleccionarComprobante(codncf, descripcion) {
+                                    // alert(descripcion)
+                                    document.getElementById('codncf').value = codncf;
+                                    document.getElementById('comprobante').value = descripcion;
+                                    document.getElementById("buscarNCF").value = "";
+                                    $('#modalBuscarComprobante').modal('hide');
+                                  }
+                                  function ncfList(valor, inicio) { // el id que llega es el id del departamento
+                                    //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+                                    $.get(`/ncf/filtro/${valor}/${inicio}`, function (data) {
+                                      // console.log(data[data.length-1].registros)
+                                      // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                                      var html = "";
+                                      let k = 1;
+                                      for (var i = 0; i < data.length - 1; i++) {
+                                        let comprobante = `${data[i].descncf} (${data[i].tipncf}${data[i].parfij})`;
+                                        html += `<tr onclick='seleccionarComprobante("${data[i].codncf}","${comprobante}")'>`;
+                                        html += "<td>" + data[i].codncf + "</td>";
+                                        html += `<td>` + comprobante + "</td>";
+                                        html += `<td>` + comprobante + "</td>";
+                                        html += `<td onclick='eliminarUnidadAlProducto("${data[i].id_producto}","${data[i].id_unidad}")'>` + "   <i class='fas fa-trash-alt' style='font-size:18px;color:red'></i></td>";
+                                        html += "</tr>";
+
+                                        k++;
+                                      }
+
+                                      var elementTabla_empleado = document.getElementById("tabla_unidad");
+                                      elementTabla_empleado.innerHTML = html;
+                                      // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+                                    });
+
+                                  }
+                                  // ncfList("aaaaaaaaaaaa", '1');
+
+                                  // productosList("aaaaaaaaaaaa", '1')
+                                  document.getElementById("btnAgregarUnidadProducto").onclick = function (e) {
+                                    let codigoDeBarras = document.getElementById("codigoDeBarras").value;
+                                    let id_unidad = document.getElementById("unidad").value;
+                                    let id_producto = document.getElementById("no_producto").value;
+                                    let factorDeConversion = document.getElementById("factorDeConversion").value;
+
+                                    $.post(`/producto/agregarUnidadProducto/${codigoDeBarras}/${id_unidad}/${id_producto}/${factorDeConversion}`, function (data) {
+                                      // alert('Guardando Unidad Producto')
+                                      document.getElementById("unidad").value = 0;
+                                      document.getElementById("factorDeConversion").value = '';
+                                      unidadProductoList(id_producto);
+                                      $('#modalUnidadProducto').modal('hide');
+
+                                      // unidadList();
+                                      // unidadListSelect();
+                                      // $('#modalUnidad').modal('hide');
+                                    });
+                                  };
+
+                                  function productoAddX(codigo, i) {
+                                    const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+                                    let almacen = 1;
+                                    // let id_cliente = 1;
+                                    let suma = 0;
+                                    console.log('por modal')
+                                    buscarProctoPorCodigo(codigo, almacen, cantidad, id_cliente, suma);
+                                    document.getElementById('buscarProducto').value = '';
+                                    $('#modalBuscarProducto').modal('hide');
+                                    // buscarCodigoProducto(codigo,cantidad);        
+                                  }
+                                </script>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR COMPROBANTE////////////////////////////////////////////////////// -->
+
+
+                        <!-- Modal Buscar Producto -->
+                        <div class="modal fade" id="modalAlmacenProducto" tabindex="-1" role="dialog"
+                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary">
+                                <h5 class="modal-title text-white" id="exampleModalCenterTitle">Mover
+                                  producto entre almacenes
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body row g-3">
+
+
+                                <div class="col-md-12">
+                                  <label for="inputEmail4" class="form-label text-black">Almacen</label>
+                                  <input type="text" class="form-control" readonly id="almacenActual">
+                                  <input type="hidden" class="form-control" readonly id="idAlmacenActual">
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="inputEmail4" class="form-label text-black">Ubicación actual</label>
+                                  <input type="text" class="form-control" placeholder="Ubicación a la que va"
+                                    id="ubicacionEnAlmacenActual">
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="inputEmail4" class="form-label text-black">Existencia</label>
+                                  <input type="text" class="form-control" placeholder="Cuantas unidades tiene"
+                                    id="cantidadEnAlmacenActual" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                  <label for="inputEmail4" class="form-label text-black">Cantidad a mover</label>
+                                  <input type="text" class="form-control" placeholder="Cuantas unidades tiene"
+                                    id="cantidadAMover">
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="inputEmail4" class="form-label text-black">Almacen al que va</label>
+                                  <select class="form-control" name="idAlmacenAlQueVa" id="idAlmacenAlQueVa" required>
+                                    <option value="0">Seleccione</option>
+
+                                  </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                  <label for="inputEmail4" class="form-label text-black">Ubicación nueva</label>
+                                  <input type="text" class="form-control" placeholder="Ubicación a la que va"
+                                    id="ubicacionEnAlmacenNuevo">
+                                </div>
+                                <div class="col-md-12 text-center pt-1">
+                                  <button type="button" id="btnMoverProductoDeAlmacen"
+                                    class="btn btn-primary col-md-4 my-3">MOVER</button>
+                                </div>
+
+                                <script>
+
+                                  // ncfList("aaaaaaaaaaaa", '1');
+                                  document.getElementById("cantidadAMover").addEventListener('input', function (e) {
+                                    var valor = e.target.value;
+                                    // 
+                                    var maxLength = e.target.maxLength;
+                                    // console.log(Number(valor) > maxLength)
+                                    if (Number(valor) > maxLength) {
+                                      e.target.value = maxLength;// valor.slice(0, maxLength); // Truncar el valor si excede la longitud máxima
+                                      // console.log(Number(valor.slice(0, maxLength)))
+                                    }
+                                  });
+                                  // productosList("aaaaaaaaaaaa", '1')
+                                  document.getElementById("btnMoverProductoDeAlmacen").onclick = async function (e) {
+                                    let idAlmacenActual = document.getElementById("idAlmacenActual").value;
+                                    let cantidadEnAlmacenActual = document.getElementById("cantidadEnAlmacenActual").value;
+                                    let ubicacionEnAlmacenActual = document.getElementById("ubicacionEnAlmacenActual").value;
+
+                                    let idAlmacenAlQueVa = document.getElementById("idAlmacenAlQueVa").value;
+                                    let cantidadAMover = document.getElementById("cantidadAMover").value;
+                                    let ubicacionEnAlmacenNuevo = document.getElementById("ubicacionEnAlmacenNuevo").value;
+                                    let id_producto = document.getElementById("no_producto").value;
+
+
+                                    if (cantidadAMover != '') {
+
+                                      const url = '/producto/cambiarProductoDeAlmacen'; // Reemplaza con la URL del endpoint a donde deseas enviar los datos
+
+                                      let response = await fetch(url, {
+                                        method: 'POST',
+                                        headers: {
+                                          'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                          idAlmacenActual: idAlmacenActual,
+                                          cantidadEnAlmacenActual: cantidadEnAlmacenActual,
+                                          ubicacionEnAlmacenActual: ubicacionEnAlmacenActual,
+                                          idAlmacenAlQueVa: idAlmacenAlQueVa,
+                                          cantidadAMover: cantidadAMover,
+                                          ubicacionEnAlmacenNuevo: ubicacionEnAlmacenNuevo,
+                                          id_producto: id_producto,
+                                        })
+                                      });
+
+
+                                      console.log(response.ok)
+                                      if (response.ok) {
+                                        $('#modalAlmacenProducto').modal('hide');
+                                        alert("Movimiento realizado exitosamente");
+                                        almacenProductoList(id_producto)
+                                      }
+                                      ///////////////////////////////////////////////////////////////////
+                                      // $.post(`/producto/cambiarProductoDeAlmacen/${id_producto}/${idAlmaceActual}/${cantidadEnAlmacenActual}/${cantidadAMover}/${idAlmacenAlQueVa}`, function (data) {
+                                      //   // alert('Guardando Unidad Producto')
+                                      //   document.getElementById("unidad").value = 0;
+                                      //   document.getElementById("factorDeConversion").value = '';
+                                      //   unidadProductoList(id_producto);
+                                      //   $('#modalUnidadProducto').modal('hide');
+
+                                      //   // unidadList();
+                                      //   // unidadListSelect();
+                                      //   // $('#modalUnidad').modal('hide');
+                                      // });
+                                    } else {
+                                      alert('Debe seleccionar la cantidad a mover');
+                                      document.getElementById("cantidadAMover").focus();
+                                    }
+
+                                  };
+
+                                  function productoAddX(codigo, i) {
+                                    const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+                                    let almacen = 1;
+                                    // let id_cliente = 1;
+                                    let suma = 0;
+                                    console.log('por modal')
+                                    buscarProctoPorCodigo(codigo, almacen, cantidad, id_cliente, suma);
+                                    document.getElementById('buscarProducto').value = '';
+                                    $('#modalBuscarProducto').modal('hide');
+                                    // buscarCodigoProducto(codigo,cantidad);        
+                                  }
+                                </script>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR COMPROBANTE////////////////////////////////////////////////////// -->
+
+
+
+                        <!-- Modal Buscar Producto -->
+                        <div class="modal fade" id="modalUnidad" tabindex="-1" role="dialog"
+                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered " role="document">
+                            <div class="modal-content">
+                              <div class="modal-header bg-primary">
+                                <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de Unidad
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+
+                                <div class="col-md-12">
+                                  <input type="hidden" class="form-control" placeholder="" id="id_unidad" value="0">
+                                  <input type="text" class="form-control"
+                                    placeholder="Ingrese el Unidad, ejemplo: caja, sixpack, etc."
+                                    id="descripcion_unidad">
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                  <label for="inputEmail4" class="form-label text-black">Estado</label>
+                                  <select class="form-control" name="estado_unidad" id="estado_unidad" required>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                  </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                  <button type="button" id="btnUnidad" class="btn btn-success col-md-12 my-3">GUARDAR
+                                  </button>
+                                </div>
+
+                                <table class="table table-bordered table-hover mt-2">
+                                  <thead class="bg-dark text-white">
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>DESCRIPCIÓN</th>
+                                      <th>ESTADO</th>
+                                      <th>ACCION</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="tabla_unidad_list">
+
+                                  </tbody>
+                                </table>
+                                <script>
+
+                                  function seleccionarComprobante(codncf, descripcion) {
+                                    // alert(descripcion)
+                                    document.getElementById('codncf').value = codncf;
+                                    document.getElementById('comprobante').value = descripcion;
+                                    document.getElementById("buscarNCF").value = "";
+                                    $('#modalBuscarComprobante').modal('hide');
+                                  }
+
+                                  function unidadList() { // el id que llega es el id del departamento
+                                    //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+                                    $.get(`/producto/unidad`, function (data) {
+                                      console.log(data)
+                                      // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                                      var html = "";//`id_unidad`, `unidad`, `estado`
+                                      let k = 1;
+                                      for (var i = 0; i < data.length; i++) {
+                                        html += "<td>" + k + "</td>";
+                                        html += `<td onclick='editarUnidad("${data[i].id_unidad}","${data[i].unidad}","${data[i].estado}")' style='font-size:18px;color:blue'>` + data[i].unidad + "</td>";
+                                        html += "<td>" + data[i].estado + "</td>";
+                                        html += `<td onclick='eliminarUnidadAlProducto("${data[i].id_producto}","${data[i].id_unidad}")'>` + "   <i class='fas fa-trash-alt' style='font-size:18px;color:red'></i></td>";
+                                        html += "</tr>";
+
+                                        k++;
+                                      }
+
+                                      var elementTabla_empleado = document.getElementById("tabla_unidad_list");
+                                      elementTabla_empleado.innerHTML = html;
+                                      // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+                                    });
+
+                                  }
+
+                                  function editarUnidad(id, unidad, estado) {
+                                    document.getElementById("id_unidad").value = id;
+                                    document.getElementById("descripcion_unidad").value = unidad;
+                                    document.getElementById("estado_unidad").value = estado;
+                                  }
+
+
+                                  document.getElementById("btnUnidad").onclick = function (e) {
+
+                                    let id_unidad = document.getElementById("id_unidad").value;
+                                    let unidad = document.getElementById("descripcion_unidad").value;
+                                    let estado = document.getElementById("estado_unidad").value;
+
+                                    $.post(`/producto/unidad/${id_unidad}/${unidad}/${estado}`, function (data) {
+                                      document.getElementById("id_unidad").value = 0;
+                                      document.getElementById("descripcion_unidad").value = '';
+                                      document.getElementById("estado_unidad").value = 1;
+                                      unidadList();
+                                      unidadListSelect();
+                                      // $('#modalUnidad').modal('hide');
+                                    });
+                                  };
+
+                                  function productoAddX(codigo, i) {
+                                    const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+                                    let almacen = 1;
+                                    // let id_cliente = 1;
+                                    let suma = 0;
+                                    console.log('por modal')
+                                    buscarProctoPorCodigo(codigo, almacen, cantidad, id_cliente, suma);
+                                    document.getElementById('buscarProducto').value = '';
+                                    $('#modalBuscarProducto').modal('hide');
+                                    // buscarCodigoProducto(codigo,cantidad);        
+                                  }
+                                </script>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR COMPROBANTE////////////////////////////////////////////////////// -->
+
+                        <script>
+                          // Obtener elementos HTML
+                          const imageContainer = document.getElementById('main-image-container');
+                          const image = document.getElementById('main-image');
+                          const zoomInButton = document.getElementById('zoom-in');
+                          const zoomResetButton = document.getElementById('zoom-reset');
+                          const zoomOutButton = document.getElementById('zoom-out');
+
+                          // Definir variables
+                          let scale = 1;
+                          let zoom = '+';
+
+                          // Función para obtener las coordenadas del clic en relación a la imagen
+                          function getClickCoordinates(event) {
+                            const rect = image.getBoundingClientRect();
+                            const offsetX = event.clientX - rect.left;
+                            const offsetY = event.clientY - rect.top;
+                            return { x: offsetX, y: offsetY };
+                          }
+
+                          // Función para controlar el zoom
+                          function handleZoom(event) {
+                            const { x, y } = getClickCoordinates(event);
+
+                            if (zoom === '+') {
+                              if (scale < 2) {
+                                scale += 0.1;
+                                image.style.transformOrigin = `${x}px ${y}px`;
+                                image.style.transform = `scale(${scale})`;
+                              }
+                            } else {
+                              if (scale > 0.5) {
+                                scale -= 0.1;
+                                image.style.transformOrigin = `${x}px ${y}px`;
+                                image.style.transform = `scale(${scale})`;
+                              }
+                            }
+                          }
+
+                          // Agregar eventos a los botones de zoom
+                          image.addEventListener('click', function (event) {
+                            handleZoom(event);
+                          });
+
+                          zoomResetButton.addEventListener('click', function () {
+                            scale = 1;
+                            image.style.transformOrigin = 'center center';
+                            image.style.transform = 'scale(1)';
+                          });
+
+                          zoomInButton.addEventListener('click', function (event) {
+                            zoom = '+';
+                          });
+
+                          zoomOutButton.addEventListener('click', function (event) {
+                            zoom = '-';
+                          });
+
+                        </script>
+                        <form class="row g-3 pb-5" action="/cliente/update/id_producto/0" enctype="multipart/form-data"
+                          method="post">
+                          <div class="col-md-4">
+                            <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="producto"
+                              required>
+                            <input type="hidden" class="form-control" name="id" id="id">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-control">
+                              <input type="file" style="display:none;" name="file" id="file" accept=".png, .jpeg, .jpg">
+                              Seleccionar imagen
+                            </label>
+                          </div>
+
+                          <div class="col-md-4 text-center ">
+                            <div id="message"></div>
+                            <button type="button" id="btnGuardarProducto" class="btn btn-primary col-4 ">SUBIR</button>
+                          </div>
+                        </form>
+                        <div id="image-preview"></div>
+                      </div>
+
+
+
+
+
+                      <script>
+
+                      </script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ///////////////////////////////MODAL PARA INGRESAR PRODUCTOS/////////////////////////////////////// -->
+
+
+      </div>
+
+      <!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+      <!-- ///////////////////////////////MODAL PARA INGRESAR PRODUCTOS/////////////////////////////////////// -->
+
+
+
+      <!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+
+
+
+
+      <!-- ///////////////////////////////MODAL PARA INGRESAR PRODUCTOS/////////////////////////////////////// -->
+
+      <!-- Modal para cambiar la imagen del cliente-->
+      <div class="modal fade" id="modalComponente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered anchotabla" role="document">
+          <div class="modal-content ">
+
+            <!-- Modal body -->
+
+            <div class="card">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Componente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="card-body col-md-12">
+                <div class="col-md-12" style="margin:0 auto">
+                  <form class="row g-3" action="producto/add" method="post">
+
+
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-header">
+                          <h5 class="card-title">Datos de los insumos usados en éste producto</h5>
+                        </div>
+                        <div class="card-body row g-3">
+
+                          <div class="col-md-4">
+                            <input type="text" class="form-control d-none" name="no_productoc" id="no_productoc"
+                              placeholder="">
+                            <label for="codigoc" class="form-label text-black">Código</label>
+                            <input type="text" class="form-control" name="codigoc" id="codigoc" maxlength="100"
+                              placeholder="" disabled>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="descripcionc" class="form-label text-black">Descripción</label>
+                            <input type="text" class="form-control" name="descripcionc" id="descripcionc"
+                              maxlength="100" placeholder="" disabled>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="ubicacionc" class="form-label text-black">Ubicación</label>
+                            <input type="text" class="form-control" name="ubicacionc" id="ubicacionc" maxlength="100"
+                              placeholder="Donde colocara el producto">
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="referenciac" class="form-label text-black">Referencia</label>
+                            <input type="text" class="form-control" name="referenciac" id="referenciac" value=""
+                              placeholder="" disabled>
+                          </div>
+
+
+                          <div class="col-md-2">
+                            <label for="marcac" class="form-label text-black">Marca <strong
+                                style="color: red;">*</strong></label>
+                            <select class="form-control" name="marcac" id="marcac" disabled>
+                              <option value="">Seleccione</option>
+                              <% if(marca) {%>
+                                <% for(var i=0;i < marca.length;i++){ %>
+                                  <option value="<%= marca[i].id_marca %>">
+                                    <%= marca[i].nombre %>
+                                  </option>
+
+                                  <% } %>
+                                    <% } %>
+                            </select>
+                          </div>
+
+                          <div class="col-md-2">
+                            <label for="categoriac" class="form-label text-black">Categoría <strong
+                                style="color: red;">*</strong></label>
+                            <select class="form-control" name="categoriac" id="categoriac" disabled>
+                              <option value="">Seleccione</option>
+                              <% if(categoria) {%>
+                                <% for(var i=0;i < categoria.length;i++){ %>
+                                  <option value="<%= categoria[i].id_categoria %>">
+                                    <%= categoria[i].nombre %>
+                                  </option>
+
+                                  <% } %>
+                                    <% } %>
+                            </select>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="almacenesc" class="form-label text-black">Almacen <strong
+                                style="color: red;">*</strong></label>
+                            <select class="form-control" name="almacenesc" id="almacenesc">
+
+                            </select>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="clasec" class="form-label text-black">Clase <strong
+                                style="color: red;">*</strong></label>
+                            <select class="form-control" name="clasec" id="clasec" disabled>
+                              <option value="">Seleccione</option>
+                              <% if(clase) {%>
+                                <% for(var i=0;i < clase.length;i++){ %>
+                                  <option value="<%= clase[i].id_clase %>">
+                                    <%= clase[i].nombre %>
+                                  </option>
+
+                                  <% } %>
+                                    <% } %>
+                            </select>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="precio_costoc" class="form-label text-black">Precio de costo</label>
+                            <input type="text" class="form-control" name="precio_costoc" id="precio_costoc" value=""
+                              placeholder="" disabled>
+                          </div>
+
+                          <div class="col-md-2">
+                            <label for="cantidad_a_preparar" class="form-label text-black">Cantidad a preparar</label>
+                            <input type="number" class="form-control" name="cantidad_a_preparar"
+                              id="cantidad_a_preparar" value="" placeholder="">
+                          </div>
+                          <div class="col-md-2">
+                            <label for="cantidad_a_preparar" class="form-label text-black">Unidad</label>
+
+                            <select class="form-control" name='unidadPreparar' id="unidadPreparar">;
+
+
+                            </select>;
+                          </div>
+
+                          <div class="col-md-4 text-center">
+                            <button type="button" id="btnBuscarComponente" class="btn btn-info col-md-8">AGREGAR
+                              COMPONENTE</button>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            <button type="button" id="btnProcesarComponente" class="btn btn-success col-md-8">ACTUALIZAR
+                              PRECIO COSTO
+                            </button>
+                          </div>
+                          <div class="col-md-4 text-center">
+                            <button type="button" id="btnPreparar" class="btn btn-warning col-md-8">PREPARAR</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                </div>
+                <div class="row pt-4">
+                  <div class="col-md-4 text-left">
+                    <label for="precio_costoc" class="form-label text-black col-md-12"
+                      style="color: black; font-size: 20px;">Cantidad de componentes: <strong id="registrostotalesc"
+                        style="color: black; font-size: 20px;"></strong></label>
+                  </div>
+
+                  <table class="table table-bordered table-hover">
+                    <thead class="bg-dark text-white">
+                      <tr>
+
+                        <th>No.</th>
+                        <th>CÓDIGO</th>
+                        <th>DESCRIPCIÓN</th>
+                        <th>REFERENCIA</th>
+                        <th>EXISTENCIA</th>
+                        <th>CANTIDAD</th>
+                        <th>UNIDAD</th>
+                        <th>PRECIO</th>
+                        <th>IMPORTE</th>
+                        <th>ELIMINAR</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabla_lista_componente">
+
+                    </tbody>
+                  </table>
+                  <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+
+                    <div class="col-md-12 text-center py-2">
+
+                    </div>
+                    </form>
+
+                    <script>
+                      document.getElementById('btnBuscarComponente').addEventListener('click', function () {
+
+                        $('#modalBuscarComponente').modal('show');
+                      });
+
+                      document.getElementById('btnProcesarComponente').addEventListener('click', function () {
+
+                        Swal.fire({
+                          title: 'Estas seguro?',
+                          text: "Deseas actualizar el precio de costo de éste producto!",
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Si, actualizar!'
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            // AQUI DEBO ACTUALIZAR EL PRECIO DE COMPRA DE UN PRODUCTO 
+                            const productoPrecioCompra = document.getElementById("precio_costoc").value;
+                            const producto = document.getElementById("no_productoc").value;
+
+                            $.get(`/producto/actualizaPrecioCompraProducto/${producto}/${productoPrecioCompra}`, async function (data) {
+                              if (data) {
+                                alert("Precio actualizado")
+                              }
+                            });
+
+                            $('#modalComponente').modal('hide');
+
+                          }
+                        })
+
+                      });
+
+                      document.getElementById('btnPreparar').addEventListener('click', function () {
+                        let cantidadAPreparar = document.getElementById("cantidad_a_preparar").value;
+                        let ubicacion = document.getElementById("ubicacionc").value;
+
+                        let unidadPreparar = document.getElementById("unidadPreparar");
+                        // Obtener el índice de la opción seleccionada
+                        var selectedIndexUnidad = unidadPreparar.selectedIndex;
+                        // Obtener el elemento select
+
+                        // Obtener el texto de la opción seleccionada
+                        var textoUnidad = unidadPreparar.options[selectedIndexUnidad].text;
+
+                        let id_unidad = document.getElementById("unidadPreparar").value;
+
+                        let producto = document.getElementById("descripcionc").value;
+                        const id_producto = document.getElementById("no_productoc").value;
+
+                        let almacen = document.getElementById("almacenesc");
+                        // Obtener el índice de la opción seleccionada
+                        var selectedIndex = almacen.selectedIndex;
+                        // Obtener el elemento select
+
+                        // Obtener el texto de la opción seleccionada
+                        var textoAlmacen = almacen.options[selectedIndex].text;
+
+
+
+                        let id_almacen = almacen.value;
+
+                        Swal.fire({
+                          title: 'Estas seguro?',
+                          text: `Deseas preparar ${cantidadAPreparar} ${textoUnidad} ${producto} para colocarlo en ${ubicacion} del almacen ${textoAlmacen}!`,
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Si, preparar!'
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            // AQUI DEBO ACTUALIZAR EL PRECIO DE COMPRA DE UN PRODUCTO 
+
+                            $.get(`/producto/prepararProducto/${id_producto}/${id_unidad}/${cantidadAPreparar}/${ubicacion}/${id_almacen}`, async function (data) {
+                              if (data) {
+                                alert("Preparado exitosamente!")
+                                productoList("aaaaaaaaaaaa", '1')
+                              }
+                            });
+
+                            $('#modalComponente').modal('hide');
+
+                          }
+                        })
+
+                      });
+
+                    </script>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Segundo Modal -->
+      <div class="modal fade" id="modalBuscarComponente" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ancho" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h5 class="modal-title text-white" id="exampleModalCenterTitle">Buscar Componente</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <input type="hidden" class="form-control" id="id_producto_componente">
+                <input type="text" class="form-control" placeholder="Buscar componente" id="buscarComponente"
+                  aria-label="Buscar componente" aria-describedby="btnBuscar">
+              </div>
+              <table class="table table-bordered table-hover">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>No.</th>
+                    <th>CÓDIGO</th>
+                    <th>DESCRIPCIÓN</th>
+                    <th>REFERENCIA</th>
+                    <th>MARCA</th>
+                    <th>CATEGORIA</th>
+                    <th>CLASE</th>
+                    <th>EXISTENCIA</th>
+                    <th>CANTIDAD</th>
+                    <th>UNIDAD</th>
+                    <th>ACCIÓN</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_componente">
+                  <!-- Aquí se cargarán los resultados de la búsqueda -->
+                </tbody>
+              </table>
+              <script>
+                function componenteList(producto) { // el id que llega es el id del departamento
+
+                  $.get(`/producto/componentes/${producto}`, async function (data) {
+                    // console.log(data)
+                    var elementTabla_empleado = document.getElementById("tabla_lista_componente");
+                    if (data == 'Este producto no contiene componentes') {
+                      document.getElementById("precio_costoc").value = '';
+                      elementTabla_empleado.innerHTML = "<tr class='text-center'><td colspan='9'>" + data + "</td></tr>";
+                    } else {
+                      var html = "";
+                      let k = 1;
+                      let precio = 0;
+                      for (var i = 0; i < data.length; i++) {
+                        //`id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                        html += "<tr>";
+                        //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_unidad_producto`, `id_estado`
+                        html += "<td>" + k + "</td>";
+                        html += `<td>` + data[i].codigo + "</td>";
+                        // html +="<td>"+ data[i].empresa +"</td>";
+                        html += "<td>" + data[i].descripcion + "</td>";
+                        html += "<td>" + data[i].referencia + "</td>";
+                        html += "<td>" + data[i].existencia + "</td>";
+                        html += "<td>" + data[i].cantidad + "</td>";
+                        html += "<td>" + data[i].unidad + "</td>";
+
+                        html += "<td>" + data[i].precio_compra + "</td>";
+                        html += "<td>" + (data[i].precio_compra * data[i].cantidad) + "</td>";
+                        html += `<td class='text-center' onclick='componenteElimina(${data[i].id_producto})' style='color:red;'>` + "<i class='fas fa-trash'></i>" + "</td>";
+                        html += "</tr>";
+
+                        k++;
+                        precio += (data[i].precio_compra * data[i].cantidad)
+                      }
+                      document.getElementById("precio_costoc").value = precio;
+
+                      elementTabla_empleado.innerHTML = html;
+                      document.getElementById("registrostotalesc").innerText = data.length;
+                    }
+                    // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+                  });
+
+                }
+
+                function toggleButtonVisibility(input) {
+                  var index = input.dataset.index;
+                  var button = document.getElementById(`btnAgregar_${index}`);
+
+                  if (parseFloat(input.value) > 0) {
+                    button.classList.remove("d-none");
+                  } else {
+                    button.classList.add("d-none");
+                  }
+                }
+                function productoListComponente(valor, inicio) { // el id que llega es el id del departamento
+
+
+                  $.get(`/facturacion/filtro/${valor}/${inicio}`, async function (data) {
+                    // console.log(data[data.length-1].registros)
+                    // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                    var html = "";
+                    let k = 1;
+                    for (var i = 0; i < data.length - 1; i++) {
+                      // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                      html += "<tr>";
+                      //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+                      html += "<td>" + k + "</td>";
+                      html += `<td>` + data[i].codigo + "</td>";
+                      // html +="<td>"+ data[i].empresa +"</td>";
+                      html += "<td>" + data[i].descripcion + "</td>";
+                      html += "<td>" + data[i].referencia + "</td>";
+                      html += "<td>" + data[i].marca + "</td>";
+                      html += "<td>" + data[i].categoria + "</td>";
+                      html += "<td>" + data[i].clase + "</td>";
+                      html += "<td>" + data[i].existencia + "</td>";
+
+                      html += `<td>` + `<input type="number" inputmode="decimal" name='cantidadProducto' class='cantidadProducto' min="1" style="text-align: right; padding-right: 5px; width: 100px" pattern="[0-9,.]*" title="Solo se permiten números, puntos y comas" />` + "</td>";
+
+                      html += "<td>";
+                      html += "<select name='units'>";
+
+                      const unidades = await $.get(`/producto/unidad_producto/${data[i].id_producto}`);
+
+                      for (let j = 0; j < unidades.length; j++) {
+                        html += "<option value=" + unidades[j].id_unidad + ">" + unidades[j].unidad + "</option>";
+                      }
+
+                      html += "</select>";
+                      html += "</td>";
+                      html += `<td><button type="button" onclick='productoAdd("${data[i].id_producto}",${i}, this)' style="display: none;" class="btn btn-primary agregarTexto">Agregar</button></td>`
+
+                      html += "</tr>";
+
+                      k++;
+                    }
+
+                    var elementTabla_empleado = document.getElementById("tabla_componente");
+                    elementTabla_empleado.innerHTML = html;
+                    ///////////////////////////////////////////////////////////////////////////
+                    var table = document.getElementById("tabla_componente");
+                    var inputs = table.querySelectorAll(".cantidadProducto");
+                    var agregarTextos = table.querySelectorAll(".agregarTexto");
+
+                    for (var i = 0; i < inputs.length; i++) {
+                      inputs[i].addEventListener("input", createInputHandler(i));
+                      inputs[i].addEventListener("click", function () {
+                        var previousInput = document.querySelector(".cantidadProducto.active");
+                        var previousBoton = document.querySelector(".agregarBoton.active");
+
+                        if (previousInput !== null && previousInput !== this) {
+                          previousInput.value = "";
+                          previousInput.classList.remove("active");
+                        }
+
+                        for (var i = 0; i < agregarTextos.length; i++) {
+                          var boton = agregarTextos[i];
+                          if (boton.style.display === "inline") {
+                            boton.style.display = "none";
+                          }
+                        }
+                        this.classList.add("active");
+                      });
+                    }
+
+                    // Suponiendo que tienes un arreglo llamado 'data' con la información de los productos
+
+                    function createInputHandler(index) {
+                      return function (event) {
+                        var currentInput = inputs[index];
+                        var currentBoton = agregarTextos[index];
+
+                        for (var i = 0; i < agregarTextos.length; i++) {
+                          var boton = agregarTextos[i];
+
+                          if (i !== index) {
+                            if (boton.style.display === "inline") {
+                              boton.style.display = "none";
+                            }
+                          }
+                        }
+
+                        // if (event.key === "Enter" && currentInput.value !== "") {
+                        //     productoAdd(data[index].codigo, index);
+                        //     currentInput.value = "";
+                        // }
+
+                        if (currentInput.value !== "") {
+                          currentBoton.style.display = "inline";
+                        } else {
+                          currentBoton.style.display = "none";
+                        }
+                      };
+                    }
+
+                    // Asignar event listeners a los inputs
+                    for (var i = 0; i < inputs.length; i++) {
+                      inputs[i].addEventListener("input", createInputHandler(i));
+                      inputs[i].addEventListener("keypress", createInputHandler(i));
+                      inputs[i].addEventListener("keydown", createInputHandler(i));
+                      inputs[i].addEventListener("click", function () {
+                        // Resto del código
+                      });
+                    }
+
+
+
+
+                    // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+                  });
+                  // $.get(`/producto/filtro/${valor}/${inicio}`, function (data) {
+                  //   // console.log(data[data.length-1].registros)
+                  //   // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                  //   var html = "";
+                  //   let k = 1;
+                  //   for (var i = 0; i < data.length - 1; i++) {
+                  //     // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                  //     html += "<tr>";
+                  //     //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_unidad_producto`, `id_estado`
+                  //     html += "<td>" + k + "</td>";
+                  //     html += `<td>` + data[i].codigo + "</td>";
+                  //     // html +="<td>"+ data[i].empresa +"</td>";
+                  //     html += "<td>" + data[i].descripcion + "</td>";
+                  //     html += "<td>" + data[i].referencia + "</td>";
+                  //     html += "<td>" + data[i].existencia + "</td>";
+
+                  //     html += `<td><input type="number" inputmode="decimal" name='cantidadComponente' class='cantidadComponente' min="1" style="text-align: right; padding-right: 5px; width: 100px" pattern="[0-9,.]*" title="Solo se permiten números, puntos y comas" data-index="${i}" onkeyup="toggleButtonVisibility(this)" /></td>`;
+                  //     html += `<td><button id="btnAgregar_${i}" onclick="componenteBtnAdd(${data[i].id_producto}, ${i})" class='btn btn-primary d-none'>Agregar</button></td>`;
+                  //     html += "</tr>";
+
+                  //     k++;
+                  //   }
+
+
+                  //   var elementTabla_empleado = document.getElementById("tabla_componente");
+                  //   elementTabla_empleado.innerHTML = html;
+                  //   // Obtén todos los elementos con la clase 'cantidadComponente'
+                  //   const cantidadInputs = document.getElementsByClassName('cantidadComponente');
+
+                  //   // Recorre cada elemento y agrega el event listener para el evento 'input'
+                  //   for (let i = 0; i < cantidadInputs.length; i++) {
+                  //     const input = cantidadInputs[i];
+
+                  //     input.addEventListener('keydown', function (event) {
+                  //       // Verificar si la tecla presionada es "Enter" y si el elemento activo es un input de cantidad
+                  //       if (event.key === 'Enter' && event.target.classList.contains('cantidadComponente')) {
+                  //         // Obtener el valor del input
+                  //         const cantidad = event.target.value;
+
+                  //         // Ejecutar la función deseada con el valor del input
+                  //         componenteAdd(data[event.target.dataset.index].id_producto, cantidad);
+                  //       }
+                  //     });
+                  //   }
+
+
+                  //   // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+                  // });
+
+                }
+
+
+                productoListComponente("aaaaaaaaaaaa", '1')
+                document.getElementById("buscarComponente").onkeyup = function (e) {
+                  let valor = e.target.value;
+                  if (valor == "") {
+                    valor = "aaaaaaaaaaaa"
+                  }
+                  console.log(valor)
+                  productoListComponente(valor, '1')
+                  // document.getElementById("empresa").value = this.value;
+                };
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+      <!-- Segundo Modal -->
+      <div class="modal fade" id="modalBuscarProducto" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ancho" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de producto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <input type="hidden" class="form-control" id="id_producto_componente">
+                <input type="text" class="form-control" placeholder="Buscar producto: Codigo Ó Descripción"
+                  id="buscarProducto" aria-label="Buscar componente" aria-describedby="btnBuscar">
+              </div>
+              <table class="table table-bordered table-hover">
+                <thead class="bg-dark text-white">
+                  <tr>
+                    <th>No.</th>
+                    <th>CÓDIGO</th>
+                    <th>DESCRIPCIÓN</th>
+                    <th>REFERENCIA</th>
+                    <th>MARCA</th>
+                    <th>CATEGORIA</th>
+                    <th>CLASE</th>
+                    <th>EXISTENCIA</th>
+                    <th>CANTIDAD</th>
+                    <th>ACCIÓN</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla_productos">
+                  <!-- Aquí se cargarán los resultados de la búsqueda -->
+                </tbody>
+              </table>
+
+              <script>
+
+                function productosList(valor, inicio) { // el id que llega es el id del departamento
+
+                  $.get(`/producto/filtro/${valor}/${inicio}`, function (data) {
+                    // console.log(data[data.length-1].registros)
+                    // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                    var html = "";
+                    let k = 1;
+                    for (var i = 0; i < data.length - 1; i++) {
+                      // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                      html += "<tr>";
+                      //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_unidad_producto`, `id_estado`
+                      html += "<td>" + k + "</td>";
+                      html += `<td>` + data[i].codigo + "</td>";
+                      // html +="<td>"+ data[i].empresa +"</td>";
+                      html += "<td>" + data[i].descripcion + "</td>";
+                      html += "<td>" + data[i].referencia + "</td>";
+                      html += "<td>" + data[i].marca + "</td>";
+                      html += "<td>" + data[i].categoria + "</td>";
+                      html += "<td>" + data[i].clase + "</td>";
+                      html += "<td>" + data[i].existencia + "</td>";
+
+                      html += `<td>` + `<input type="number" inputmode="decimal" name='cantidadProducto' class='cantidadProducto' min="1" style="text-align: right; padding-right: 5px; width: 100px" pattern="[0-9,.]*" title="Solo se permiten números, puntos y comas" />` + "</td>";
+
+                      html += `<td><button type="button" onclick='productoAdd("${data[i].codigo}",${i})' style="display: none;" class="btn btn-primary agregarTexto">Agregar</button></td>`
+
+                      html += "</tr>";
+
+                      k++;
+                    }
+
+                    var elementTabla_empleado = document.getElementById("tabla_productos");
+                    elementTabla_empleado.innerHTML = html;
+                    ///////////////////////////////////////////////////////////////////////////
+                    var table = document.getElementById("tabla_productos");
+                    var inputs = table.querySelectorAll(".cantidadProducto");
+                    var agregarTextos = table.querySelectorAll(".agregarTexto");
+
+                    for (var i = 0; i < inputs.length; i++) {
+                      inputs[i].addEventListener("input", createInputHandler(i));
+                      inputs[i].addEventListener("click", function () {
+                        var previousInput = document.querySelector(".cantidadProducto.active");
+                        var previousBoton = document.querySelector(".agregarBoton.active");
+
+                        if (previousInput !== null && previousInput !== this) {
+                          previousInput.value = "";
+                          previousInput.classList.remove("active");
+                        }
+
+                        for (var i = 0; i < agregarTextos.length; i++) {
+                          var boton = agregarTextos[i];
+                          if (boton.style.display === "inline") {
+                            boton.style.display = "none";
+                          }
+                        }
+                        this.classList.add("active");
+                      });
+                    }
+
+                    // Suponiendo que tienes un arreglo llamado 'data' con la información de los productos
+
+                    function createInputHandler(index) {
+                      return function (event) {
+                        var currentInput = inputs[index];
+                        var currentBoton = agregarTextos[index];
+
+                        for (var i = 0; i < agregarTextos.length; i++) {
+                          var boton = agregarTextos[i];
+
+                          if (i !== index) {
+                            if (boton.style.display === "inline") {
+                              boton.style.display = "none";
+                            }
+                          }
+                        }
+
+                        if (event.key === "Enter" && currentInput.value !== "") {
+                          productoAdd(data[index].codigo, index);
+                          currentInput.value = "";
+                        }
+
+                        if (currentInput.value !== "") {
+                          currentBoton.style.display = "inline";
+                        } else {
+                          currentBoton.style.display = "none";
+                        }
+                      };
+                    }
+
+                    // Asignar event listeners a los inputs
+                    for (var i = 0; i < inputs.length; i++) {
+                      inputs[i].addEventListener("input", createInputHandler(i));
+                      inputs[i].addEventListener("keypress", createInputHandler(i));
+                      inputs[i].addEventListener("keydown", createInputHandler(i));
+                      inputs[i].addEventListener("click", function () {
+                        // Resto del código
+                      });
+                    }
+
+
+
+
+                    // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+                  });
+
+                }
+
+                productosList("aaaaaaaaaaaa", '1')
+                document.getElementById("buscarProducto").onkeyup = function (e) {
+                  let valor = e.target.value;
+                  if (valor == "") {
+                    valor = "aaaaaaaaaaaa"
+                  }
+                  console.log(valor)
+                  productosList(valor, '1')
+                  // document.getElementById("empresa").value = this.value;
+                };
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+    </div>
+
+  </div>
+  </div>
+  <script>
+
+    const fileInput = document.getElementById('file');
+    const messageDiv = document.getElementById('message');
+
+    fileInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        messageDiv.textContent = `Imagen seleccionada: ${file.name}`;
+        // Realizar alguna acción adicional, como mostrar una vista previa de la imagen, cargarla en el servidor, etc.
+      } else {
+        messageDiv.textContent = 'No se seleccionó ninguna imagen';
+      }
+    });
+
+    var modal = document.getElementById('modalProducto');
+    var crearProducto = document.getElementById('btnCrearProducto');
+    // Agregar evento 'click' al elemento previewImg
+    if (crearProducto) {
+      crearProducto.addEventListener('click', function () {
+        // limpiarCamposproducto();
+        var elementos = document.getElementsByClassName('blockUnidades');
+
+        for (var i = 0; i < elementos.length; i++) {
+          elementos[i].style.display = "none";
+        }
+        limpiarCamposproducto()
+        document.getElementById("no_producto").value = 0;
+        document.getElementById("ubicacion").value = "Indefinida";
+        $('#modalProducto').modal('show');
+      });
+    }
+
+
+    // document.getElementById('').addEventListener('click', function() {
+    //   modal.style.display = "none";
+    // });
+
+    // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+    window.addEventListener('click', function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+
+
+    function productoListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+      if (valor == "") {
+        valor = "aaaaaaaaaaaa";
+      }
+
+      productoList(valor, inicio)
+    }
+
+    function cargaPaginacion(cantidad_registros, inicio) {
+      nrolink = Math.ceil(cantidad_registros / paginacion);
+      ht = `<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if (inicio == 1) {
+
+      } else {
+        ht += `<button type="button" onclick='productoListPage(1);' class="btn btn-secondary"><<</button>`
+        ht += `<button type="button" onclick='productoListPage(${inicio - 1});' class="btn btn-secondary"><</button>`
+      }
+      for (i = 1; i <= nrolink; i++) {
+        if (inicio == i) {
+          ht += `<button type="button" onclick='productoListPage(${i});' class="btn btn-primary">${i}</button>`
+        }
+        else {
+          ht += `<button type="button" onclick='productoListPage(${i});' class="btn btn-secondary">${i}</button>`
+        }
+
+      }
+      if (inicio == nrolink) {
+
+      } else {
+        if (inicio == '') {
+          ht += `No hay registro`;
+        } else {
+          if (nrolink != 0) {
+            ht += `<button type="button" onclick='productoListPage(${inicio + 1});' class="btn btn-secondary">></button>`
+            ht += `<button type="button" onclick='productoListPage(${nrolink});' class="btn btn-secondary">>></button>`
+          }
+          else {
+            ht += `No hay registro`;
+          }
+        }
+      }
+      ht += `</div>`;
+      $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+    }
+    function componente(id_producto) {
+      // alert("Componentes"+id_producto)
+      $('#modalComponente').modal('show');
+      $.get(`/producto/buscar_producto/${id_producto}`, async function (_data) {
+        document.getElementById("no_productoc").value = id_producto;
+        document.getElementById("id_producto_componente").value = id_producto;
+        document.getElementById("codigoc").value = _data.codigo;
+        document.getElementById("descripcionc").value = _data.descripcion;
+        document.getElementById("referenciac").value = _data.referencia;
+        document.getElementById("marcac").value = _data.idmarca;
+        document.getElementById("categoriac").value = _data.idcategoria;
+        document.getElementById("clasec").value = _data.id_clase;
+        componenteList(id_producto)
+        let ht = '';
+        const unidades = await $.get(`/producto/unidad_producto/${id_producto}`);
+
+        for (let j = 0; j < unidades.length; j++) {
+          ht += "<option value=" + unidades[j].id_unidad + ">" + unidades[j].unidad + "</option>";
+        }
+        document.getElementById("unidadPreparar").innerHTML = ht;
+
+        ////////////////////
+        $.get(`/producto/almacenes`, function (data) {
+          console.log("los almacenes ", data)
+          var htc = "";
+          htc += "<option value='0'>Seleccione</option>";
+          for (var i = 0; i < data.length; i++) {
+
+            htc += "<option value=" + data[i].id_almacen + ">" + data[i].nombre + "</option>";
+
+          }
+          document.getElementById("almacenesc").innerHTML = htc;
+        });
+
+      });
+    }
+
+    // function componenteBtnAdd(id_producto, i) {
+    //   const cantidad = document.querySelector(`#tabla_componente tr:nth-child(${i + 1}) .cantidadComponente`).value;
+    //   componenteAdd(id_producto, cantidad)
+    // }
+    function componenteAdd(id_componente, cantidad, unidad) {
+
+      const producto = document.getElementById("no_productoc").value
+      // const cantidad = document.querySelector(`#tabla_componente tr:nth-child(${i + 1}) .cantidadComponente`).value;
+
+      $('#modalBuscarComponente').modal('hide');
+      $.post(`/producto/guardar_componente/${producto}/${id_componente}/${cantidad}/${unidad}`, function (_data) {
+        productoListComponente("aaaaaaaaaaaa", '1')
+        componenteList(producto)
+      });
+
+    }
+    function componenteElimina(id_componente) {
+      let del = confirm('Deseas eliminar éste componente?')
+      if (del) {
+        const producto = document.getElementById("no_productoc").value
+
+        $.post(`/producto/elimina_componente/${producto}/${id_componente}`, function (_data) {
+
+          componenteList(producto)
+        });
+      }
+    }
+
+    // function productoAdd(codigo, i) {
+    //   const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+    //   // console.log(cantidad)
+    //   // $('#modalBuscarProducto').modal('hide');
+    //   document.getElementById('buscarProducto').value = '';
+    //   buscarCodigoProducto(codigo, cantidad);
+    // }
+
+    async function productoAdd(id_producto, i, button) {
+      const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+
+      let selectElement = button.parentNode.previousElementSibling.querySelector('select');
+      const id_unidad = selectElement.value;
+      // console.log(id_unidad)
+      // let id_cliente = 1;
+      let suma = 0;
+
+      await $.get(`/facturacion/buscarCodigoUnidadProducto/${id_unidad}/${id_producto}`, async function (data) {
+        let codigo = data[0].codigo_barras;
+        // console.log('Muestro el codigo ===> ',codigo)
+        // alert(document.getElementById('id_camarero').value)
+        // alert(caja)
+        // alert(`el idCliente ${id_cliente} y el numero de pedido ${N_pedido}`)
+        await buscarProctoPorCodigo(codigo, almacen, cantidad, id_unidad, id_cliente, suma, caja);
+      });
+
+
+      document.getElementById('buscarProducto').value = '';
+      $('#modalBuscarProducto').modal('hide');
+      // buscarCodigoProducto(codigo,cantidad);        
+    }
+
+    function editarproducto(id_producto) {
+      // alert(id_producto)
+      existenciaTotalDelProducto = 0;
+      $.get(`/producto/buscar_producto/${id_producto}`, function (data) {
+        document.getElementById("no_producto").value = id_producto;
+        document.getElementById("codigo").value = data.codigo;
+        document.getElementById("descripcion").value = data.descripcion;
+        document.getElementById("referencia").value = data.referencia;
+        document.getElementById("factor_conversion").value = data.factor_conversion;
+        // document.getElementById("existencia").value = data.existencia;
+        document.getElementById("precio_compra").value = data.precio_compra;
+        document.getElementById("precio_detalle").value = data.precio_detalle;
+        document.getElementById("precio_al_por_mayor").value = data.precio_al_por_mayor;
+        document.getElementById("precio_especial").value = data.precio_especial;
+        document.getElementById("con_itbis").checked = data.con_itbis == 1 ? true : false;
+        document.getElementById("itbis").value = data.itbis;
+        document.getElementById("con_descuento").checked = data.con_descuento == 1 ? true : false;
+        document.getElementById("descuento").value = data.descuento;
+        document.getElementById("margen_ganancia").value = data.margen_ganancia;
+        document.getElementById("cantidad_minima").value = data.cantidad_minima;
+        document.getElementById("cantidad_maxima").value = data.cantidad_maxima;
+        document.getElementById("ubicacion").value = data.ubicacion;
+        document.getElementById("marca").value = data.idmarca;
+        document.getElementById("categoria").value = data.idcategoria;
+        document.getElementById("clase").value = data.id_clase;
+        document.getElementById("estado").value = data.id_estado;
+
+        document.getElementById("id").value = id_producto;
+        // var elementos = document.getElementsByClassName('blockUnidades');
+
+        // for (var i = 0; i < elementos.length; i++) {
+        //   var elemento = elementos[i];
+        //   var valorOriginal = elemento.getAttribute('data-valor-original');
+
+        //   if (valorOriginal) {
+        //     elemento.style.display = valorOriginal;
+        //   }
+        // }
+
+        var elementos = document.getElementsByClassName('blockUnidades');
+
+        for (var i = 0; i < elementos.length; i++) {
+          elementos[i].style.display = "table";
+        }
+        unidadProductoList(id_producto)
+        almacenProductoList(id_producto)
+        $('#modalProducto').modal('show');
+        // Esperamos a que el modal esté completamente visible
+        var mainImage = document.getElementById('main-image');
+        $(mainImage).zoom({
+          url: mainImage.src,
+          on: 'mouseover'
+        });
+      });
+
+    }
+
+    function limpiarCamposproducto() {
+
+      document.getElementById("no_producto").value = '0';
+      document.getElementById("no_producto").value = '';
+      document.getElementById("codigo").value = '';
+      document.getElementById("descripcion").value = '';
+      document.getElementById("referencia").value = '';
+      document.getElementById("factor_conversion").value = '';
+      document.getElementById("existencia").value = '';
+      document.getElementById("precio_compra").value = '';
+      document.getElementById("precio_detalle").value = '';
+      document.getElementById("precio_al_por_mayor").value = '';
+      document.getElementById("precio_especial").value = '';
+      document.getElementById("con_itbis").checked = false;
+      document.getElementById("itbis").value = '';
+      document.getElementById("con_descuento").checked = false;
+      document.getElementById("descuento").value = '';
+      document.getElementById("margen_ganancia").value = '';
+      document.getElementById("cantidad_minima").value = '';
+      document.getElementById("cantidad_maxima").value = '';
+      document.getElementById("ubicacion").value = '';
+      document.getElementById("marca").value = '';
+      document.getElementById("categoria").value = '';
+      document.getElementById("clase").value = 0;
+      document.getElementById("estado").value = '';
+    }
+
+
+    function productoList(valor, inicio) { // el id que llega es el id del departamento
+
+      $.get(`/producto/filtro/${valor}/${inicio}`, function (data) {
+        // console.log(data[data.length-1].registros)
+        document.getElementById('registrostotales').innerText = data[data.length - 1].registros[0].total;
+        var html = "";
+        let k = 1;
+        for (var i = 0; i < data.length - 1; i++) {
+          // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+          html += "<tr>";
+          //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_unidad_producto`, `id_estado`
+          html += "<td>" + k + "</td>";
+          html += `<td onclick='editarproducto(${data[i].id_producto})' style='color:blue;'>` + data[i].codigo + "</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html += "<td>" + data[i].descripcion + "</td>";
+          html += "<td>" + data[i].referencia + "</td>";
+          html += "<td>" + (data[i].existencia || "") + "</td>";
+          html += "<td>" + data[i].precio_detalle + "</td>";
+          html += "<td>" + data[i].precio_al_por_mayor + "</td>";
+          html += "<td>" + data[i].precio_especial + "</td>";
+          html += "<td>" + data[i].itbis + "</td>";
+          html += "<td>" + data[i].descuento + "</td>";
+          html += "<td>" + data[i].ubicacion + "</td>";
+
+          html += `<td onclick='componente(${data[i].id_producto})' style='color:blue;'>` + "Componente" + "</td>";
+          html += "</tr>";
+
+          k++;
+        }
+
+        var elementTabla_empleado = document.getElementById("tabla_producto");
+        elementTabla_empleado.innerHTML = html;
+        cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+      });
+
+    }
+    async function productoAdd(id_producto, i, button) {
+      const cantidad = document.querySelector(`#tabla_componente tr:nth-child(${i + 1}) .cantidadProducto`).value;
+
+      let selectElement = button.parentNode.previousElementSibling.querySelector('select');
+      const id_unidad = selectElement.value;
+      // console.log(id_unidad)
+      // let id_cliente = 1;
+      // let suma = 0;
+
+      await $.get(`/facturacion/buscarCodigoUnidadProducto/${id_unidad}/${id_producto}`, async function (data) {
+        let codigo = data[0].codigo_barras;
+        // console.log('Muestro el codigo ===> ',codigo)
+        // alert(document.getElementById('id_camarero').value)
+        // alert(caja)
+        componenteAdd(id_producto, cantidad, id_unidad)
+        alert(`unidad ${id_unidad} ,producto ${id_producto} y cantidad ${cantidad}`)
+        // await buscarProctoPorCodigo(codigo, almacen, cantidad, id_unidad, id_cliente, suma, caja);
+      });
+
+
+      document.getElementById('buscarProducto').value = '';
+      $('#modalBuscarProducto').modal('hide');
+      // buscarCodigoProducto(codigo,cantidad);        
+    }
+
+
+    // function buscarCodigoProducto(codigo, cantidad) {
+    //   let suplidor = document.getElementById("no_suplidor").value
+    //   $.get(`/producto/buscarCodigoProducto/${codigo}/${cantidad}/${suplidor}`, function (data) {
+    //     // console.log(data)
+    //     buscarSuplidorPedidoTemporal(suplidor)
+    //   });
+    // }
+
+    function agregarUnidad() {
+      let id_producto = document.getElementById("no_producto").value;
+      unidadList();
+      $('#modalUnidad').modal('show');
+      // alert('agregar unidad' )
+    }
+
+    function eliminarUnidadAlProducto(id_producto, id_unidad) {
+      let del = confirm('Deseas eliminar esta unidad al producto?')
+      if (del) {
+        $.post(`/producto/eliminaUnidadAlProducto/${id_producto}/${id_unidad}`, function (_data) {
+
+          unidadProductoList(id_producto)
+        });
+      }
+    }
+
+    function unidadListSelect() { // el id que llega es el id del departamento
+      //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+      $.get(`/producto/unidad`, function (data) {
+
+        var html = "";
+        html += "<option value=0>Seleccione</option>";
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].estado == 1)
+            html += "<option value=" + data[i].id_unidad + ">" + data[i].unidad + "</option>";
+
+        }
+
+        document.getElementById("unidad").innerHTML = html;
+
+        // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+      });
+
+    }
+
+    function movimientoAlmacenProducto(id_almacen, almacen, ubicacion, id_producto, existencia) {
+      // let id_producto = document.getElementById("no_producto").value;
+      $.get(`/producto/almacenes`, function (data) {
+        var html = "";
+        html += "<option value='0'>Seleccione</option>";
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].id_almacen != id_almacen) {
+            html += "<option value=" + data[i].id_almacen + ">" + data[i].nombre + "</option>";
+          }
+        }
+        document.getElementById("idAlmacenActual").value = id_almacen;
+        document.getElementById("cantidadEnAlmacenActual").value = existencia;
+        document.getElementById("almacenActual").value = almacen;
+        document.getElementById("ubicacionEnAlmacenActual").value = ubicacion;
+
+        document.getElementById("cantidadAMover").setAttribute('maxlength', existencia);
+        document.getElementById("idAlmacenAlQueVa").innerHTML = html;
+        $('#modalAlmacenProducto').modal('show');
+      })
+
+      // alert('agregar unidad' )
+    }
+
+    document.getElementById("idAlmacenAlQueVa").addEventListener('change', function (event) {
+      let id_almacen = event.target.value;
+      let id_producto = document.getElementById("no_producto").value;
+      //aqui busco la ubicacion del producto al que va
+      $.get(`/producto/consultaProductoAlmacen/${id_producto}/${id_almacen}`, function (data) {
+        document.getElementById("ubicacionEnAlmacenNuevo").value = '';
+        if (data.length > 0) {
+          document.getElementById("ubicacionEnAlmacenNuevo").value = data[0].ubicacion;
+        }
+      });
+    });
+
+    function agregarUnidadAlProducto() {
+      // let id_producto = document.getElementById("no_producto").value;
+      unidadListSelect();
+      $('#modalUnidadProducto').modal('show');
+      // alert('agregar unidad' )
+    }
+
+
+
+
+    function unidadProductoList(id_producto) { // el id que llega es el id del departamento
+      //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+      // let id_producto = document.getElementById("no_producto").value;
+      $.get(`/producto/unidad_producto/${id_producto}`, function (data) {
+        // console.log(data)
+        // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+        var html = "";//`id_unidad`, `unidad`, `estado`
+        let k = 1;
+        for (var i = 0; i < data.length; i++) {
+          html += "<td>" + k + "</td>";
+          html += `<td onclick='editarUnidad("${data[i].id_unidad}","${data[i].unidad}","${data[i].estado}")' style='font-size:18px;color:blue'>` + data[i].unidad + "</td>";
+          html += "<td>" + data[i].factor_conversion + "</td>";
+          html += "<td>" + data[i].codigo_barras + "</td>";
+          html += `<td onclick='eliminarUnidadAlProducto("${data[i].id_producto}","${data[i].id_unidad}")'>` + "   <i class='fas fa-trash-alt' style='font-size:18px;color:red'></i></td>";
+          html += "</tr>";
+
+          k++;
+        }
+
+        var elementTabla_empleado = document.getElementById("tabla_unidad_producto");
+        elementTabla_empleado.innerHTML = html;
+        // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+      });
+
+    }
+
+    let existenciaTotalDelProducto = 0;
+    function almacenProductoList(id_producto) { // el id que llega es el id del departamento
+      //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+      // let id_producto = document.getElementById("no_producto").value;
+      $.get(`/producto/almacenProducto/${id_producto}`, function (data) {
+        console.log(data)
+        // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+        var html = "";//`id_unidad`, `unidad`, `estado`
+        let k = 1;
+        document.getElementById("existencia").value = 0;
+        for (var i = 0; i < data.length; i++) {
+          html += "<td>" + k + "</td>";
+          html += `<td onclick='movimientoAlmacenProducto("${data[i].id_almacen}","${data[i].almacen}","${data[i].ubicacion}","${data[i].id_producto}","${data[i].existencia}")' style='font-size:18px;color:blue'>` + data[i].almacen + "</td>";
+          html += "<td>" + data[i].ubicacion + "</td>";
+          html += "<td>" + data[i].existencia + "</td>";
+          html += "</tr>";
+          existenciaTotalDelProducto += parseFloat(data[i].existencia)
+          k++;
+        }
+        document.getElementById("existencia").value = existenciaTotalDelProducto;
+        var elementTabla_empleado = document.getElementById("tabla_almacen_producto");
+        elementTabla_empleado.innerHTML = html;
+        // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+      });
+
+    }
+
+    ////////////////////LOAD/////////////////////////////////////////////////////////////////////////////////////////////////
+    let paginacion = 0;
+    window.addEventListener('load', function () {
+      paginacion = '<%- paginacion %>';
+      productoList("aaaaaaaaaaaa", '1')
+
+      // PERMITE FILTRAR LA BUSQUEDA DE LOS PRODUCTOS EN LA PANTALLA PRINCIPAL
+      document.getElementById("buscar").onkeyup = function (e) {
+        let valor = e.target.value;
+        if (valor == "") {
+          valor = "aaaaaaaaaaaa"
+        }
+        productoList(valor, '1')
+        // document.getElementById("empresa").value = this.value;
+      };
+
+      // document.getElementById("contenido").onkeyup = function(e) {
+      //   let valor = e.target.value;
+
+      // if(valor.length == 0){
+      //   document.getElementById("caracteres").innerText = "0/2000";
+      // }else{
+      //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+      // }
+      //   // document.getElementById("empresa").value = this.value;
+      // };
+
+
+      // document.getElementById("btnGuardarProducto").onclick = function(e) {
+      //   // limpiarCamposproducto();
+      //   $('#modalProducto').modal('show');
+      //   // $('#ModalHistorialCita').modal('hide');
+      //   // document.getElementById("empresa").value = this.value;
+      // };
+      // document.getElementById("btnAgregarUnidadProducto").onclick = function (e) {
+      //                               let id_unidad = document.getElementById("unidad").value;
+      //                               let id_producto = document.getElementById("no_producto").value;
+      //                               let factorDeConversion = document.getElementById("factorDeConversion").value;
+
+
+      //                             };
+
+
+      document.getElementById("btnGuardarProducto").onclick = function (e) {
+
+        let no_producto = document.getElementById("no_producto").value;
+        let codigo = '';
+        let descripcion = document.getElementById("descripcion").value;
+        let referencia = document.getElementById("referencia").value;
+        let factor_conversion = document.getElementById("factor_conversion").value;
+        let existencia = document.getElementById("existencia").value;
+        let precio_compra = document.getElementById("precio_compra").value;
+        let precio_detalle = document.getElementById("precio_detalle").value;
+        let precio_al_por_mayor = document.getElementById("precio_al_por_mayor").value;
+        let precio_especial = document.getElementById("precio_especial").value;
+        let con_itbis = document.getElementById("con_itbis").checked == true ? '1' : '0';
+        let itbis = document.getElementById("itbis").value;
+        let con_descuento = document.getElementById("con_descuento").checked == true ? '1' : '0';
+        let descuento = document.getElementById("descuento").value;
+        let margen_ganancia = document.getElementById("margen_ganancia").value;
+        let cantidad_minima = document.getElementById("cantidad_minima").value;
+        let cantidad_maxima = document.getElementById("cantidad_maxima").value;
+        let ubicacion = document.getElementById("ubicacion").value;
+        let marca = document.getElementById("marca").value;
+        let categoria = document.getElementById("categoria").value;
+        let clase = document.getElementById("clase").value;
+        let estado = document.getElementById("estado").value;
+
+        $('#modalProducto').modal('hide');
+
+        const datos = {
+          id: no_producto,
+          codigo: codigo,
+          descripcion: descripcion,
+          referencia: referencia,
+          factor_conversion: factor_conversion,
+          existencia: existencia,
+          precio_compra: precio_compra,
+          precio_detalle: precio_detalle,
+          precio_al_por_mayor: precio_al_por_mayor,
+          precio_especial: precio_especial,
+          con_itbis: con_itbis,
+          itbis: itbis,
+          con_descuento: con_descuento,
+          descuento: descuento,
+          margen_ganancia: margen_ganancia,
+          cantidad_minima: cantidad_minima,
+          cantidad_maxima: cantidad_maxima,
+          ubicacion: ubicacion,
+          id_estado: estado,
+          idmarca: marca,
+          idcategoria: categoria,
+          id_clase: clase
+
+        };
+
+        // Realizar la solicitud Fetch para enviar los datos
+        fetch('/producto/save_or_update', {
+          method: 'POST', // Puedes usar POST u otro método según tus necesidades
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        })
+          .then(response => response.json())
+          .then(resultados => {
+
+            let data = resultados;
+            // Aquí puedes manejar la respuesta del servidor si es necesario
+            console.log(data);
+            productoList("aaaaaaaaaaaa", '1')
+            // alert(data);
+            if (data == "Producto actualizado correctamente") {
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: data,
+                showConfirmButton: false,
+                timer: 4000
+              })
+            }
+
+            if (data == "Producto guardado correctamente") {
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: data,
+                showConfirmButton: false,
+                timer: 4000
+              })
+            }
+
+            limpiarCamposproducto();
+
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      };
+
+
+    });
+
+    $(document).ready(function () {
+      var slideIndex = 0;
+      var slides = $('.slide');
+
+      showSlide(slideIndex);
+
+      $('.prev-button').click(function () {
+        showSlide(slideIndex -= 1);
+      });
+
+      $('.next-button').click(function () {
+        showSlide(slideIndex += 1);
+      });
+
+      function showSlide(index) {
+        if (index >= slides.length) {
+          slideIndex = 0;
+        } else if (index < 0) {
+          slideIndex = slides.length - 1;
+        } else {
+          slideIndex = index;
+        }
+
+        slides.removeClass('active');
+        slides.eq(slideIndex).addClass('active');
+      }
+    });
+
+
+
+
+
+
+
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    const mainImage = document.querySelector('#main-image');
+
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', () => {
+        const src = thumbnail.getAttribute('src');
+        mainImage.setAttribute('src', src);
+      });
+    });
+
+
+  </script>
+
+  <style>
+    .active {
+      background-color: yellow;
+    }
+
+    .ancho {
+      max-width: 80%;
+
+    }
+
+    .anchotabla {
+      max-width: 95%;
+
+    }
+
+    .gallery {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 80vh;
+    }
+
+    .thumbnail-container {
+      display: flex;
+      flex-direction: column;
+      height: 650px;
+      overflow-y: auto;
+      width: 130px;
+      overflow-x: hidden;
+    }
+
+    .thumbnail {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .laimagen {
+      height: 650px;
+      overflow-y: auto;
+      max-width: 100%;
+      /* Ajusta el ancho máximo deseado */
+      max-height: 100%;
+      /* Ajusta la altura máxima deseada */
+      overflow-x: auto;
+    }
+
+    .fixed-size-image {
+
+      width: auto;
+      height: auto;
+      position: flex-end;
+      height: auto;
+      overflow-y: auto;
+    }
+  </style>
+  <%- include('partials/_footer') %>

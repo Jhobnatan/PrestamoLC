@@ -1,0 +1,134 @@
+<%- include('partials/_header') %>
+
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="card">
+                              <div class="card-header">
+                                  <h5>Crear grupo</h5>
+                              </div>
+                              <div class="card-body col-md-12">
+                                  <div class="col-md-10" style="margin:0 auto">
+                                      <form class="row g-3" action="grupo_acceso/add" method="post">
+                                          <div class="col-12">
+                                              <label for="inputAddress2" class="form-label text-black">Nombre del grupo</label>
+                                              <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Ingrese nombre">
+                                            </div>
+                                            
+                                         <div class="col-12">
+                                           <button type="submit" class="btn btn-primary">GUARDAR</button>
+                                         </div>
+                                       </form>
+                                     </div>
+                              </div>
+                          </div>
+                                            
+                                    
+                                        
+                                        <table class="table table-bordered table-hover mt-5">
+                                            <thead class="bg-dark text-white">
+                                                <tr>
+                                                  <th>No.</th>
+                                                  <th>NOMBRE</th>
+                                                  <th>EDITAR</th>
+                                                  <th>ACCESOS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tabla_permiso">
+                                              <% if(data) {%>
+                                                <% for(var i =0;i < data.length;i++){ %>
+                                                    <tr> 
+                                                        <td><%= i+1 %></td>
+                                                        <td><%= data[i].descripcion %></td>
+                                                        <td><a href="/grupo_acceso/update/<%= data[i].id_grupo %>" ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>
+                                                        <td><a href="/grupo_acceso/accesos/<%= data[i].id_grupo %>" ><i class='fas fa-list' style='font-size:28px;color: red; margin-left:10px''></i></a></td>
+                                                    </tr>
+                            
+                            
+                                                 <% } %>
+                                                <% } %>
+                                               
+                                            </tbody>
+                                        </table>
+                           
+        </div>
+        
+    </div>
+</div>
+
+<script>
+  
+  function permisoList(e) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    let valor = e.target.value;
+    
+    if(valor ==""){
+      valor ="aaaaaaaaaaaa";
+    }
+    $.get("/form_data/grupo/" + valor, function (data) {
+      
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+                
+                console.log(data[i]);  
+                if(data[i].id_estado ==data[i].id_estado){
+                  html +="<tr class=''>";
+                  html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].fecha_solicitud +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].encargado +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].estado_permiso +"</td>";
+                  html +="<td><a href='/permiso/rrhh/"+ data[i].id_permiso +"'' ><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></a></td>";
+                  html +="</tr>";        
+                  k++;  
+                }
+                
+          }
+  
+        var elementTabla_empleado = document.getElementById("tabla_permiso");
+        elementTabla_empleado.innerHTML = html;
+        
+    });
+  }
+
+  window.addEventListener('load', function() {
+    
+    document.getElementById("buscarp").onkeyup = function(e) {
+      
+      permisoList(e);
+    };
+
+    document.addEventListener("click", (event) => {
+  const clickedElement = event.target;
+  
+  if (!clickedElement.matches('.ver')) {
+    return;
+  }
+  handlePermiso(clickedElement.value);
+  confirm("Are you sure to EDIT this user?");
+});
+    console.log('no se desplieaga')
+  //document.getElementById('formSolicitud_permiso').style.display = 'none';
+  //document.getElementById("fecha").value = new Date().toISOString();//.toDateString();//.toLocaleDateString();
+  document.getElementById('permiso_enc').style.display = "none";
+  //alert("cargo")
+
+  document.getElementById('ver').addEventListener('click', function(e) {
+    console.log(e)
+  });
+
+  const editButtons = document.querySelectorAll(".ver");
+editButtons.forEach(editBtn => editBtn.addEventListener("click", () => {
+  alert('click')
+}));
+  
+
+});
+</script>
+
+
+<%- include('partials/_footer') %>

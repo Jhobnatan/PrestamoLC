@@ -1,0 +1,181 @@
+<%- include('partials/_header') %>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-black">
+                        <h5>LISTA SOLICITUDES DE RECLUTAMIENTO - RRHH</h5>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="col-12 mt-5 d-flex text-right">
+              <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Ingrese puesto" >
+            </div>
+
+         
+
+            <table class="table table-bordered table-hover mt-4">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>EMPRESA</th>
+                        <th>DEPARTAMENTO</th>
+                        <th>PUESTO</th>
+                        <th>SOLICITANTE</th>
+                        <th>ESTADO</th>
+                        <th class="text-center">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_empleado">
+                    <% if(data) {%>
+                    <% for(var i =0;i < data.length;i++){ %>
+                      
+                    <% if(data[i].id_empresa==3) {%>
+                      <% if(accesos.empleados_awm) {%>
+                        <tr class="table-success">
+                          <td><%= i+1 %></td>
+                        <td><%= data[i].empresa %></td>
+                        <td><%= data[i].departamento %></td>
+                        <td><%= data[i].puesto %></td>
+                        <td><%= data[i].solicitante %></td>
+                        <td><%= data[i].estado %></td>
+                        <td class="text-center">
+                          <a href="/reclutamiento/update_rrhh/<%= data[i].id_reclutamiento %>" ><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>
+                          </td>
+                          </tr>
+                            <% } %>                              
+                          <% }else{%>
+                            <% if(accesos.empleados_afg) {%>
+                            <tr class="table-info">
+                              <td><%= i+1 %></td>
+                                <td><%= data[i].empresa %></td>
+                                <td><%= data[i].departamento %></td>
+                                <td><%= data[i].puesto %></td>
+                                <td><%= data[i].solicitante %></td>
+                                <td><%= data[i].estado %></td>
+                                <td class="text-center">
+                                  <a href="/reclutamiento/update_rrhh/<%= data[i].id_reclutamiento %>" ><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>
+                                  </td>
+                            </tr>
+                          <% } %>  
+                        <% } %>
+                      <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+
+<script >
+
+
+  function reclutamientoList(valor) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    ////////
+   //alert(valor)
+
+    // let afg = document.getElementById('afg').checked;
+    // let awm = document.getElementById('awm').checked;
+    // alert(activos+"activos")
+    // const jsondata = '<%- JSON.stringify(data) %>';
+    // var datai = JSON.parse(jsondata);
+ 
+    
+    // var data = datai.filter(function(e){
+    //   if(e['cedula'].includes(valor)){
+    //     return e['cedula'].includes(valor);
+    //   }
+    // });
+    // console.log("El valor es..."+valor)
+    ///////////
+
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+   
+    $.get("/form_data/reclutamiento/" + valor, function (data) {
+        // console.log(data)
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+
+            //console.log(data.length);  
+              if(data[i].id_empresa==3) {
+                  if(accesos.empleados_awm){ 
+                  html +="<tr class='table-success'>";
+                  html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].motivo +"</td>";
+                
+                  html +="<td>";
+                    html +="<a href='/reclutamiento/update_rrhh/"+data[i].id_reclutamiento+"'><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+                   html +="</td></tr>";  
+                  
+              k++;  
+                  }
+                //console.log('AWM')
+              }else{
+                //console.log('AFG')
+                
+                if(accesos.empleados_afg){ 
+                  html +="<tr class='table-info'>";
+                    html +="<td>"+k+"</td>";
+                  html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].departamento +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].solicitante +"</td>";
+                  html +="<td>"+ data[i].motivo +"</td>";
+            
+                  html +="<td>";
+                    html +="<a href='/reclutamiento/update_rrhh/"+data[i].id_reclutamiento+"' ><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+                   html +="</td></tr>";  
+                  
+              k++;
+                  }
+                }     
+                
+            }
+            var elementTabla_empleado = document.getElementById("tabla_empleado");
+            elementTabla_empleado.innerHTML = html;
+  });
+}
+  function fechaActual(){
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    return  day + "/" + month + "/" + year;
+    
+  }
+  
+  window.addEventListener('load', function() {
+    //const nacionalidad = document.getElementById("nacionalidad");
+    //$("#fecha").val(fechaActual());
+    //document.getElementById("fecha").value = new Date().toLocaleDateString();
+   
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+      
+      reclutamientoList(valor); 
+      // alert(valor);
+    };
+
+  
+  
+  });
+  </script>
+<%- include('partials/_footer') %>

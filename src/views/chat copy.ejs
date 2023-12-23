@@ -1,0 +1,940 @@
+<%- include('partials/_header_facturacion') %>
+	<style>
+        .chat-container {
+            padding-top: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+        }
+
+        .chat-header {
+            background-color: #446e9b;
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+        }
+        .chat-header h4 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .chat-body {
+            flex: 1;
+            overflow-y: scroll;
+            background-color: #ECE5DD;
+            padding: 10px;
+        }
+
+		.chat-body::-webkit-scrollbar {
+			width: 0.5em;
+		}
+
+		.chat-body::-webkit-scrollbar-track {
+			background-color: #ECE5DD;
+		}
+
+		.chat-body::-webkit-scrollbar-thumb {
+			background-color: #446e9b;
+		}
+
+        .message-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .my-message {
+			align-self: flex-end;
+        }
+
+		.my-message .message-content {
+			align-self: flex-end;
+			text-align: left;
+            background-color: #c4f0b5;
+            padding: 10px;
+            margin-right: 5%;
+			margin-left: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px #a6a6a6;
+            max-width: 65%;
+            word-wrap: break-word;
+        }
+
+        .other-message {
+            align-self: flex-end;
+        }
+		.other-message .message-content {
+			margin-left: 5%;
+            background-color: #fefffe;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px #a6a6a6;
+            max-width: 65%;
+            word-wrap: break-word;
+        }
+
+        .message-time {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #9a9a9a;
+			margin-top: 25px;
+        }
+
+        .message-time-audio {
+            margin-left: auto;
+            font-size: 12px;
+            color: #9a9a9a;
+        }
+
+        .data-duracion {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #9a9a9a;
+        }
+
+        .chat-footer {
+            background-color: #ECE5DD;
+            padding: 15px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .el-footer {
+            display: flex;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px 10px 10px 10px;
+        }
+
+        .messagee {
+  width: 100%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px 10px;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.message-input {
+  width: 100%;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+        .message-input:focus {
+            outline: none;
+        }
+        .send-button {
+            background-color: transparent;
+            border: none;
+            border-radius: 5px;
+            color: #446e9b;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .send-button-mic {
+            background-color: transparent;
+            border: none;
+            border-radius: 5px;
+            color: #446e9b;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+		.container{
+			border-radius: 30%;
+		}
+
+		#perfil-imagen {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .modal-body img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .notification {
+            font-size: 14px;
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #ff5722;
+            border-radius: 10px;
+        }
+        audio::-webkit-media-controls-volume-slider {
+  display: none;
+}
+.audio-container {
+  display: flex;
+  align-items: center;
+}
+
+.data-container {
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  margin-right: 10px;
+  background-color: #ccc;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #32a744;
+}
+
+.control-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6c6565;
+  padding: 0;
+  margin: 5px;
+}
+
+.fa-fighter-jet {
+  transform: rotate(-90deg);
+}
+
+.message-input::before {
+  content: attr(data-placeholder);
+  color: gray;
+  pointer-events: none;
+}
+
+.message-input:focus::before {
+  display: none;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #007bff;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: progress 2s linear forwards;
+}
+
+@keyframes progress {
+  0% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+:root {
+  --primary-color: #3f51b5;
+  --secondary-color: #ddd;
+  --text-color: #666;
+  --font-size: 12px;
+}
+
+.message {
+  position: relative;
+  max-width: 90%;
+}
+
+.circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.circle svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.circle circle {
+  fill: transparent;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0, 251.2;
+  transform: translate(5px, 5px);
+}
+
+.circle .circle-progress {
+  stroke: var(--primary-color);
+}
+
+.circle .circle-background {
+  stroke: var(--secondary-color);
+}
+
+.circle .circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  font-size: var(--font-size);
+  color: var(--text-color);
+}
+
+.circle.loading .circle-progress {
+  stroke-dasharray: 251.2, 251.2;
+  transition: stroke-dasharray 1s linear;
+}
+
+
+    </style>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<div class="container">
+    <div class="chat-container">
+        <div class="chat-header text-white">
+            <h4>
+                <img src="<%- foto%>" alt="la imagen" id="perfil-imagen" onclick="abrirModal()">
+                <strong id="nombre">Jhobnatan Rosario Santos</strong>
+                <strong id="noti"></strong>
+            </h4>
+        </div>
+        <div class="chat-body" id="chat-body">
+            
+        </div>
+        
+
+        <div class="chat-footer">
+            <div class="el-footer">
+              <div style="position: relative; width: 90%;">
+                <div class="messagee">   
+                  <div class="circle d-none">
+                    <svg>
+                      <circle class="circle-progress" cx="50%" cy="50%" r="40"></circle>
+                      <circle class="circle-background" cx="50%" cy="50%" r="40"></circle>
+                    </svg>
+                    <p class="circle-text">Cargando...</p>
+                  </div>               
+                  <p id="message-input" class="message-input" contenteditable="true" data-placeholder="Escribe un mensaje..."></p>
+                </div>
+                
+              </div>
+              <button type="button" id="elclick" style="position: relative; right: 20px; border: none; background: transparent; font-size: larger; color: gray;"><i class="fas fa-paperclip"></i></button>
+                <button type="button" style=" right: 1px; border: none; background: transparent; font-size: larger; color: gray;"><i class="fas fa-camera"></i></button>
+              <button type="button" id="record-button" class="send-button-mic"><i id="send-button-mic" class="fas fa-microphone fs-3" style="font-size: 20px; width: 20px; text-align: center"></i> </button>
+              <button type="button" id="send-button" class="send-button d-none"><i class="fas fa-fighter-jet fs-3" style="font-size: 20px; width: 20px; text-align: center"></i> </button>
+            </div>
+          </div>
+          
+    </div>
+</div>
+
+<!-- Agrega esto antes de cerrar el body -->
+<div class="modal" tabindex="-1" role="dialog" id="modal-imagen">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img src="" alt="Imagen de perfil ampliada" id="perfil-imagen-modal">
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<script src="/../mqtt/mqttws31.js" type="text/javascript"></script>
+    <script src="/../mqtt/config.js" type="text/javascript"></script>
+
+
+
+	<script  type="text/javascript">
+
+    // Conectarse al servidor Mosca
+// var client = mqtt.connect('ws://localhost:1983')
+
+// // Manejar evento de conexión
+// client.on('connect', function () {
+//   console.log('Conectado al servidor Mosca')
+  
+//   // Enviar un mensaje al servidor Mosca
+//   client.publish('my/topic', 'Hello, Mosca!')
+// })
+
+
+        function abrirModal() {
+        // Obtiene la imagen de perfil
+        var imagenPerfil = document.getElementById("perfil-imagen");
+        var imagenModal = document.getElementById("perfil-imagen-modal");
+
+        // Obtiene la ruta de la imagen de perfil y la establece en la imagen del modal
+        imagenModal.src = imagenPerfil.src;
+
+        // Abre el modal
+        $("#modal-imagen").modal("show");
+    }
+    ///////////////////////////////////////////////SECCION DE MQTT
+		var mqtt;
+    var reconnectTimeout = 2000;
+
+    function MQTTconnect() {
+	if (typeof path == "undefined") {
+		path = '/mqtt';
+	}
+	mqtt = new Paho.MQTT.Client(
+			host,
+			port,
+			path,
+			"web_" + parseInt(Math.random() * 100, 10)
+	);
+        var options = {
+            timeout: 3,
+            useSSL: useTLS,
+            cleanSession: cleansession,
+            onSuccess: onConnect,
+            onFailure: function (message) {
+                //$('#status').val("Connection failed: " + message.errorMessage + "Retrying");
+                setTimeout(MQTTconnect, reconnectTimeout);
+            }
+        };
+
+        mqtt.onConnectionLost = onConnectionLost;
+        mqtt.onMessageArrived = onMessageArrived;
+
+        if (username != null) {
+            options.userName = username;
+            options.password = password;
+        }
+        console.log("Host="+ host + ", port=" + port + ", path=" + path + " TLS = " + useTLS + " username=" + username + " password=" + password);
+        mqtt.connect(options);
+    }
+
+    function onConnect() {
+        //$('#status').val('Connected to ' + host + ':' + port + path);
+        // Connection succeeded; subscribe to our topic
+
+			mqtt.subscribe('chat', {qos: 0});
+			mqtt.subscribe('notificacion', {qos: 0});
+			// setInterval(function() {
+			// 	const messagex = 'Este es un mensaje de prueba';
+			// 	// mqtt.publish('test', messagex);
+			// 	message = new Paho.MQTT.Message(messagex);
+			// 	message.destinationName = 'chat';
+			// 	mqtt.send(message);
+			// 	// console.log('Mensaje enviado al topic "test data": ' + message);
+			// }, 3000);
+					
+		console.log('se conecto ahora');
+        //$('#topic').val(topic);
+    }
+
+    function onConnectionLost(response) {
+        setTimeout(MQTTconnect, reconnectTimeout);
+        //$('#status').val("connection lost: " + responseObject.errorMessage + ". Reconnecting");
+
+    };
+    // Función para formatear el tiempo en formato MM:SS
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+async function onMessageArrived(message) {
+
+  try {
+    
+    
+	console.log(message)
+  console.log('El mensaje llega pero se pierde ', message.payloadString)
+	var topic = message.destinationName;
+        var payload = message.payloadString;
+        
+		// let usuario = message.user;
+		// alert(usuario);
+
+		// const messageObject = JSON.parse(message.payloadString);
+        //proceso si es audio
+//     if (messageObject.data) {
+//         alert('es un audio')
+//         const audioBlob = messageObject.data;
+//     const audioUrl = URL.createObjectURL(audioBlob);
+//     const audio = new Audio(audioUrl);
+//     audio.play();
+//   }
+const messageObject = JSON.parse(message.payloadString);
+let usuario = messageObject.user;
+
+const messageTime = document.createElement("div");
+    messageTime.classList.add("message-time-audio");
+
+    messageTime.textContent =messageObject.horaenvio;// new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+
+    if (messageObject.type === 'audio') {
+        const base64String = messageObject.data;
+        const bytes = atob(base64String);
+        const arrayBuffer = new ArrayBuffer(bytes.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < bytes.length; i++) {
+            uint8Array[i] = bytes.charCodeAt(i);
+        }
+        const blob = new Blob([uint8Array], { type: "audio/webm" });
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        // audio.play();
+
+        const audioElement = document.createElement("audio");
+        audioElement.controls = true;
+        audioElement.src = "data:audio/webm;base64," + messageObject.data;
+        // audioElement.play();
+
+        let cuantoDura = 0;
+        const duracion = document.createElement("div"); //aqui agregare la parte de la duracion del audio
+
+        const playButton = document.createElement("button");
+playButton.classList.add("control-button");
+playButton.innerHTML = '<i class="fas fa-play"></i>';
+playButton.addEventListener("click", () => {
+  if (audioElement.paused) {
+    audioElement.play();
+    playButton.innerHTML = '<i class="fas fa-pause"></i>';
+  } else if (audioElement.play)  {
+    audioElement.pause();
+    playButton.innerHTML = '<i class="fas fa-play"></i>';
+  } else{
+    audioElement.stop();
+    playButton.innerHTML = '<i class="fas fa-play"></i>';
+  }
+});
+
+  const progressBar = document.createElement("input");
+  progressBar.type = "range";
+  progressBar.min = 0;
+  progressBar.max = 100;
+  progressBar.value = 0;
+  progressBar.step = 0.01;
+  progressBar.classList.add("progress-bar");
+
+  ///duracion del audio
+duracion.classList.add("data-duracion");
+
+
+//const messageObject = { type: "audio", content: 'Envie una nota de voz', user: user, data: audioBase64,duracion: duration,horaenvio: endTime };
+  audioElement.addEventListener("timeupdate", () => {
+    const percent = (audioElement.currentTime / messageObject.duracion) * 100;
+        duracion.innerText = formatTime(audioElement.currentTime);
+    
+    // 
+    progressBar.value = percent;
+    
+    if (audioElement.ended) {
+    playButton.innerHTML = '<i class="fas fa-play"></i>';
+    duracion.innerText = formatTime(audioElement.currentTime);
+    progressBar.value = 0;
+  }
+  });
+
+  audioElement.addEventListener("loadedmetadata", () => {
+    let dura = messageObject.duracion;
+            // alert('metadata')
+            if(audioElement.duration != 0){
+                audioElement.pause();
+            }
+            
+            cuantoDura = formatTime(dura);
+            console.log("Duración:", cuantoDura);
+            duracion.innerText = cuantoDura;
+            // Mostrar la duración en el reproductor
+        });
+
+  const audioContainer = document.createElement("div");
+audioContainer.classList.add("audio-container");
+
+const dataContainer = document.createElement("div");
+dataContainer.classList.add("data-container");
+
+
+  const messageContent = document.createElement("div");
+  messageContent.classList.add("message-content");
+  audioContainer.appendChild(playButton);
+  audioContainer.appendChild(progressBar);
+  dataContainer.appendChild(duracion);
+  dataContainer.appendChild(messageTime);
+  messageContent.appendChild(dataContainer)
+  messageContent.appendChild(audioContainer)
+  
+
+  const messageRow = document.createElement("div");
+  // decide si el mensaje es enviado por el usuario actual o por otro usuario
+  // decide si el mensaje es enviado por el usuario actual o por otro usuario
+  if (user == usuario) {
+        messageRow.classList.add("my-message");
+    } else {
+        messageRow.classList.add("other-message");
+    }
+
+  messageRow.classList.add("message-row");
+  messageRow.appendChild(messageContent);
+  
+  chatBody.appendChild(messageRow);
+ 
+    } else{
+        
+		if(messageObject.content=='1'){
+			const messageObject = { type: "notification", content: 'Envie una notificacion', user: user };
+            mqtt.send("chat", JSON.stringify(messageObject));
+		}
+
+		if(messageObject.type=='notification' && user !=usuario){
+			notificacion ++;
+			document.getElementById('noti').innerText = notificacion;
+			// alert('Has enviado una '+messageObject.content)
+		}
+		// alert(messageObject.user)
+            if (messageObject.user === "message") {
+                addMessageToChat(messageObject.content, false);
+            }
+
+
+		// console.log(message)
+		// console.log(payload);
+		// console.log(topic);
+
+		// crea un nuevo elemento HTML para representar el mensaje
+		const messageRow = document.createElement("div");
+    messageRow.classList.add("message-row");
+    
+    const messageContent = document.createElement("div");
+    messageContent.classList.add("message-content");
+	messageContent.textContent = messageObject.content;
+    // messageContent.textContent = usuario+": "+ messageObject.content;
+    messageContent.appendChild(messageTime);
+    
+
+const dataContainer = document.createElement("div");
+dataContainer.classList.add("data-container");
+    // decide si el mensaje es enviado por el usuario actual o por otro usuario
+    if (user == usuario) {
+        messageRow.classList.add("my-message");
+    } else {
+        messageRow.classList.add("other-message");
+    }
+    // if (user !== usuario) {
+    // agrega los elementos HTML al chat
+    messageRow.appendChild(messageContent);
+    // messageRow.appendChild(messageTime);
+    chatBody.appendChild(messageRow);
+	// }
+    }
+
+  } catch (error) {
+    console.log('Salio un errorr =====================================>',error)
+  }
+    //termina audio
+		
+}
+
+const chatBody = document.getElementById("chat-body");
+    const messageInput = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+	const user = "<%= nombre %>"//Math.random().toString(36).substr(2, 9);
+	let notificacion = 0;
+
+	document.getElementById('nombre').innerText = user;//.toUpperCase();
+    
+    document.addEventListener("DOMContentLoaded", function(event) {
+    MQTTconnect(); // me conecto a MQTT
+
+    const sendButton = document.querySelector('#send-button');
+    const recordButton = document.querySelector('#record-button');
+    const messageInput = document.querySelector('.message-input');
+    const elclick = document.querySelector('#elclick');
+
+    messageInput.addEventListener('input', function(event) {
+        console.log(messageInput.textContent);
+        if (messageInput.textContent.trim() == '') {
+            messageInput.setAttribute('data-placeholder', 'Escribe un mensaje...');
+            sendButton.classList.add('d-none');
+            recordButton.classList.remove('d-none');
+            elclick.classList.remove('d-none');
+        } else {
+            messageInput.removeAttribute('data-placeholder');
+            sendButton.classList.remove('d-none');
+            recordButton.classList.add('d-none');
+            elclick.classList.add('d-none');
+        }
+
+    });
+
+    elclick.addEventListener('click', function(event) {
+        console.log('El botón de adjuntar archivo fue clickeado');
+    });
+
+    recordButton.addEventListener('click', function(event) {
+      
+    });
+
+    sendButton.addEventListener('click', function(event) {
+        const messageInput = document.querySelector('.message-input');
+        const inputValue = messageInput.textContent.trim();
+        sendMessage();
+        // alert(`El valor del input es: ${inputValue}`);
+    });
+
+
+  /////fin record y enviar 
+    // variables para referenciar los elementos HTML del chat
+    
+    // alert(user)
+    // función para agregar un mensaje a la vista del chat
+    function addMessageToChat(message, isMyMessage) {        
+        const messageRow = document.createElement("div");
+        messageRow.classList.add("message-row");
+        messageRow.classList.add("my-message");
+        const messageContent = document.createElement("div");
+        messageContent.classList.add("message-content");
+        // messageContent.innerText = user+": "+message;
+		messageContent.innerText = message;
+        messageRow.appendChild(messageContent);
+        const messageTime = document.createElement("div");
+        messageTime.classList.add("message-time");
+        messageTime.innerText = new Date().toLocaleTimeString();
+        messageRow.appendChild(messageTime);
+        chatBody.appendChild(messageRow);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    
+    // función para enviar un mensaje al servidor MQTT
+    function sendMessage() {
+
+        const message =  messageInput.textContent.trim();
+        if (message !== "") {
+            messageInput.textContent= ''
+            messageInput.setAttribute('data-placeholder', 'Escribe un mensaje...');
+            elclick.classList.remove('d-none');
+            const messageObject = { type: "message", content: message, user: user };
+            mqtt.send("chat", JSON.stringify(messageObject));
+            // addMessageToChat(message, true);
+        }
+        document.querySelector('#send-button').classList.add('d-none');
+        document.querySelector('#record-button').classList.remove('d-none');
+    }
+    
+    // evento para enviar un mensaje al hacer clic en el botón de enviar
+    sendButton.addEventListener("click", sendMessage);
+    
+    // evento para enviar un mensaje al presionar Enter en el cuadro de entrada
+    // messageInput.addEventListener("keydown", function(event) {
+    //     if (event.key === "Enter") {
+    //         sendMessage();
+    //     }
+    // });
+    
+    // función para procesar un mensaje recibido desde el servidor MQTT
+    function processMessage(message) {
+        try {
+            const messageObject = JSON.parse(message.payloadString);
+            if (messageObject.type === "message") {
+                addMessageToChat(messageObject.content, false);
+            }
+        } catch (error) {
+            console.error("Error al procesar el mensaje recibido:", error);
+        }
+    }
+    
+    // suscribirse al canal "chat" del servidor MQTT para recibir mensajes
+    mqtt.subscribe("chat");
+    mqtt.onMessageArrived = processMessage;
+});
+////notas de voz
+// Seleccionar el botón de grabación
+const recordButton = document.getElementById("record-button");
+
+// Seleccionar los elementos de la barra de progreso
+const circle = document.querySelector('.circle');
+const circleProgress = document.querySelector('.circle-progress');
+const circleText = document.querySelector('.circle-text');
+
+// Inicializar variables de grabación de audio
+let mediaRecorder;
+let audioChunks = [];
+let startTime;
+
+
+// Establecer el tiempo máximo de grabación en segundos
+const maxRecordingTime = 10;
+
+// Variable para almacenar el ID del temporizador
+let timerId;
+
+// Función para actualizar el contador de tiempo
+
+function updateTimer(time) {
+  const timerText = `${formatTime(time)}`;
+  const messageInput = document.querySelector('#message-input');
+  messageInput.setAttribute('data-placeholder', timerText);
+}
+
+// Función para iniciar la grabación
+function startRecordingTimer() {
+  // Iniciar el temporizador
+  let timeLeft = 0;
+  updateTimer(timeLeft);
+  timerId = setInterval(() => {
+    timeLeft++;
+      updateTimer(timeLeft);
+  }, 1000);
+  
+  // // Cambiar el texto del placeholder
+  // messageInput.setAttribute('data-placeholder', 'XGrabando...');
+}
+
+// Función para detener la grabación
+function stopRecording() {
+  // Detener el temporizador
+  clearInterval(timerId);
+
+  // Restaurar el texto del botón de grabar
+  const btnMic = document.querySelector('#send-button-mic');
+  btnMic.style.color = '#446e9b';
+
+  // Restaurar el texto del placeholder
+  messageInput.setAttribute('data-placeholder', 'Escribe un mensaje...');
+}
+
+// Función para comenzar a grabar
+function startRecording() {
+  startRecordingTimer()
+  startTime = Date.now();
+  
+  // Cambiar el placeholder del input
+  const messageInput = document.querySelector('.message-input');
+  const btnMic = document.querySelector('#send-button-mic');
+  btnMic.style.color = 'red';
+  messageInput.setAttribute('data-placeholder', 'Grabando nota de voz...');
+  
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(stream => {
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.addEventListener("dataavailable", event => {
+        audioChunks.push(event.data);
+      });
+      mediaRecorder.addEventListener("recording", () => {
+        console.log("Está grabando...");
+      });
+      mediaRecorder.addEventListener("stop", () => {
+        stopRecording();
+        // Restablecer el placeholder del input
+        messageInput.setAttribute('data-placeholder', 'Escribe un mensaje...');
+        
+        // Determinar la duración de la grabación
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000; // Duración en segundos
+        console.log(`El botón se mantuvo presionado por ${duration} segundos`);
+        
+        // Crear un objeto Blob con los datos de audio
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        
+        // Convertir el audio a Base64
+        const reader = new FileReader();
+        reader.onloadend = function() {
+          circle.classList.remove('loading');
+          circleProgress.setAttribute('stroke-dasharray', '0, 251.2');
+          circleText.textContent = 'Cargando...';
+          
+          // Enviar el audio al servidor
+          const audioBase64 = btoa(new Uint8Array(reader.result).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+          const horadeenvio = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+          const messageObject = { type: "audio", content: 'Envie una nota de voz', user: user, data: audioBase64, duracion: duration, horaenvio: horadeenvio };
+          mqtt.send("chat", JSON.stringify(messageObject));
+        };
+        
+        // Mostrar la barra de progreso
+        circle.classList.add('loading');
+        
+        reader.addEventListener('progress', function(event) {
+          if (event.lengthComputable) {
+            const percentLoaded = Math.round((event.loaded / event.total) * 100);
+            circleProgress.setAttribute('stroke-dasharray', percentLoaded * 2.512 + ', 251.2');
+            circleText.textContent = `Cargando ${percentLoaded}%`;
+          }
+        });
+        
+        reader.readAsArrayBuffer(audioBlob);
+        // audioChunks = [];
+      });
+      mediaRecorder.start();
+    });
+}
+
+// Agregar el evento de mousedown al botón de grabación
+recordButton.addEventListener("mousedown", startRecording);
+
+// Agregar el evento de mouseup al botón de grabación
+recordButton.addEventListener("mouseup", () => {
+    mediaRecorder.stop();
+    recordButton.style.fontSize = "18px";
+});
+
+
+// document.getElementById('record-button').addEventListener('click', function () {
+//   navigator.mediaDevices.getUserMedia({ audio: true })
+//     .then(stream => {
+//       const mediaRecorder = new MediaRecorder(stream);
+//       const chunks = [];
+
+//       mediaRecorder.start();
+
+//       mediaRecorder.addEventListener('dataavailable', event => {
+//         chunks.push(event.data);
+//       });
+
+//       mediaRecorder.addEventListener('stop', () => {
+//         const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+//         const audioURL = URL.createObjectURL(blob);
+//         const audio = new Audio(audioURL);
+
+//         // Reproduce el audio grabado
+//         audio.play();
+
+//         // Envía el audio por MQTT
+//         // ...
+//       });
+
+//       setTimeout(() => {
+//         mediaRecorder.stop();
+//       }, 5000);
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     });
+// });
+
+//////fin notas
+
+
+	</script>
+

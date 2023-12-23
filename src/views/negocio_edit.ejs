@@ -1,0 +1,490 @@
+<%- include('partials/_header') %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="containero">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3" id="negocio_update" action="/negocio/update/<%= ng.id_negocio %>/0" enctype="multipart/form-data" method="post">
+                              <div class="card-header bg-dark text-white d-flex pt-3">
+                                <div class="col-9"><h5>Información - General</h5></div>
+                                
+                                <label for="inputAddress2" name="fech" id="fech" class="form-label text-white">Fecha: <%= ng.fecha_creacion %></label>
+                                    <input type="hidden" class="form-control bg-dark text-white" name="fecha" id="fecha" required readonly>
+                                  
+                            </div>
+                            
+                                <div class="col-8">
+                                    <label for="inputAddress2" class="form-label text-black">Razón social</label>
+                                    <input type="text" class="form-control" name="razon_social" id="razon_social" value="<%= ng.razon_social %>" placeholder="Ingrese la razón social" required>
+                                  </div>
+                                  
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">RNC</label>
+                                    <input type="text" class="form-control" name="rnc" id="rnc" value="<%= ng.rnc %>" placeholder="Ingrese RNC"  required>
+                                  </div>
+
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Cantidad de sucursales</label>
+                                    <input type="text" class="form-control" name="cant_sucursales" id="cant_sucursales" value="<%= ng.cant_sucursales %>"  required>
+                                  </div>
+
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Sap acreedor</label>
+                                <input type="text" class="form-control" name="sap_acreedor" id="sap_acreedor" value="<%= ng.sap_acreedor %>" readonly placeholder="ingrese cuenta acreedor">
+                              </div>
+
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Sap deudor</label>
+                                <input type="text" class="form-control" name="sap_deudor" id="sap_deudor" value="<%= ng.sap_deudor %>" readonly placeholder="ingrese cuenta deudor">
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Tipo de afiliación</label>
+                                <select class="form-control" name="tipo_afiliacion" id="tipo_afiliacion" required>
+                                  <option value="0">Seleccione</option>
+                                    <% if(ta) {%>
+                                      <% for(var i =0;i < ta.length;i++){ 
+                                        if(ta[i].id_tipo_afiliacion == ng.id_tipo_afiliacion){%>
+                                        <option selected value="<%= ta[i].id_tipo_afiliacion %>"><%= ta[i].tipo_afiliacion %></option>
+                                        <% }else { %>
+                                          <option value="<%= ta[i].id_tipo_afiliacion %>"><%= ta[i].tipo_afiliacion %></option>
+                                         
+                                       <% }
+                                      } %>
+                                      <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Pagos electrónicos</label>
+                                <select class="form-control" name="pago_electronico" id="pago_electronico" required>
+                                  <option value="0">Seleccione</option>
+                                    <% if(pe) {%>
+                                      <% for(var i =0;i < pe.length;i++){ 
+                                        if(pe[i].id_pago_electronico == ng.id_pago_electronico){%>
+                                        <option selected value="<%= pe[i].id_pago_electronico %>"><%= pe[i].tipo_pago_electronico %></option>
+                                        <% }else { %>
+                                          <option value="<%= pe[i].id_pago_electronico %>"><%= pe[i].tipo_pago_electronico %></option>
+                                         
+                                       <% }
+                                      } %>
+                                      <% } %>
+                                 </select>
+                              </div>
+
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Red social</label>
+                                    <input type="text" class="form-control" name="red_social" id="red_social" value="<%= ng.red_social %>"  placeholder="ingrese red social">
+                                  </div>
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Fecha vencimiento (Registro mercantil)<strong style="color: red;">*</strong></label>
+                                    <input class="form-control" type="date" name="fecha_vencimiento_rm" id="fecha_vencimiento_rm" value="<%= ng.rm_vence %>" required>
+                                  </div>
+
+                                  <div class="card-header mt-5 pt-3">
+                                    <h5>Productos</h5>
+                                </div>
+                                      <div class="d-table">
+                                      <div class="row" id="productoid">
+                                        <% if(prod) {%>
+                                          <% for(var k =0;k < prod.length;k++){ %>
+                                            <% if(prod_ng.find( producto => producto.id_producto === prod[k].id_producto )){ %>
+                                            <div class="form-check mx-4">
+                                              <input class="form-check-input" name="producto" type="checkbox" value="<%= prod[k].id_producto %>" id="<%= prod[k].producto %>" checked>
+                                              <label class="form-check-label" for="<%= prod[k].producto %>">
+                                                <%= prod[k].producto %>
+                                              </label>
+                                            </div>
+                                            <% } else{%>
+                                              <div class="form-check mx-4">
+                                                <input class="form-check-input" name="producto" type="checkbox" value="<%= prod[k].id_producto %>" id="<%= prod[k].producto %>">
+                                                <label class="form-check-label" for="<%= prod[k].producto %>">
+                                                  <%= prod[k].producto %>
+                                                </label>
+                                              </div>
+                                          <% }
+                                        } %>
+                                    <% } %>                                                
+          
+                                    </div>
+                             
+                                  </div>
+                                  
+
+                                  
+                                  <div class="card-header mt-5">
+                                    <h5>Documentos</h5>
+                                </div>
+                                  <div class="col-md-12">
+                                    <% if(docs) {%>
+                                      <% for(var i =0;i < docs.length;i++){ %>
+                                          <a class="btn btn-outline-primary" href="/../<%= docs[i].path %>" target="_blank" style='font-size:16px;'><%= docs[i].descripcion %></a>
+                                        
+                                        <% 
+                                      } %>
+                                      <% } %>
+                                  </div> 
+                                  
+                                  <div class="col-8">
+                                    <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="negocio" required>
+                                    <label for="inputAddress2" class="form-label text-black">Descripción del documento</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcion">
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="inputPassword4" class="form-label text-black">Subir documento</label>
+                                    <input type="file" class="form-control" name="file" id="file" >
+                                  </div> 
+                                                            
+                               
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Estado</label>
+                                <select class="form-control" name="estado" id="estado" required>
+                                   <option value="0">Seleccione</option>
+                                   <% if (ng.estado == "Prospecto"){%>
+                                    <option value="Prospecto" selected>Prospecto</option>
+                                   <option value="Afiliado">Afiliado</option>
+                                   <option value="Descartado">Descartado</option>
+                                   <option value="Inactivo" >Inactivo</option>
+                                   <% }else if (ng.estado == "Afiliado"){%>
+                                    <option value="Prospecto">Prospecto</option>
+                                   <option value="Afiliado" selected>Afiliado</option>
+                                   <option value="Descartado" >Descartado</option>
+                                   <option value="Inactivo" >Inactivo</option>
+                                     <% }else if (ng.estado == "Descartado"){%>
+                                      <option value="Prospecto" >Prospecto</option>
+                                      <option value="Afiliado">Afiliado</option>
+                                      <option value="Descartado" selected>Descartado</option>
+                                      <option value="Inactivo" >Inactivo</option>
+                                      <% }else if (ng.estado == "Inactivo"){%>
+                                    <option value="Prospecto">Prospecto</option>
+                                   <option value="Afiliado">Afiliado</option>
+                                   <option value="Descartado" >Descartado</option>
+                                   <option value="Inactivo" selected>Inactivo</option>
+                                     <%}%>
+
+                                 </select>
+                              </div>
+                              
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Proceso</label>
+                                <input type="text" class="form-control" name="proceso" id="proceso" value="<%= ng.proceso %>" placeholder=""  readonly>
+                              </div>
+
+                              <div class="btn-group  mt-4 fs-5" role="group" aria-label="bs-component">
+                                <% if(ng.proceso == "En revisión") {%>
+                                  <div class="form-check mx-2">
+                                    <input class="form-check-input" type="checkbox" value="true" name="revisado" id="revisado">
+                                    <label class="form-check-label" for="revisado">
+                                      Revisado
+                                    </label>
+                                  </div>
+                                  <% } %>
+                                <% if((accesos.comercial && ng.proceso == "Comercial" || accesos.finanzas && ng.proceso == "Comercial")||(accesos.comercial && ng.proceso == "Finanzas" || accesos.finanzas && ng.proceso == "Finanzas")) {%>
+                                <div class="form-check mx-2">
+                                  <input class="form-check-input" type="checkbox" value="true" name="aprobar" id="aprobar">
+                                  <label class="form-check-label" for="aprobar">
+                                    Aprobar
+                                  </label>
+                                </div>
+                                
+                                <div class="form-check mx-2">
+                                  <input class="form-check-input" type="checkbox" value="true" name="rechazar" id="rechazar">
+                                  <label class="form-check-label" for="rechazar">
+                                    Rechazar
+                                  </label>
+                                </div>
+                                <% } %>
+                                
+                              </div>
+                              <div class="col-md-12 d-none" id="motivo">
+                                <label for="inputPassword4" class="form-label text-black">Motivo de rechazo</label>
+                                <textarea class="col-md-12" name="motivo_rechazo" id="motivo_rechazo" cols="auto" rows="3" placeholder="Escriba por que esta rechazando"></textarea >                                
+                              </div>
+
+                               <div class="col-12 pt-4">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script >
+
+
+function handleNacionalidad() {
+  console.log("ID: ");
+  
+  $.get("/empleado", function (data) {
+      var municipios = data.municipios;
+
+  });
+
+}
+
+function handleProvincia(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form-data/municipios?provincia=" + e.target.value, function (data) {
+      var municipios = data.municipios;
+
+     console.log(municipios)
+  });
+}
+
+function handleMunicipio(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/municipio/" + e.target.value, function (data) {
+      console.log(data)
+      var municipio = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el municipio</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_municipio+">"+data[i].municipio+"</option>";
+              console.log(data[i]);                    
+        }
+
+      var elementMunicipio = document.getElementById("municipio");
+      elementMunicipio.innerHTML = html;
+
+
+      
+  });
+}
+
+function handleSector(e) {
+  //console.log("ID: ", e.target.value);
+
+  $.get("/form_data/sector/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el sector</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_sector+">"+data[i].sector+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementSector = document.getElementById("sector");
+      elementSector.innerHTML = html;
+
+
+      
+  });
+}
+
+function handleEncargado(e) { // el id que llega es el id del departamento
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/encargado/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el encargado</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_empleado+">"+data[i].nombres+" "+data[i].apellidos+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementEncargado = document.getElementById("encargado");
+      elementEncargado.innerHTML = html;
+      
+  });
+}
+
+function fechaActual(){
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  return  day + "/" + month + "/" + year;
+  
+}
+function handleRnc(e) {
+  // alert("ID: ", e.target.value);
+  // console.log("ID: ", e.target.value);
+  if(e.target.value == 'Afiliado'){
+    var rnc = document.getElementById("rnc");
+    if(rnc.value==""){
+      var estado = document.getElementById("estado");
+      estado.value = "Prospecto";
+      rnc.focus();
+      alert('El RNC es obligatorio para ser Afiliado')
+      
+    }
+  }
+  // $.get("/form_data/municipio/" + e.target.value, function (data) {
+  //     console.log(data)
+  //     var municipio = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+  //     var html = "";
+  //     html +="<option value=0>Seleccione el municipio</option>";
+  //     for(var i =0;i < data.length;i++){ 
+  //             html +="<option value="+data[i].id_municipio+">"+data[i].municipio+"</option>";
+  //             console.log(data[i]);                    
+  //       }
+
+  //     var elementMunicipio = document.getElementById("municipio");
+  //     elementMunicipio.innerHTML = html;
+
+
+      
+  // });
+}
+function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+
+
+
+  function eliminar_elemento(e){
+    let del = confirm("¿Deseas eliminar éste afiliado?");
+    if(del){
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+}
+function handleCodigoPostal(e) {
+
+$.get("/form_data/codigo_postal/" + e.target.value, function (data) {
+    // console.log(data[0])
+   
+    var elementCodigoPostal = document.getElementById("codigo_postal");
+    elementCodigoPostal.value = data[0].codigo_postal;
+});
+}
+// let prod = document.getElementById("proid"); // producto id
+// prod.onclick = productoAdd; // Agrega función onclick al elemento
+    
+//   function productoAdd(evento) {
+//     evento.preventDefault();
+    
+//     let boton = `<div class="col-4 pt-2 delete">
+//       <a onclick="eliminar_producto(this);">&times;</a>
+//       <label for="inputAddre" class="form-label text-black">Producto</label>
+//       <div class="col-md-12">
+//                               <select class="form-control" name="producto" id="producto" required>
+//                                 <option value="0">Seleccione</option>
+                               
+//                                 <% if(prod) {%>
+//                                   <% for(var i =0;i < prod.length;i++){ %>
+//                                     <option value="<%= prod[i].id_producto %>"><%= prod[i].producto %></option>
+                                     
+//                                    <% } %>
+//                                   <% } %>
+                                 
+//                                </select>
+//                             </div>
+      
+//       </div>`;
+    
+//     document.getElementById('productoid').insertAdjacentHTML("beforeend",boton); 
+//     //alert("Evento onclick ejecutado!"+evento);
+//   }
+
+  function eliminar_producto(e){
+    let del = confirm("¿Deseas eliminar éste producto?");
+    if(del){
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+}
+window.addEventListener('load', function() {
+  const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+
+  if(document.getElementById('estado').value == 'Afiliado' && accesos.cuentas_sap && "<%= ng.proceso %>" == "Finanzas"){
+    // alert('Negocio afiliado')
+    $('#negocio_update #sap_acreedor').prop('readonly', false);
+    $('#negocio_update #sap_deudor').prop('readonly', false);
+  }
+  // $(":input").inputmask();
+  //const nacionalidad = document.getElementById("nacionalidad");
+  //$("#fecha").val(fechaActual());name="fecha" id="fecha"
+  // document.getElementById("fecha").value = new Date().toLocaleDateString();
+  // document.getElementById("fech").innerHTML = "Fecha: " + new Date().toLocaleDateString();
+  
+  if(document.getElementById("rechazar")){
+  document.getElementById("rechazar").onchange = function(e) {
+    // alert('rechazo')
+    document.getElementById("aprobar").checked = false;
+    if(document.getElementById("rechazar").checked == false){
+      document.getElementById('motivo').classList.add('d-none');
+    }
+    else{
+      document.getElementById('motivo').classList.remove('d-none');
+    }
+    // handleMunicipio(e);
+    // handleCodigoPostal(e);    
+    // 
+      
+  };
+}
+  if(document.getElementById("aprobar")){
+  document.getElementById("aprobar").onchange = function(e) {
+    document.getElementById("rechazar").checked = false;
+    document.getElementById('motivo').classList.add('d-none');
+    // alert('aprobar')
+    // document.getElementById("rechazar").checked = false;
+  };
+}
+
+document.getElementById("estado").onchange = function(e) {
+    handleRnc(e);
+  };
+
+  
+  
+
+});
+</script>
+
+
+
+<%- include('partials/_footer') %>

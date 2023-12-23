@@ -1,0 +1,288 @@
+<%- include('partials/_header') %>
+
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-black">
+                        <h5>HISTORIAL - <%= razon_social %></h5>
+                    </div>
+                </div>
+            </div>
+            
+           
+
+            <div class="btn-group  mt-4 fs-5" role="group" aria-label="bs-component">
+                   
+              <div class="col-5">
+                <label class="form-label" for="fecha_desde">
+                  DESDE:
+                </label>
+                <input class="form-input" type="datetime-local" name="fecha_desde" value="<%= fecha_desde %>" id="fecha_desde">
+              </div>
+                <div class="col-5">
+                  <label class="form-label" for="fecha_hasta">
+                    HASTA:
+                  </label>
+                  <input class="form-input" type="datetime-local" name="fecha_hasta" value="<%= fecha_hasta %>" id="fecha_hasta">
+                </div>
+                  <div class="col-5 pt-4">
+                    <input class="btn btn-primary mt-2" type="button" value="BUSCAR" id="btnBuscar">
+                  </div>
+            </div>
+
+            <div class="col-12 mt-3 d-flex text-right" style="overflow-x: auto">
+            <table class="table table-bordered table-hover " style="width:auto; white-space: nowrap">
+                <thead class="bg-dark text-white">
+                    <tr>
+                      <th>FECHA</th>
+                        <th>RAZÓN SOCIAL</th>
+                        <th>RNC</th>
+                        <th>CANT. SUCURSALES</th>
+                        <th>SAP ACREEDOR</th>
+                        <th>SAP DEUDOR</th>
+                        <th>TIPO AFILIACIÓN</th>
+                        <th>PAGO ELECTÓNICO</th>
+                        <th>RED SOCIAL</th>
+                        <th>ESTADO</th>
+                        <th>PRODUCTOS</th>
+                        <th>VENCE REGISTRO MERCANTIL</th>
+                        <th>PROCESO</th>
+                        <th>CREADO POR</th>
+                        <th>EDITADO POR</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_negocio">
+                  <% if(historial) { var k = 1%>
+                    <% for(var i =0;i < historial.length;i++){ %>
+
+                          <tr class="table-active">
+                           
+                                <tr class="">
+                                    <% k = 1; %>
+                            <td><%= historial[i].fecha %></td>
+                            <td><%= historial[i].razon_social %></td>
+                            <td><%= historial[i].rnc %></td>
+                            <td><%= historial[i].cant_sucursales %></td>
+                            <td><%= historial[i].sap_acreedor %></td>
+                            <td><%= historial[i].sap_deudor %></td>
+                            <td><%= historial[i].ta %></td>
+                            <td><%= historial[i].pe %></td>
+                            <td><%= historial[i].red_social %></td>
+                            <td><%= historial[i].estado %></td>
+                            <td><%= historial[i].productos %></td>
+                            <td><%= historial[i].rm_vence %></td>
+                            <td><%= historial[i].proceso %></td>
+                            <td><%= historial[i].emp %></td>
+                            <td><%= historial[i].edita %></td>
+                            
+                        </tr>
+                   
+                     <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+            
+            </div>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+          </div>
+        </div>
+        
+    </div>
+</div>
+
+<script >
+
+
+  function negocioHistorial(inicio) { // el id que llega es el id del departamento
+ 
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+    let fecha_desde = document.getElementById('fecha_desde').value;
+    let fecha_hasta = document.getElementById('fecha_hasta').value;
+    if(fecha_desde == ''){
+      alert('La fecha DESDE no puede ser nula')
+      // fecha_hasta = moment().format('YYYY-MM-DD HH:mm:ss');
+      // fecha_desde = moment().add(-1, 'd').format('YYYY-MM-DD HH:mm:ss');
+    } else if(fecha_hasta ==''){
+      alert('La fecha HASTA no puede ser nula');
+      // fecha_hasta = moment().format('YYYY-MM-DD HH:mm:ss');
+      // fecha_desde = moment().add(-1, 'd').format('YYYY-MM-DD HH:mm:ss');
+    }
+    else{
+    let id_negocio ="<%= id_negocio %>";
+    // console.log(id_negocio)
+    
+    ///negocio/historial/${data[i].id_negocio}/${1}/${ayer}/${ahora}  /:id/:inicio/:fecha_desde/:fecha_hasta
+    $.get("/form_data/historial_filtro/" + id_negocio+'/'+inicio+'/'+fecha_desde+'/'+fecha_hasta, function (data) {
+        console.log(data)
+        var html = "";
+        for(var i =0;i < data.length-1;i++){ 
+
+            //console.log(data.length);                              
+              html +="<tr>";
+              // html +=`<td><a href="/negocio/update/${data[i].id_negocio}" style="text-decoration:none;color: blue;font-size: large;">${data[i].razon_social}</a></td>`;
+              html +="<td>"+ data[i].fecha +"</td>";
+              html +="<td>"+ data[i].razon_social +"</td>";
+              html +="<td>"+ data[i].rnc +"</td>";
+              html +="<td>"+ data[i].cant_sucursales +"</td>";
+              html +="<td>"+ data[i].sap_acreedor +"</td>";
+              html +="<td>"+ data[i].sap_deudor +"</td>";
+              html +="<td>"+ data[i].ta +"</td>";
+              html +="<td>"+ data[i].pe +"</td>";
+              html +="<td>"+ data[i].red_social +"</td>";
+              html +="<td>"+ data[i].estado +"</td>";
+              html +="<td>"+ data[i].productos +"</td>";
+              html +="<td>"+ data[i].rm_vence +"</td>";
+              html +="<td>"+ data[i].proceso +"</td>";
+              html +="<td>"+ data[i].emp +"</td>";
+              html +="<td>"+ data[i].edita +"</td>";
+              
+              html +="</tr>";  
+               
+          }
+        var elementTabla_empleado = document.getElementById("tabla_negocio");
+        elementTabla_empleado.innerHTML = html;
+        console.log('No se cuantos son: ',data[data.length-1].registros[0][0].total)
+// console.log('No se cuantos son: ',)
+cargaPaginacion(data[data.length-1].registros[0][0].total,inicio)
+    //     totalregistros = data[data.length-1].registros[0][0].total;
+		// nrolink = Math.ceil(totalregistros/10);
+		// paginador = "<ul class='pagination'>";
+		// campobuscar = $('#buscar').val();
+		// for(i=1;i<=nrolink;i++){
+		// 	if(i===inicio){
+		// 		paginador += "<li class='active'><a href='javascript:void(0)'>"+i+"</li>";
+		// 	}else{
+		// 		paginador+="<li><a href='javascript:void(0)' onclick='listar_empleados("+'"'+campobuscar+'","'+i+'"'+");'>"+i+"</a></li>";
+		// 	}
+		// }
+		// paginador += "</ul>"
+		// $('#paginacion').html(paginador);
+        
+    });
+  }
+  }
+  
+  function fechaActual(){
+    date = new Date();
+    year = date.getFullYear();
+    month = date.getMonth() + 1;
+    day = date.getDate();
+    return  day + "/" + month + "/" + year;
+    
+  }
+   function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='negocioHistorial(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='negocioHistorial(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='negocioHistorial(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='negocioHistorial(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='negocioHistorial(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='negocioHistorial(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+        
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+  window.addEventListener('load', function() {
+    let cantidad_registros ="<%= reg %>";
+    cargaPaginacion(cantidad_registros,1)
+    // negocioHistorial()
+    //const nacionalidad = document.getElementById("nacionalidad");
+    //$("#fecha").val(fechaActual());
+    //document.getElementById("fecha").value = new Date().toLocaleDateString();
+    const radioButtons = document.querySelectorAll('input[name="optionsRadios"]');
+    for (const radioButton of radioButtons) {
+      radioButton.addEventListener('change', showSelected);
+    }
+    let radioSelected = 'Prospecto'
+    function showSelected(e) {
+      let valor = document.getElementById('buscar').value;
+      if (this.checked) {
+
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }
+        // alert(`You selected ${this.id}`);
+        radioSelected = this.id;
+        negocioList(this.id,valor)
+      }
+    }
+
+
+    document.getElementById("btnBuscar").onclick = function(e) {
+      let fecha_desde = document.getElementById('fecha_desde').value;
+        let fecha_hasta = document.getElementById('fecha_hasta').value;
+        if(fecha_desde == ''){
+          alert("La fecha DESDE no puede ser nula");
+        }else if(fecha_hasta == ''){
+          alert("La fecha HASTA no puede ser nula");
+        }else if(fecha_hasta<fecha_desde){
+          alert("la fecha inicial no puede ser mayor que la fecha final");          
+        }else{
+          inicio = 1;
+          negocioHistorial(inicio);
+        }
+    }
+    // document.getElementById("inactivos").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("otros").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("afg").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+    // document.getElementById("awm").onclick = function(e) {
+    //   let buscar = document.getElementById("buscar").value;
+    //   if(buscar ==""){
+    //     buscar ="aaaaaaaaaaaa";
+    //   }
+    //   empleadoList(buscar); 
+    // };
+  
+  });
+  </script>
+<%- include('partials/_footer') %>

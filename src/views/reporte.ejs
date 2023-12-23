@@ -1,0 +1,1482 @@
+<%- include('partials/_header_facturacion') %>
+
+    <div class="containere mx-5">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="col-md-12 row ">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>REPORTE</h5>
+                        </div>
+                        <div class="card-body row g-3">
+
+
+
+                            <div class="col-12 row g-3">
+
+                                <div class="col-md-4">
+                                    <label for="sucursal" class="form-label text-black">Sucursal<strong
+                                            style="color: red;">*</strong></label>
+                                    <select class="form-control" name="sucursal" id="sucursal" required>
+                                        <% if(suc) {%>
+                                            <% for(var i=0;i < suc.length;i++){ %>
+                                                <option value="<%= suc[i].id_sucursal %>">
+                                                    <%= suc[i].razon_social %> - <%= suc[i].nombre_sucursal%>
+                                                </option>
+                                                <% } %>
+                                                    <% } %>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="fecha_inicial" class="form-label text-black">Fecha desde<strong
+                                            style="color: red;">*</strong></label>
+                                    <input type="datetime-local" class="form-control" name="fecha_inicial"
+                                        id="fecha_inicial">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="fecha_final" class="form-label text-black">Fecha hasta<strong
+                                            style="color: red;">*</strong></label>
+                                    <input type="datetime-local" class="form-control" name="fecha_final"
+                                        id="fecha_final">
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <label for="estadoFactura" class="form-label text-black">Estado</label>
+                                    <select class="form-control" name="estadoFactura" id="estadoFactura" required>
+                                        <option value="">Seleccione</option>
+                                        <option value="Procesada">Procesada</option>
+                                        <option value="Anulada">Anulada</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="condicionVenta" class="form-label text-black">Condición</label>
+                                    <select class="form-control" name="condicionVenta" id="condicionVenta" required>
+                                        <option value="CONTADO">CONTADO</option>
+                                        <option value="15">A 15 DÍAS</option>
+                                        <option value="30">A 30 DÍAS</option>
+                                        <option value="45">A 45 DÍAS</option>
+                                        <option value="60">A 60 DÍAS</option>
+                                        <option value="120">A 120 DÍAS</option>
+                                        <option value="presentacion">A PRESENTACIÓN</option>
+                                        <option value="cajaChica">CAJA CHICA</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label for="dataEmpleado" class="form-label text-black">Empleado
+                                    </label> <i id="quitarEmpleado" style='color:red; cursor: pointer;'
+                                        class='fas fa-trash'></i>
+                                    <input type="hidden" class="form-control" name="idEmpleado" id="idEmpleado"
+                                        placeholder="">
+                                    <input type="text" class="form-control" name="dataEmpleado" id="dataEmpleado"
+                                        value="" placeholder="Click: Consultar ventas de un cajero" readonly>
+                                </div>
+
+
+
+                                <div class="col-md-2">
+
+                                    <label for="caja" class="form-label text-black">Caja</label>
+                                    <select class="form-control" name="caja" id="caja" required>
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <label for="turno" class="form-label text-black">Turno</label>
+                                    <select class="form-control" name="turno" id="turno" required>
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label for="descripcionProducto" class="form-label text-black">Producto
+                                    </label> <i id="quitarProducto" style='color:red; cursor: pointer;'
+                                        class='fas fa-trash'></i>
+
+                                    <input type="hidden" class="form-control" name="idUnidadProducto"
+                                        id="idUnidadProducto" placeholder="">
+                                    <input type="hidden" class="form-control" name="idProducto" id="idProducto"
+                                        placeholder="">
+                                    <input type="text" class="form-control" name="descripcionProducto"
+                                        id="descripcionProducto" placeholder="Click: Consultar ventas por producto"
+                                        readonly>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <label for="nombre_cliente" class="form-label text-black">
+                                        Cliente
+                                    </label> <i id="quitarCliente" style='color:red; cursor: pointer;'
+                                        class='fas fa-trash'></i>
+                                    <input type="hidden" class="form-control" name="id_cliente" id="id_cliente" value=""
+                                        placeholder="">
+                                    <input type="text" class="form-control" name="nombre_cliente" id="nombre_cliente"
+                                        placeholder="Click: Consultar consumo de un cliente" readonly>
+                                </div>
+
+                                <div class="col-md-2">
+
+                                    <label for="rnc_cliente" class="form-label text-black">RNC del Cliente</label>
+                                    <input type="text" class="form-control" name="rnc_cliente" id="rnc_cliente"
+                                        placeholder="" disabled>
+                                </div>
+
+
+
+                                <div class="row g-3 py-2">
+                                    <div class="card-header">
+                                        <h5>Resultado de la busqueda </h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="tarjetaDebitoTotal" class="form-label text-black">Tarjeta de
+                                            Débito (<strong id="cantidadDebito"></strong>)</label>
+                                        <input type="text" class="form-control" name="tarjetaDebitoTotal"
+                                            id="tarjetaDebitoTotal" placeholder="Monto en tarjeta de débito"
+                                            style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="pagoConBonoTotal" class="form-label text-black">Pago con
+                                            Bono (<strong id="cantidadBono"></strong>)</label>
+                                        <input type="text" class="form-control" name="pagoConBonoTotal"
+                                            id="pagoConBonoTotal" style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="chequeTotal" class="form-label text-black">Cheque (<strong
+                                                id="cantidadCheque"></strong>)</label>
+                                        <input type="text" class="form-control" name="chequeTotal" id="chequeTotal"
+                                            placeholder="Monto del cheque" style='text-align: right;' readonly>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <label for="tarjetaCreditoTotal" class="form-label text-black">Tarjeta
+                                            de
+                                            Crédito (<strong id="cantidadCredito"></strong>)</label>
+                                        <input type="text" class="form-control" name="tarjetaCreditoTotal"
+                                            id="tarjetaCreditoTotal" placeholder="Monto en tarjeta de crédito"
+                                            style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="montoNotaCreditoTotal" class="form-label text-black">Monto
+                                            de
+                                            Nota (<strong id="cantidadNota"></strong>)</label>
+                                        <input type="text" class="form-control" name="montoNotaCreditoTotal"
+                                            id="montoNotaCreditoTotal" style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="cuentaPorCobrarTotal" class="form-label text-black">Cuenta por
+                                            Cobrar (<strong id="cantidadPorCobrar"></strong>)</label>
+                                        <input type="text" class="form-control" name="cuentaPorCobrarTotal"
+                                            id="cuentaPorCobrarTotal" style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="efectivoTotal" class="form-label text-black">Efectivo</label>
+                                        <input type="text" class="form-control" name="efectivoTotal" id="efectivoTotal"
+                                            style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="montoTotalNotaPendiente" class="form-label text-black">Pendiente en Notas de Creditos</label>
+                                        <input type="text" class="form-control" name="montoTotalNotaPendiente" id="montoTotalNotaPendiente"
+                                            placeholder="Monto en tarjeta de crédito" style='text-align: right;'
+                                            readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="totalDescuento" class="form-label text-black">Total
+                                            descuento</label>
+                                        <input type="text" class="form-control" name="totalDescuento"
+                                            id="totalDescuento" style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="totalItbis" class="form-label text-black">Total Itbis</label>
+                                        <input type="text" class="form-control" name="totalItbis" id="totalItbis"
+                                            style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="totalVendido" class="form-label text-black">Total
+                                            vendido</label>
+                                        <input type="text" class="form-control" name="totalVendido" id="totalVendido"
+                                            placeholder="Monto del cheque" style='text-align: right;' readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="totalGanancia" class="form-label text-black">Ganancia en
+                                            venta</label>
+                                        <input type="text" class="form-control" name="totalGanancia" id="totalGanancia"
+                                            style='text-align: right;' disabled>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 mt-4">
+                        <div class="col-md-12 table-responsive"
+                            style="max-height: 58vh; height: 58vh; overflow-y: auto;">
+                            <table class="table table-bordered table-hover detalleDeFacturacion">
+                                <thead class="bg-dark text-white ">
+                                    <tr>
+                                        <th class="d-none">ID</th>
+                                        <th>CÓDIGO</th>
+                                        <th>DESCRIPCIÓN</th>
+                                        <th>PRECIO</th>
+                                        <th>CANTIDAD</th>
+                                        <th>CANTIDAD PENDIENTE</th>
+                                        <th>UNIDAD</th>
+                                        <th>DESCUENTO</th>
+                                        <th>ITBIS</th>
+                                        <th>SUBTOTAL</th>
+                                        <th>IMPORTE</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detalleFacturacion">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal Buscar Producto -->
+    <div class="modal fade" id="modalBuscarProducto" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered anchotabla" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="hidden" class="form-control" id="id_producto_componente">
+                        <input type="text" class="form-control" placeholder="Buscar producto: Codigo Ó Descripción"
+                            id="buscarProductoP" aria-label="Buscar componente" aria-describedby="btnBuscar">
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>No.</th>
+                                <th>DESCRIPCIÓN</th>
+                                <th>REFERENCIA</th>
+                                <th>MARCA</th>
+                                <th>CATEGORIA</th>
+                                <th>CLASE</th>
+                                <th>UNIDAD</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_productos">
+                            <!-- Aquí se cargarán los resultados de la búsqueda -->
+                        </tbody>
+                    </table>
+                    <script>
+                        //           function componenteList(producto) { // el id que llega es el id del departamento
+
+                        // $.get(`/producto/componentes/${producto}`, function (data) {
+                        //     console.log(data)
+                        //     var elementTabla_empleado = document.getElementById("tabla_pedido_list");
+                        //     if(data=='Este producto no contiene componentes'){
+                        //       document.getElementById("precio_costoc").value ='';
+                        //       elementTabla_empleado.innerHTML = "<tr class='text-center'><td colspan='9'>"+data+"</td></tr>";
+                        //     } else{
+                        //     var html = "";
+                        //     let k = 1;
+                        //     let precio = 0;
+                        //     for(var i =0;i < data.length;i++){ 
+                        //           //`id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                        //           html +="<tr>";
+                        //             //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+                        //             html +="<td>"+ k +"</td>";
+                        //           html +=`<td>`+ data[i].codigo +"</td>";
+                        //           // html +="<td>"+ data[i].empresa +"</td>";
+                        //           html +="<td>"+ data[i].descripcion +"</td>";
+                        //           html +="<td>"+ data[i].referencia +"</td>";
+                        //           html +="<td>"+ data[i].existencia +"</td>";
+                        //           html +="<td>"+ data[i].cantidad +"</td>";
+                        //           html +="<td>"+ data[i].precio_compra +"</td>";
+                        //           html +="<td>"+(data[i].precio_compra * data[i].cantidad) +"</td>";
+                        //           html +=`<td class='text-center' onclick='componenteElimina(${data[i].id_producto})' style='color:red;'>`+ "<i class='fas fa-trash'></i>" +"</td>";
+                        //           html +="</tr>";  
+
+                        //           k++;  
+                        //           precio += (data[i].precio_compra * data[i].cantidad)
+                        //           }
+                        //           document.getElementById("precio_costoc").value = precio;
+
+                        //     elementTabla_empleado.innerHTML = html;
+                        //     document.getElementById("registrostotalesc").innerText = data.length;
+                        //   }
+                        //     // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+                        // });
+
+                        // }
+                        function productosList(valor, inicio) {
+                            $.get(`/facturacion/filtro/${valor}/${inicio}`, async function (data) {
+                                var html = "";
+                                let k = 1;
+                                for (var i = 0; i < data.length - 1; i++) {
+                                    html += "<tr>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + k + "</td>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + data[i].descripcion + "</td>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + data[i].referencia + "</td>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + data[i].marca + "</td>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + data[i].categoria + "</td>";
+                                    html += "<td onclick='productoAdd(this)' class='no-click'>" + data[i].clase + "</td>";
+
+                                    html += "<td>";
+                                    html += "<select style='width: 100%;' name='units'>";
+                                    const unidades = await $.get(`/producto/unidad_producto/${data[i].id_producto}`);
+                                    for (let j = 0; j < unidades.length; j++) {
+                                        html += "<option value=" + unidades[j].id_unidad + ">" + unidades[j].unidad + "</option>";
+                                    }
+                                    html += "</select>";
+                                    html += "</td>";
+                                    html += `<td style="display: none;">${data[i].id_producto}</td>`
+                                    html += "</tr>";
+
+                                    k++;
+                                }
+                                var elementTabla_empleado = document.getElementById("tabla_productos");
+                                elementTabla_empleado.innerHTML = html;
+                            });
+                        }
+
+
+                        productosList("aaaaaaaaaaaa", '1')
+                        document.getElementById("buscarProductoP").onkeyup = function (e) {
+                            let valor = e.target.value;
+                            if (valor == "") {
+                                valor = "aaaaaaaaaaaa"
+                            }
+                            // console.log(valor)
+                            productosList(valor, '1')
+                            // document.getElementById("empresa").value = this.value;
+                        };
+
+                        function productoAdd(cell) {
+                            // Verificar si la celda tiene la clase 'no-click'
+                            console.log("Cell:", cell);
+                            var row = cell.parentNode;
+                            console.log("Clicked row:", row);
+                            // Obtener la fila completa desde la celda
+
+                            // Obtener los datos de la fila
+                            var rowData = row.cells;
+                            var k = rowData[0].innerText; // Obtener el valor de la primera celda (número de fila)
+                            var descripcion = rowData[1].innerText;
+                            var referencia = rowData[2].innerText;
+                            var marca = rowData[3].innerText;
+                            var categoria = rowData[4].innerText;
+                            var clase = rowData[5].innerText;
+
+                            // Obtener el valor de la unidad seleccionada
+                            var unidadSelect = row.cells[6].querySelector('select[name="units"]');
+                            var id_unidad = unidadSelect.options[unidadSelect.selectedIndex].value;
+                            var unidad = unidadSelect.options[unidadSelect.selectedIndex].text;
+                            var productoid = rowData[7].innerText;
+
+                            document.getElementById("idProducto").value = productoid;
+                            document.getElementById("idUnidadProducto").value = id_unidad;
+                            document.getElementById("descripcionProducto").value = `${unidad} - ${descripcion}`;
+                            verificarCambiosDescripcionProducto();
+                            // Puedes hacer lo que necesites con los datos, por ejemplo, mostrarlos en la consola
+                            // console.log("Número de Fila: " + k);
+                            // console.log("Descripción: " + productoid);
+                            // console.log("Referencia: " + referencia);
+                            // console.log("Marca: " + marca);
+                            // console.log("Categoría: " + categoria);
+                            // console.log("Clase: " + clase);
+                            // console.log("ID de Unidad: " + id_unidad);
+                            // console.log("Unidad Seleccionada: " + unidad);
+                            $('#modalBuscarProducto').modal('hide');
+                            // Aquí puedes realizar otras acciones, como enviar los datos a través de AJAX o hacer lo que necesites con ellos.
+
+                        }
+
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+
+    <!-- Modal Buscar Producto -->
+    <div class="modal fade" id="modalBuscarCliente" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered anchotabla" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de Clientes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar cliente" id="buscarCliente"
+                            aria-label="Buscar cliente" aria-describedby="btnBuscar">
+                        <button id="btnNuevoCliente" class="btn btn-warning col-md-4" type="button">Nuevo
+                            cliente</button>
+                    </div>
+                    <table class="table table-bordered table-hover mt-2">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>No.</th>
+                                <th>CÉDULA / PASAPORTE</th>
+                                <th>NOMBRE</th>
+                                <th>APODO</th>
+                                <th>RNC</th>
+                                <th>CELULAR</th>
+                                <th>CORREO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_cliente">
+
+                        </tbody>
+                    </table>
+                    <script>
+
+                        async function seleccionarCliente(cliente, nombre, rnc, celular) {
+                            // Obtener la referencia al tbody de la tabla
+
+                            // alert(descripcion)("${data[i].nombre_completo}","${data[i].rnc}","${data[i].cedula}")
+                            document.getElementById('id_cliente').value = cliente;
+                            document.getElementById('nombre_cliente').value = nombre;
+                            document.getElementById('rnc_cliente').value = rnc || '';
+                            // document.getElementById("celular_cliente").value = celular || '';
+
+                            document.getElementById("buscarCliente").value = '';
+                            verificarCambiosNombreCliente();
+                            $('#modalBuscarCliente').modal('hide');
+                        }
+
+                        function clienteList(valor, inicio) { // el id que llega es el id del departamento
+
+                            const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+                            var accesos = JSON.parse(jsonAccesos);
+                            //////
+                            let cartera = 0;
+                            let sucursal = 0;
+                            let elestado_cliente = 2;
+                            //  let estado = 2;:
+                            $.get("/cliente/filtro_list/" + sucursal + '/' + cartera + '/' + elestado_cliente + '/' + inicio + '/' + valor, function (data) {
+                                // console.log('no VEO LA DATA ========>',data[data.length-1].registros[0].total)
+                                var html = "";
+                                let k = 1;
+                                if (data) {
+                                    for (var i = 0; i < data.length - 1; i++) {
+
+                                        //console.log(data.length);  
+
+                                        html += `<tr onclick='seleccionarCliente("${data[i].id_cliente}","${data[i].nombre_completo}","${data[i].rnc || ''}","${data[i].celular || ''}")'>`;
+                                        html += "<td>" + k + "</td>";
+                                        html += "<td>" + data[i].cedula + " / " + data[i].pasaporte + "</td>";
+                                        html += "<td>" + data[i].nombre_completo + "</td>";
+                                        html += "<td>" + (data[i].apodo || '') + "</td>";
+                                        html += "<td>" + (data[i].rnc || '') + "</td>";
+                                        html += "<td>" + (data[i].celular || '') + "</td>";
+                                        html += "<td>" + (data[i].correo || '') + "</td>";
+                                        html += "</tr>";
+
+                                        k++;
+                                    }
+                                }
+                                document.getElementById("tabla_cliente").innerHTML = html;
+                                // cargaPaginacion(data[data.length-1].registros[0].total,inicio)     
+                            });
+
+                        }
+                        clienteList("aaaaaaaaaaaa", '1');
+
+                        // productosList("aaaaaaaaaaaa", '1')
+                        document.getElementById("buscarCliente").onkeyup = function (e) {
+                            let valor = e.target.value;
+                            if (valor == "") {
+                                valor = "aaaaaaaaaaaa"
+                            }
+                            // console.log(valor)
+                            clienteList(valor, '1')
+                            // document.getElementById("empresa").value = this.value;
+                        };
+
+                        // function productoAddX(codigo, i) {
+                        //     const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+                        //     // let almacen = "1";
+                        //     // let id_cliente = 1;
+                        //     let suma = 0;
+                        //     console.log('por modal')
+                        //     buscarProctoPorCodigo(codigo, almacen, cantidad, id_cliente, suma);
+                        //     document.getElementById('buscarProducto').value = '';
+                        //     $('#modalBuscarProducto').modal('hide');
+                        //     // buscarCodigoProducto(codigo,cantidad);
+                        // }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR CLIENTE////////////////////////////////////////////////////// -->
+
+
+    <!-- Modal Buscar Producto -->
+    <div class="modal fade" id="modalBuscarEmpleado" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered anchotabla" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de Cajeros</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar empleado" id="buscarEmpleado"
+                            aria-label="Buscar empleado" aria-describedby="btnBuscarEmpleado">
+                    </div>
+                    <table class="table table-bordered table-hover mt-2">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>No.</th>
+                                <th>CÉDULA</th>
+                                <th>CÓDIGO</th>
+                                <th>NOMBRE</th>
+                                <th>DEPARTAPENTO</th>
+                                <th>PUESTO</th>
+                                <th>CORREO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_cajeros">
+
+                        </tbody>
+                    </table>
+                    <script>
+
+                        async function seleccionarCajero(row) {
+                            // Obtener la referencia al tbody de la tabla
+                            var rowData = row.cells;
+                            var k = rowData[0].innerText; // Obtener el valor de la primera celda (número de fila)
+                            var cedula = rowData[1].innerText;
+                            var codigo = rowData[2].innerText;
+                            var nombre = rowData[3].innerText;
+                            var departamento = rowData[4].innerText;
+                            var puesto = rowData[5].innerText;
+                            var correo = rowData[6].innerText;
+                            var idCajero = rowData[7].innerText;
+
+                            // console.log("muestro el correo ===>", correo)
+                            // console.log("muestro el cajero ===>", idCajero)
+                            document.getElementById("idEmpleado").value = idCajero;
+                            document.getElementById("dataEmpleado").value = `${codigo} - ${nombre}`;
+                            verificarCambiosDataEmpleado();
+                            // Puedes hacer lo que necesites con los datos, por ejemplo, mostrarlos en la consola
+                            // console.log("Número de Fila: " + k);
+                            // console.log("Descripción: " + productoid);
+
+                            document.getElementById("buscarEmpleado").value = '';
+                            $('#modalBuscarEmpleado').modal('hide');
+                        }
+
+                        function empleadoList(valor, inicio) { // el id que llega es el id del departamento
+                            // alert('modal empleado')
+                            const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+                            var accesos = JSON.parse(jsonAccesos);
+                            //////
+                            // let cartera = 0;
+                            let sucursal = 1;
+                            // let elestado_cliente = 2;
+                            //  let estado = 2;:
+                            $.get("/facturacion/consultaEmpleadoReporte/" + sucursal + '/' + valor, function (data) {
+                                // console.log('no VEO LA DATA ========>', data)
+                                var html = "";
+                                let k = 1;
+                                if (data) {
+                                    for (var i = 0; i < data.length; i++) {
+
+                                        //console.log(data.length);  
+
+                                        html += `<tr onclick='seleccionarCajero(this)'>`;
+                                        html += "<td>" + k + "</td>";
+                                        html += "<td>" + data[i].cedula + "</td>";
+                                        html += "<td>" + data[i].codigo + "</td>";
+                                        html += "<td>" + (data[i].cajero || '') + "</td>";
+                                        html += "<td>" + (data[i].departamento || '') + "</td>";
+                                        html += "<td>" + (data[i].puesto || '') + "</td>";
+                                        html += "<td>" + (data[i].email_institucional || '') + "</td>";
+                                        html += "<td>" + (data[i].id_cajero || '') + "</td>";
+                                        html += "</tr>";
+
+                                        k++;
+                                    }
+                                }
+                                document.getElementById("tabla_cajeros").innerHTML = html;
+                                // cargaPaginacion(data[data.length-1].registros[0].total,inicio)     
+                            });
+
+                        }
+                        empleadoList("aaaaaaaaaaaa", '1');
+
+                        // productosList("aaaaaaaaaaaa", '1')
+                        document.getElementById("buscarEmpleado").onkeyup = function (e) {
+                            let valor = e.target.value;
+                            if (valor == "") {
+                                valor = "aaaaaaaaaaaa"
+                            }
+                            // console.log(valor)
+                            empleadoList(valor, '1')
+                            // document.getElementById("empresa").value = this.value;
+                        };
+
+
+                        function consultaCajaReporte() { // el id que llega es el id del departamento
+                            // alert('modal empleado')
+                            const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+                            var accesos = JSON.parse(jsonAccesos);
+                            //////
+                            // let cartera = 0;
+                            let sucursal = 1;
+                            // let elestado_cliente = 2;
+                            //  let estado = 2;:
+                            $.get("/facturacion/consultaCajaReporte/" + sucursal, function (data) {
+                                // console.log('no VEO LA DATA CAJA ========>',data)
+                                var html = "";
+                                let k = 1;
+                                html += "<option  value=''>Consultar por caja</option>";
+                                for (let j = 0; j < data.length; j++) {
+                                    // console.log('Muestro las Unidades ===> ',data[i].id_unidad)
+                                    html += "<option  value=" + data[j].id_caja + ">" + data[j].caja + " - " + data[j].descripcion + "</option>";
+
+                                }
+
+                                document.getElementById("caja").innerHTML = html;
+
+                            });
+
+                        }
+                        consultaCajaReporte();
+
+                        function consultaTurnoReporte() { // el id que llega es el id del departamento
+                            // alert('modal empleado')
+                            const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+                            var accesos = JSON.parse(jsonAccesos);
+                            //////
+                            // let cartera = 0;
+                            let sucursal = 1;
+                            // let elestado_cliente = 2;
+                            //  let estado = 2;:
+                            $.get("/facturacion/consultaTurnoReporte/" + sucursal, function (data) {
+                                // console.log('no VEO LA DATA CAJA ========>',data)
+                                var html = "";
+                                let k = 1;
+                                html += "<option  value=''>Consultar por turno</option>";
+                                for (let j = 0; j < data.length; j++) {
+                                    // console.log('Muestro las Unidades ===> ',data[i].id_unidad)
+                                    html += `<option  value="${data[j].turno}">${data[j].turno}</option>`;
+
+                                }
+
+                                document.getElementById("turno").innerHTML = html;
+
+                            });
+
+                        }
+                        consultaTurnoReporte();
+
+
+
+                        // function productoAddX(codigo, i) {
+                        //     const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+                        //     let almacen = "";
+                        //     // let id_cliente = 1;
+                        //     let suma = 0;
+                        //     console.log('por modal')
+                        //     buscarProctoPorCodigo(codigo, almacen, cantidad, id_cliente, suma);
+                        //     document.getElementById('buscarProducto').value = '';
+                        //     $('#modalBuscarProducto').modal('hide');
+                        //     // buscarCodigoProducto(codigo,cantidad);
+                        // }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR CLIENTE////////////////////////////////////////////////////// -->
+
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA NUEVO CLIENTE////////////////////////////////////////////////////// -->
+
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA PROCESAR VENTA////////////////////////////////////////////////////// -->
+
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA NUEVO CLIENTE////////////////////////////////////////////////////// -->
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA PROCESAR VENTA////////////////////////////////////////////////////// -->
+
+
+
+    </div>
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA PROCESAR VENTA////////////////////////////////////////////////////// -->
+
+    <!-- ///////////////////////INICIO MODAL CUADRE DE CAJA////////////////////////////////////////////////////// -->
+
+
+    </div>
+
+    <!-- ///////////////////////FINAL DEL MODAL PARA PROCESAR VENTA////////////////////////////////////////////////////// -->
+    <script>
+
+        ///////////fin cerrar caja///////////////////////////////
+
+
+
+        let id_cliente = 1;
+        let id_almacen = '';
+
+        document.getElementById('dataEmpleado').addEventListener('click', function () {
+            $('#modalBuscarEmpleado').modal('show');
+            empleadoList("aaaaaaaaaaaa", '1');
+        });
+
+
+
+        document.getElementById('nombre_cliente').addEventListener('click', function () {
+
+            $('#modalBuscarCliente').modal('show');
+        });
+
+        document.getElementById('btnNuevoCliente').addEventListener('click', function () {
+            $('#modalRegistrarCliente').modal('show');
+            $('#modalBuscarCliente').modal('hide');
+        });
+
+        document.getElementById('descripcionProducto').addEventListener('click', function () {
+
+            $('#modalBuscarProducto').modal('show');
+        });
+
+        function listaDeFacturas() {
+            $('#modalFacturas').modal('show');
+            establecerFechas();
+            document.getElementById('monto_a_cobrar').value = document.getElementById('totalCobrar').value;
+            formatAndSetNumber(document.getElementById('efectivo'))
+        }
+
+        // function procesarVenta(datos) {
+
+
+        //     if (datos != '') {
+
+        //         // Obtiene los valores de los campos adicionales
+        //         const subTotal = document.getElementById('subTotal').value;
+        //         const masItbis = document.getElementById('masItbis').value;
+        //         const descuento = document.getElementById('descuento').value;
+        //         const servicio = document.getElementById('servicio').checked;
+        //         const maselservicio = document.getElementById('maselservicio').value;
+        //         const totalCobrar = document.getElementById('totalCobrar').value;
+        //         const nombreCliente = document.getElementById('nombre_cliente').value;
+        //         const rncCliente = document.getElementById('rnc_cliente').value;
+        //         const celularCliente = document.getElementById('celular_cliente').value;
+        //         const codncf = document.getElementById('codncf').value;
+
+        //         // Crea un objeto con los datos a enviar
+        //         const datosParaEnviar = {
+        //             tabla: datos,
+        //             subTotal: subTotal,
+        //             masItbis: masItbis,
+        //             descuento: descuento,
+        //             servicio: servicio,
+        //             maselservicio: maselservicio,
+        //             totalCobrar: totalCobrar,
+        //             nombreCliente: nombreCliente,
+        //             rncCliente: rncCliente,
+        //             celularCliente: celularCliente,
+        //             codncf: codncf,
+        //             id_cliente: id_cliente
+        //         };
+
+        //         // Envía los datos mediante fetch
+        //         fetch('/facturacion/imprimeCobra', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify(datosParaEnviar)
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 // Hacer algo con la respuesta del servidor si es necesario
+        //                 console.log(data);
+        //             })
+        //             .catch(error => {
+        //                 // Manejar errores en caso de que ocurra alguno durante la solicitud
+        //                 console.error('Error:', error);
+        //             });
+        //     } else {
+        //         alert("No hay factura por imprimir")
+        //     }
+
+        // }
+        ////////////////////////////AQUI TERMINA IMPRIME Y COBRA///////////////////////////////////////////////////////////////////////////////////
+
+        function formatearNumero(numero) {
+            const separadorDecimal = ".";
+            const separadorMiles = ",";
+            const decimales = 2;
+
+            let numeroFormateado = numero.toFixed(decimales).toString();
+
+            let partes = numeroFormateado.split(".");
+            partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, separadorMiles);
+            numeroFormateado = partes.join(separadorDecimal);
+
+            return numeroFormateado;
+        }
+
+
+        // Obtener la fecha actual
+        var fechaActual = new Date();
+
+        // Restar un mes a la fecha actual
+        var fechaHaceUnMes = new Date();
+        fechaHaceUnMes.setMonth(fechaActual.getMonth() - 1);
+
+        // Formatear las fechas como cadenas en el formato de entrada de datetime-local (YYYY-MM-DDTHH:MM)
+        var fechaDesde = fechaHaceUnMes.toISOString().slice(0, 16); // Recorta para eliminar los segundos y milisegundos
+        var fechaHasta = fechaActual.toISOString().slice(0, 16);
+
+        // Asignar los valores a los campos de fecha
+        document.getElementById("fecha_inicial").value = fechaDesde;
+        document.getElementById("fecha_final").value = fechaHasta;
+
+        // Variables para almacenar los valores anteriores de los campos
+        var valorAnteriorDescripcionProducto = "";
+        var valorAnteriorNombreCliente = "";
+        var valorAnteriorDataEmpleado = "";
+
+        // Función para verificar cambios en el campo de descripción de producto
+        function verificarCambiosDescripcionProducto() {
+            var descripcionProducto = document.getElementById("descripcionProducto").value;
+            if (descripcionProducto !== valorAnteriorDescripcionProducto) {
+                // El valor ha cambiado
+                valorAnteriorDescripcionProducto = descripcionProducto;
+                // Realiza las acciones que desees aquí
+                filtroReporte();
+            }
+        }
+
+        // Función para verificar cambios en el campo de nombre de cliente
+        function verificarCambiosNombreCliente() {
+            var nombreCliente = document.getElementById("nombre_cliente").value;
+            if (nombreCliente !== valorAnteriorNombreCliente) {
+                // El valor ha cambiado
+                valorAnteriorNombreCliente = nombreCliente;
+                // Realiza las acciones que desees aquí
+                filtroReporte();
+            }
+        }
+
+        // Función para verificar cambios en el campo de dataEmpleado
+        function verificarCambiosDataEmpleado() {
+            var dataEmpleado = document.getElementById("dataEmpleado").value;
+            if (dataEmpleado !== valorAnteriorDataEmpleado) {
+                // El valor ha cambiado
+                valorAnteriorDataEmpleado = dataEmpleado;
+                // Realiza las acciones que desees aquí
+                filtroReporte();
+            }
+        }
+
+        // Llama a la función de verificación una vez al cargar la página para establecer el valor inicial
+        verificarCambiosDataEmpleado();
+
+        // Llama a las funciones de verificación una vez al cargar la página para establecer los valores iniciales
+        verificarCambiosDescripcionProducto();
+        verificarCambiosNombreCliente();
+
+        // Agrega eventos onchange a los campos relevantes
+        document.getElementById("sucursal").onchange = filtroReporte;
+        document.getElementById("fecha_inicial").onchange = filtroReporte;
+        document.getElementById("fecha_final").onchange = filtroReporte;
+        document.getElementById("estadoFactura").onchange = filtroReporte;
+        document.getElementById("condicionVenta").onchange = filtroReporte;
+        document.getElementById("dataEmpleado").onchange = filtroReporte;
+        document.getElementById("caja").onchange = filtroReporte;
+        document.getElementById("turno").onchange = filtroReporte;
+        document.getElementById("descripcionProducto").onchange = filtroReporte;
+        document.getElementById("nombre_cliente").onchange = filtroReporte;
+        // document.getElementById("rnc_cliente").onchange = filtroReporte;
+
+        function filtroReporte() {
+            // Obtener los valores de los campos
+            // console.log('Al cambiar llama la funcion ')
+            const sucursal = document.getElementById("sucursal").value;
+            const fechaInicial = document.getElementById("fecha_inicial").value;
+            const fechaFinal = document.getElementById("fecha_final").value;
+            const estadoFactura = document.getElementById("estadoFactura").value;
+            const condicionVenta = document.getElementById("condicionVenta").value;
+            const idEmpleado = document.getElementById("idEmpleado").value;
+            const caja = document.getElementById("caja").value;
+            const turno = document.getElementById("turno").value;
+            const idUnidadProducto = document.getElementById("idUnidadProducto").value;
+            const idProducto = document.getElementById("idProducto").value;
+            const idCliente = document.getElementById("id_cliente").value;
+            const rncCliente = document.getElementById("rnc_cliente").value;
+
+            console.log("Muestro el empleado ", idEmpleado)
+            // Crear un objeto con los valores
+            const datos = {
+                sucursal,
+                fechaInicial,
+                fechaFinal,
+                estadoFactura,
+                condicionVenta,
+                idEmpleado,
+                caja,
+                turno,
+                idUnidadProducto,
+                idProducto,
+                idCliente,
+                rncCliente
+            };
+
+            // Realizar la solicitud Fetch para enviar los datos
+            fetch('/facturacion/filtroReporte', {
+                method: 'POST', // Puedes usar POST u otro método según tus necesidades
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+                .then(response => response.json())
+                .then(resultados => {
+
+                    let data = resultados[0].reporteDetalle;
+                    // Aquí puedes manejar la respuesta del servidor si es necesario
+                    console.log(data);
+                    var html = "";
+                    let totalDescuento = 0;
+                    let totalItbis = 0;
+                    let totalImporte = 0;
+                    let totalGanancia = 0;
+                    let k = 1;
+                    let n = 0;
+                    if (data) {
+                        for (var i = 0; i < data.length; i++) {
+
+                            console.log(data[i].precio_compra);
+
+                            if (data[i].cantidad_pendiente != 0) {
+                                html += `<tr onclick='seleccionarCliente("${data[i].id_cliente}","${data[i].nombre_completo}","${data[i].rnc || ''}","${data[i].celular || ''}")'>`;
+                                html += "<td>" + data[i].codigo_barras + "</td>";
+                                html += "<td>" + data[i].descripcion_producto + "</td>";
+                                html += "<td style='text-align: right;''>" + formatearNumero(data[i].precio_venta) + "</td>";
+                                html += "<td style='text-align: right;'>" + data[i].cantidad + "</td>";
+                                html += "<td style='text-align: right;'>" + (data[i].cantidad_pendiente) + "</td>";
+                                html += "<td>" + (data[i].unidad_producto || '') + "</td>";
+                                html += "<td style='text-align: right;'>" + formatearNumero(data[i].descuento || '') + "</td>";
+                                html += "<td style='text-align: right;'>" + formatearNumero(data[i].itbis || '') + "</td>";
+                                html += "<td style='text-align: right;'>" + formatearNumero(data[i].precio_venta || '') + "</td>";
+                                html += "<td style='text-align: right;'>" + formatearNumero(data[i].importe || '') + "</td>";
+                                html += "</tr>";
+
+                                k++;
+                                totalDescuento += data[i].descuento;
+                                totalItbis += data[i].itbis;
+                                totalImporte += data[i].importe;
+                                totalGanancia += data[i].ganancia;
+                            } else {
+                                n++;
+                                console.log("Monto en nota", formatearNumero(data[i].importe || ''))
+                            }
+
+                            // if (data[i].cantidad_pendiente == 0 && estadoFactura =="Anulada") {
+                            //     html += `<tr onclick='seleccionarCliente("${data[i].id_cliente}","${data[i].nombre_completo}","${data[i].rnc || ''}","${data[i].celular || ''}")'>`;
+                            //     html += "<td>" + data[i].codigo_barras + "</td>";
+                            //     html += "<td>" + data[i].descripcion_producto + "</td>";
+                            //     html += "<td style='text-align: right;''>" + formatearNumero(data[i].precio_venta) + "</td>";
+                            //     html += "<td style='text-align: right;'>" + data[i].cantidad + "</td>";
+                            //     html += "<td style='text-align: right;'>" + (data[i].cantidad_pendiente) + "</td>";
+                            //     html += "<td>" + (data[i].unidad_producto || '') + "</td>";
+                            //     html += "<td style='text-align: right;'>" + formatearNumero(data[i].descuento || '') + "</td>";
+                            //     html += "<td style='text-align: right;'>" + formatearNumero(data[i].itbis || '') + "</td>";
+                            //     html += "<td style='text-align: right;'>" + formatearNumero(data[i].precio_venta || '') + "</td>";
+                            //     html += "<td style='text-align: right;'>" + formatearNumero(data[i].importe || '') + "</td>";
+                            //     html += "</tr>";
+
+                            //     k++;
+                            //     totalDescuento += data[i].descuento;
+                            //     totalItbis += data[i].itbis;
+                            //     totalImporte += data[i].importe;
+                            //     totalGanancia += data[i].ganancia;
+                            // }
+                        }
+                    }
+
+                    document.getElementById("totalDescuento").value = formatearNumero(totalDescuento || 0);
+                    document.getElementById("totalItbis").value = formatearNumero(totalItbis || 0);
+                    document.getElementById("totalVendido").value = formatearNumero(totalImporte || 0);
+                    document.getElementById("totalGanancia").value = formatearNumero(totalGanancia || 0);
+
+                    document.getElementById("detalleFacturacion").innerHTML = html;
+
+                    console.log(resultados[1].resultadosTiposDePago[0])
+                    let tipoDePago = resultados[1].resultadosTiposDePago[0];
+
+                    document.getElementById("tarjetaDebitoTotal").value = formatearNumero(tipoDePago.suma_tarjeta_debito || 0);
+                    document.getElementById("cantidadDebito").innerText = tipoDePago.cantidad_tarjeta_debito;
+
+                    document.getElementById("tarjetaCreditoTotal").value = formatearNumero(tipoDePago.suma_tarjeta_credito || 0);
+                    document.getElementById("cantidadCredito").innerText = tipoDePago.cantidad_tarjeta_credito;
+
+                    document.getElementById("chequeTotal").value = formatearNumero(tipoDePago.suma_cheque || 0);
+                    document.getElementById("cantidadCheque").innerText = tipoDePago.cantidad_cheque;
+
+                    document.getElementById("montoNotaCreditoTotal").value = formatearNumero(tipoDePago.suma_monto_nota || 0);
+                    document.getElementById("cantidadNota").innerText = tipoDePago.cantidad_monto_nota;
+
+                    // 
+                    document.getElementById("cuentaPorCobrarTotal").value = formatearNumero(tipoDePago.suma_cuenta_por_cobrar || 0);
+                    document.getElementById("cantidadPorCobrar").innerText = tipoDePago.cantidad_cuenta_por_cobrar;
+                    
+
+                    document.getElementById("pagoConBonoTotal").value = formatearNumero(tipoDePago.suma_bono || 0);
+                    document.getElementById("cantidadBono").innerText = tipoDePago.cantidad_bono;
+
+                    document.getElementById("efectivoTotal").value = formatearNumero(tipoDePago.suma_efectivo_neto || 0);
+
+                    let notaDeCreditoCreada = resultados[2].notaCredito[0];
+                    document.getElementById("montoTotalNotaPendiente").value = `Pendiente RD$ ${notaDeCreditoCreada.suma_no_vencidas}, Vencido RD$ ${notaDeCreditoCreada.suma_vencidas}`;//"Aqui va el monto total pendiente en notas de creditos a la fecha";
+
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        $(document).ready(function () {
+            // $(document).on('keydown', function (e) {
+            //     if (e.key === 'Enter') {
+            //         e.preventDefault(); // Evitar el comportamiento por defecto al presionar Enter
+            //         $('#buscarProducto').focus();
+            //     }
+            // });
+
+            // $('#buscarProducto').on('keydown', function (e) {
+            //     if (e.key === 'Enter' || e.keyCode === 32) {
+            //         e.preventDefault(); // Evitar el comportamiento por defecto al presionar Enter o espacio
+            //         let codigo = $(this).val().trim();
+            //         if (codigo !== '') {
+            //             // buscarProctoPorCodigo(codigo);
+            //             $(this).val(''); // Limpiar el campo de búsqueda después de realizar la búsqueda
+            //         }
+            //     }
+            // });
+
+            // Colocar el cursor en el campo de búsqueda al cargar la página
+            // $('#buscarProducto').focus();
+
+            // buscarVentaTemporal();
+        });
+
+        // async function buscarVentaTemporal() {
+        //     // let id_cliente = 1;
+        //     let id_empleado = "";
+        //     // alert(`Muestro el ID Cliente ${id_cliente}`)
+        //     await $.get(`/facturacion/buscarVentaTemporal/${id_empleado}/${id_cliente}`, async function (data) {
+        //         var html = "";
+        //         // console.log(data)
+        //         let k = 1;
+        //         let subTotal = 0;
+        //         let descuentoTotal = 0;
+        //         let itbisTotal = 0;
+        //         let totalCobrar = 0;
+        //         let precioVenta = 0;
+        //         let itbis = 0;
+        //         let descuento = 0;
+        //         let precio = 0;
+        //         let tipoVenta = 1;
+        //         if (data != "No tiene venta temporal") {
+        //             for (var i = 0; i < data.length; i++) {
+
+        //                 if (data[i].con_itbis == 1) {
+        //                     itbis = data[i].itbis;
+        //                 }
+        //                 if (data[i].con_descuento == 1) {
+        //                     descuento = data[i].descuento;
+        //                 }
+
+        //                 if (tipoVenta == 1) {
+        //                     precio = Number(data[i].precio_detalle)
+        //                 } else if (tipoVenta == 2) {
+        //                     precio = Number(data[i].precio_al_por_mayor)
+        //                 } else if (tipoVenta == 3) {
+        //                     precio = Number(data[i].precio_especial)
+        //                 }
+        //                 ///////////////////////////////////////aqui consulto las unidades del producto y veo cual estan comprando
+        //                 const unidades = await $.get(`/producto/unidad_producto/${data[i].id_producto}`);
+
+        //                 let factorDeConversion = 0;
+        //                 for (let k = 0; k < unidades.length; k++) {
+        //                     if (unidades[k].id_unidad == data[i].id_unidad) {
+        //                         factorDeConversion = unidades[k].factor_conversion;
+        //                     }
+        //                 }
+
+        //                 html += "<tr>";
+        //                 const descuentoTotalProducto = (precio * descuento / 100) * (data[i].cantidad * factorDeConversion);
+        //                 const itbisTotalProducto = (precio * itbis / 100) * (data[i].cantidad * factorDeConversion);
+        //                 const importe = (precio * (data[i].cantidad * factorDeConversion)) - descuentoTotalProducto + itbisTotalProducto;
+        //                 precio = precio * factorDeConversion * data[i].cantidad;// actualizo el preso con el factor de conversion
+        //                 html += `<td class='d-none'>` + data[i].id_producto + "</td>";
+        //                 html += `<td>` + data[i].codigo + "</td>";
+        //                 html += "<td>" + data[i].descripcion + "</td>";
+        //                 html += "<td style='text-align: right;'>" + formatearNumero(precio / data[i].cantidad) + "</td>";
+        //                 html += "<td contenteditable='true' style='text-align: right;' onkeydown='handleBlurKeydown(event)' onblur='handleCantidadKeydown(event, " + data[i].id_producto + "," + data[i].id_unidad + ")'><b>" + data[i].cantidad + "</b></td>";
+        //                 // html += "<td contenteditable='true' style='text-align: right; ' onkeydown='handleCantidadKeydown(event, " + data[i].id_producto + ")'><b>" + data[i].cantidad + "</b></td>";
+        //                 html += "<td>";
+        //                 html += `<select name='unidades' onchange='actualizaUnidad(this.value,"${data[i].id_producto}","${id_cliente}")'>`;
+
+        //                 //las unidades consultadas arriba las itero para colocar cual es la unidad seleccionada
+        //                 let id_unidad = 0;
+        //                 for (let j = 0; j < unidades.length; j++) {
+        //                     // console.log('Muestro las Unidades ===> ',data[i].id_unidad)
+        //                     if (unidades[j].id_unidad == data[i].id_unidad) {
+        //                         id_unidad = unidades[j].id_unidad;
+        //                         html += "<option selected value=" + unidades[j].id_unidad + ">" + unidades[j].unidad + "</option>";
+        //                     } else {
+        //                         //html += "<option value=" + unidades[j].id_unidad + ">" + unidades[j].unidad + "</option>";
+        //                     }
+        //                 }
+
+        //                 html += "</select>";
+        //                 html += "</td>";
+
+        //                 html += "<td style='text-align: right;'>" + formatearNumero(descuentoTotalProducto) + "</td>";
+        //                 html += "<td style='text-align: right;'>" + formatearNumero(itbisTotalProducto) + "</td>";
+        //                 html += "<td style='text-align: right;'>" + formatearNumero(precio) + "</td>";
+        //                 html += "<td style='text-align: right;'>" + formatearNumero(importe) + "</td>";
+        //                 html += `<td onclick='eliminarProductoEnFactura("${data[i].id_cliente}","${data[i].id_producto}","${data[i].descripcion}","${id_unidad}")'>` + "   <i class='fas fa-trash-alt' style='font-size:18px;color:red'></i></td>";
+        //                 html += "</tr>";
+
+        //                 k++;
+        //                 // Calcular sub total
+        //                 subTotal += parseFloat(precio);//parseFloat(data[i].cantidad) *
+
+        //                 // Calcular descuento total
+        //                 descuentoTotal += parseFloat(descuentoTotalProducto);
+
+        //                 // Calcular ITBIS total
+        //                 itbisTotal += parseFloat(itbisTotalProducto);
+
+        //                 // Calcular total a cobrar
+        //                 totalCobrar += parseFloat(importe);
+        //                 itbis = 0;
+        //                 descuento = 0;
+        //             }
+        //         }
+
+
+
+        //         var elementTabla_empleado = document.getElementById("detalleFacturacion");
+        //         elementTabla_empleado.innerHTML = html;
+        //         // Establecer los valores calculados en los campos de entrada
+        //         document.getElementById("subTotal").value = formatearNumero(subTotal);
+        //         document.getElementById("masItbis").value = formatearNumero(itbisTotal);
+        //         document.getElementById("descuento").value = formatearNumero(descuentoTotal);
+        //         if (document.getElementById("servicio").checked == true) {
+        //             // alert(totalCobrar*0.1)
+        //             document.getElementById("maselservicio").value = formatearNumero(subTotal * 0.1);
+        //             document.getElementById("totalCobrar").value = formatearNumero(totalCobrar + (subTotal * 0.1));
+        //         } else {
+        //             document.getElementById("totalCobrar").value = formatearNumero(totalCobrar);
+        //             document.getElementById("maselservicio").value = '';
+        //         }
+
+
+        //         // Obtener todos los campos de cantidad
+        //         var camposCantidad = document.querySelectorAll("td[contenteditable='true']");
+        //         camposCantidad.forEach(function (campoCantidad) {
+        //             campoCantidad.addEventListener("click", function (event) {
+        //                 var range = document.createRange();
+        //                 range.selectNodeContents(campoCantidad);
+        //                 var selection = window.getSelection();
+        //                 selection.removeAllRanges();
+        //                 selection.addRange(range);
+        //             });
+        //         });
+        //     });
+
+        // }
+
+
+
+
+        function handleMask(event, mask) {
+            with (event) {
+                stopPropagation()
+                preventDefault()
+                if (!charCode) return
+                var c = String.fromCharCode(charCode)
+                if (c.match(/\D/)) return
+                with (target) {
+                    var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+                    var pos = selectionStart + 1
+                }
+            }
+            var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+            val = val.replace(/\D/g, '')
+
+            var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+            if (!mask) return // meglio exception?
+            if (val.length > count(mask[2], /9/)) return
+
+            for (var txt = '', im = 0, iv = 0; im < mask[2].length && iv < val.length; im += 1) {
+                var c = mask[2].charAt(im)
+                txt += c.match(/\D/) ? c : val.charAt(iv++)
+            }
+
+            with (event.target) {
+                value = mask[1] + txt + mask[3]
+                selectionStart = selectionEnd = pos + (pos == 1 ? mask[1].length : count(value, /\D/, pos) - nan)
+            }
+
+            function count(str, c, e) {
+                e = e || str.length
+                for (var n = 0, i = 0; i < e; i += 1) if (str.charAt(i).match(c)) n += 1
+                return n
+            }
+        }
+
+
+        async function buscarProctoPorCodigo(codigo, almacen, cantidad, id_unidad, id_cliente, suma) {
+            console.log(codigo, almacen, cantidad, id_cliente, suma)
+            console.log("id unidad ==> ", almacen)
+            await $.get(`/facturacion/consultaProductoCodigoAlmacenCantidad/${codigo}/${almacen}/${cantidad}/${id_unidad}/${id_cliente}/${suma}`, function (data) {
+
+                if (data != "Producto actualizado correctamente" && data != "Producto actualizado correctamente") {
+
+                }
+                if (data == "Cantidad insuficiente para cubir el pedido") {
+                    alert(data);
+                }
+                // console.log('la data ====>',data)
+                // buscarVentaTemporal();
+            });
+        }
+
+        // document.getElementById("buscarProducto").onkeydown = async function (e) {
+        //     if ((e.key === "Enter" || e.keyCode === 32) && e.target.value.trim() !== "") {
+        //         e.preventDefault(); // Evitar que se realice el salto de línea por defecto en un campo de texto
+        //         let codigo = e.target.value.trim();
+        //         if (codigo == "") {
+        //             codigo = "aaaaaaaaaaaa";
+        //         }
+        //         console.log("busco el producto")
+        //         let almacen = "";
+        //         let cantidad = 1;
+        //         let id_unidad = 1;
+        //         // let id_cliente = 1;
+        //         let suma = 1;// indica que se va a sumar la cantidad
+        //         let data = await buscarProctoPorCodigo(codigo, almacen, cantidad, id_unidad, id_cliente, suma);
+        //         e.target.value = "";
+
+        //         ////////////////////////////////////////////////////////////////////////
+        //     }
+        // };
+
+
+
+        // Agrega un event listener al botón btnProcesar
+        // document.getElementById('btnProcesar').addEventListener('click', function () {
+        //     const tableRows = document.querySelectorAll('#tablaFacturaDetalle tr');
+        //     const tabla = []; // Define la variable donde se almacenarán los datos de la tabla
+
+        //     tableRows.forEach((row) => {
+        //         const cells = row.getElementsByTagName('td');
+        //         const rowData = {
+        //             id_producto: cells[0].textContent,
+        //             codigo: cells[1].textContent,
+        //             descripcion: cells[2].textContent,
+        //             precio_venta: parseFloat(cells[3].textContent.replace(/,/g, '').replace(' ', '')).toFixed(2), // Elimina comas, puntos y espacios, y ajusta a 2 decimales
+        //             cantidad: parseInt(cells[4].textContent),
+        //             cantidad_pendiente: parseFloat(cells[5].textContent),
+        //             cantidad_devuelta: parseFloat(cells[6].textContent),
+        //             unidad: cells[7].querySelector('select[name="unidades"]').value,
+        //             descuento: (parseFloat(cells[8].textContent.replace(/,/g, '').replace(' ', '')) / parseInt(cells[4].textContent) * parseInt(cells[6].textContent)).toFixed(2), // Elimina comas, puntos y espacios, y ajusta a 2 decimales
+        //             itbis: (parseFloat(cells[9].textContent.replace(/,/g, '').replace(' ', '')) / parseInt(cells[4].textContent) * parseInt(cells[6].textContent)).toFixed(2), // Elimina comas, puntos y espacios, y ajusta a 2 decimales
+        //             subtotal: (parseFloat(cells[10].textContent.replace(/,/g, '').replace(' ', '')) / parseInt(cells[4].textContent) * parseInt(cells[6].textContent)).toFixed(2), // Elimina comas, puntos y espacios, y ajusta a 2 decimales
+        //             importe: (parseFloat(cells[11].textContent.replace(/,/g, '').replace(' ', '')) / parseInt(cells[4].textContent) * parseInt(cells[6].textContent)).toFixed(2), // Elimina comas, puntos y espacios, y ajusta a 2 decimales
+        //         };
+        //         tabla.push(rowData);
+        //     });
+
+        //     // Obtiene los otros datos
+        //     const subTotalDevolverInput = parseFloat(document.getElementById("subTotal_devolver").value.replace(/,/g, '').replace(' ', '')).toFixed(2);
+        //     const masItbisDevolverInput = parseFloat(document.getElementById("masItbis_devolver").value.replace(/,/g, '').replace(' ', '')).toFixed(2);
+        //     const descuentoDevolverInput = parseFloat(document.getElementById("descuento_devolver").value.replace(/,/g, '').replace(' ', '')).toFixed(2);
+        //     const totalDevueltoInput = parseFloat(document.getElementById("totalDevuelto").value.replace(/,/g, '').replace(' ', '')).toFixed(2);
+        //     const idVentaDevolver = document.getElementById("idVentaDevolver").value;
+        //     const llevaNotaCredito = document.getElementById("llevaNotaCredito").checked;
+        //     const comentario = document.getElementById("comentario").value;
+        //     const estadoFactura = document.getElementById("estadoFactura").value;
+        //     let almacen = "";
+        //     alert(llevaNotaCredito)
+        //     // Crea un objeto que contenga ambos conjuntos de datos
+        //     const datosCompletos = {
+        //         tabla: tabla,
+        //         subTotalDevolver: subTotalDevolverInput,
+        //         masItbisDevolver: masItbisDevolverInput,
+        //         descuentoDevolver: descuentoDevolverInput,
+        //         totalDevuelto: totalDevueltoInput,
+        //         id_venta: idVentaDevolver,
+        //         llevaNotaCredito: llevaNotaCredito,
+        //         comentario: comentario,
+        //         id_almacen: almacen,
+        //         estado: estadoFactura,
+        //     };
+        //     console.log(datosCompletos)
+        //     // Ahora puedes enviar el objeto 'datosCompletos' al servidor usando una solicitud Fetch
+        //     fetch(`/facturacion/anularFactura`, {
+        //         method: 'POST', // Utiliza el método HTTP apropiado
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(datosCompletos), // Convierte los datos a JSON y envíalos
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             // Hacer algo con la respuesta del servidor si es necesario
+        //             // console.log(data);
+        //             if (data != "Algo anda mal en la venta temproral") {
+
+        //                 id_cliente = 0;
+        //                 // console.log(respo)
+        //                 buscarVentaTemporal();
+        //                 $('#modalDetalleDelPago').modal('hide');
+        //                 var jsonData = JSON.stringify(data);
+        //                 fetch("http://localhost:8081?printer=" + "POS80", {
+        //                     method: "POST",
+        //                     body: jsonData
+        //                 })
+        //                     .then(response => {
+        //                         if (response.ok) {
+        //                             console.log("Texto enviado a imprimir.");
+        //                             location.reload();
+        //                         } else {
+        //                             console.log("Error al enviar el texto a imprimir:", response.status);
+        //                         }
+        //                     })
+        //                     .catch(error => {
+        //                         console.log("Error al enviar el texto a imprimir:", error);
+        //                     });
+        //             }
+
+        //         })
+        //         .catch(error => {
+        //             // Manejar errores en caso de que ocurra alguno durante la solicitud
+        //             console.error('Error:', error);
+        //         });
+        // });
+
+// Obtén una referencia a los elementos HTML de los campos y los íconos de eliminación
+const nombreClienteInput = document.getElementById("nombre_cliente");
+const idClienteInput = document.getElementById("id_cliente");
+const rncClienteInput = document.getElementById("rnc_cliente");
+const quitarClienteIcon = document.getElementById("quitarCliente");
+
+const dataEmpleadoInput = document.getElementById("dataEmpleado");
+const idEmpleadoInput = document.getElementById("idEmpleado");
+const quitarEmpleadoIcon = document.getElementById("quitarEmpleado");
+
+const descripcionProductoInput = document.getElementById("descripcionProducto");
+const idUnidadProductoInput = document.getElementById("idUnidadProducto");
+const idProductoInput = document.getElementById("idProducto");
+const quitarProductoIcon = document.getElementById("quitarProducto");
+
+// Agrega un evento de clic al ícono de eliminación del cliente
+quitarClienteIcon.addEventListener("click", () => {
+  // Restablece los campos del cliente a sus valores por defecto
+  nombreClienteInput.value = "";
+  idClienteInput.value = "";
+  rncClienteInput.value = "";
+});
+
+// Agrega un evento de clic al ícono de eliminación del empleado
+quitarEmpleadoIcon.addEventListener("click", () => {
+  // Restablece los campos del empleado a sus valores por defecto
+  dataEmpleadoInput.value = "";
+  idEmpleadoInput.value = "";
+});
+
+// Agrega un evento de clic al ícono de eliminación del producto
+quitarProductoIcon.addEventListener("click", () => {
+  // Restablece los campos del producto a sus valores por defecto
+  descripcionProductoInput.value = "";
+  idUnidadProductoInput.value = "";
+  idProductoInput.value = "";
+});
+
+    </script>
+
+    <style>
+        .active {
+            background-color: yellow;
+        }
+
+        .ancho {
+            max-width: 80%;
+
+        }
+
+        .anchotabla {
+            max-width: 95%;
+
+        }
+
+        .anchotablafull {
+            max-width: 100vw;
+
+        }
+    </style>
+    <%- include('partials/_footer') %>

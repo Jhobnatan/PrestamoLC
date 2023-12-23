@@ -1,0 +1,108 @@
+<!-- Modal de autorización -->
+<div class="modal fade" id="modalAutorizacion" tabindex="1050" role="dialog" aria-labelledby="modalAutorizacionTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!-- Cabecera del modal -->
+      <div class="modal-header bg-green">
+        <h5 class="modal-title" id="modalAutorizacionTitle">Autorización</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Contenido del modal -->
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="inputUsuario">Usuario</label>
+          <input type="text" class="form-control" id="inputUsuario" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="inputClave">Contraseña</label>
+          <input type="password" class="form-control" id="inputClave" required autocomplete="off">
+        </div>
+      </div>
+      <!-- Pie del modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" id="btnAceptarAutorizacion" class="btn btn-primary">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  let autoriza = [];
+  var quevalida = "";
+  // Función para mostrar el modal de autorización
+  function mostrarModalAutorizacion() {
+    // alert(quevalida)
+    // Mostrar el modal de autorización
+    $('#modalAutorizacion').modal('show');
+  }
+
+  
+
+  // Obtener el botón de aceptar en el modal de autorización
+  var btnAceptarAutorizacion = document.getElementById('btnAceptarAutorizacion');
+// let arreglo = [];
+  // Agregar el listener de eventos click al botón de aceptar
+  btnAceptarAutorizacion.addEventListener('click', function () {
+    var usuario = document.getElementById('inputUsuario').value;
+    var clave = document.getElementById('inputClave').value;
+
+    if(usuario !="" && clave !=""){
+    var validacionExitosa = false; // Coloca aquí tu lógica de validación
+    // Obtener los valores de usuario y código de autorización
+    let url = `/login/autoriza`;
+    const data = {
+      usuario: usuario,
+      clave: clave,
+    };
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // autoriza = data;
+        // document.getElementById('id_cliente').value = data;
+        // document.getElementById('nombre_cliente').value = nombres + " " + apellidos;
+        // document.getElementById('rnc_cliente').value = rnc ? rnc : cedula;
+        // document.getElementById('celular_cliente').value = celular;
+        // Aquí puedes manejar la respuesta recibida del servidor
+        // console.log(data);
+        // $('#modalRegistrarCliente').modal('hide');
+        if (data) {
+          // alert('supervisa '+data.id_supervisor)
+          try {
+            validarAcceso(data,quevalida)
+          } catch (error) {
+            
+          }
+        }
+      })
+      .catch(error => {
+        // Aquí puedes manejar cualquier error que ocurra durante la solicitud
+        // console.error(error);
+        alert("Usuario o contraseña incorreto")
+      });
+
+    // Realizar las validaciones necesarias con los valores ingresados
+    
+
+    // Cerrar el modal de autorización
+    $('#modalAutorizacion').modal('hide');
+
+    // Restablecer los valores del formulario de autorización
+    document.getElementById('inputUsuario').value = '';
+    document.getElementById('inputClave').value = '';
+    }else{
+      alert("Usuario o contraseña no pueden estar en blanco")
+    }
+  });
+</script>

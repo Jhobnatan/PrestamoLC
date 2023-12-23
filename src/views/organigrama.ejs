@@ -1,0 +1,182 @@
+<%- include('partials/_header') %>
+
+<script type='text/javascript' src='org/jquery.js'></script>
+<link rel="stylesheet" href="org/demo.css"/>
+<link rel="stylesheet" href="org/jquery.orgchart.css"/>
+<script src="org/jquery.orgchart.js"></script>
+
+
+            <div class="container">
+                <div class="row mt-4 text-center">
+                    <div class="col-md-12 text-center">
+                      <div class="col-md-12 text-center mx-1 cale text-black">
+                        <div  style="display: none">
+
+
+                          <ul id="mainContainer" class="clearfix"></ul>	
+                              
+                          </div>
+                          <div id="organigrama" class="organigrama">
+                            <ul id="main"></ul>
+                          </div>
+                      </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script type='text/javascript'>
+// <link rel="stylesheet" type="text/css" href="css/style.css">
+// $(function(){
+// var members;
+// // $.ajax({
+// // 	url:'load.php',
+// // 	async:false,
+// // 	success:function(data){
+// // 		members=$.parseJSON(data)
+// // 	}
+// // })
+// $.get("/form_data/organigrama", function (data) {
+//           console.log('la data ssssss ',data)
+//           // members=$.parseJSON(data) 
+//           //memberId,parentId,otherInfo
+//           members=$.parseJSON(data)
+// 		for(var i = 0; i < members.length; i++){
+			
+//       var member = members[i];
+    
+//     if(i==0){
+//       $("#mainContainer").append("<li id="+member.memberId+">"+member.otherInfo+"</li>")
+//     }else{
+      
+//       if($('#pr_'+member.parentId).length<=0){
+//         $('#'+member.parentId).append("<ul id='pr_"+member.parentId+"'><li id="+member.memberId+">"+member.otherInfo+"</li></ul>")
+//       }
+//       else{
+//         $('#pr_'+member.parentId).append("<li id="+member.memberId+">"+member.otherInfo+"</li>")
+//          }
+      
+//     }
+//   }
+        
+// $("#mainContainer").orgChart({container: $("#main"),interactive: true, fade: true, speed: 'slow'});
+          
+//         });
+// }); 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+
+    const jsonData = '<%- JSON.stringify(data) %>';
+    var datas = JSON.parse(jsonData);
+
+    // console.log('Obteniendo datos ', datas)
+    //memberId,parentId,otherInfo
+    let members = datas;
+  for(var i = 0; i < members.length; i++){
+			
+      var member = members[i];
+    
+    if(i==0){
+      $("#mainContainer").append("<li id="+member.memberId+"><a href='#'>"+member.otherInfo+"</a></li>")
+    }else{
+      
+      if($('#pr_'+member.parentId).length<=0){
+        $('#'+member.parentId).append("<ul id='pr_"+member.parentId+"'><li id="+member.memberId+"><a href='#'>"+member.otherInfo+"</a></li></ul>")
+        
+      }
+      else{
+        $('#pr_'+member.parentId).append("<li id="+member.memberId+"><a href='#'>"+member.otherInfo+"</a></li>")
+        
+         }
+      
+    }
+  }
+    
+  $("#mainContainer").orgChart({container: $("#main"),interactive: true, fade: true, speed: 'slow'});	
+
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+  
+
+  
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+  
+
+  // function invitadoList(valor) { // el id que llega es el id del departamento
+    
+  //   const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+  //   var accesos = JSON.parse(jsonAccesos);
+  //   //////
+  //   if(valor ==""){
+  //       valor ="aaaaaaaaaaaa";
+  //     }
+   
+  //   $.get("/form_data/invitados/" + valor, function (data) {
+  //       // console.log(data)
+  //       var html = "";
+  //       let k = 1;
+  //       for(var i =0;i < data.length;i++){ 
+  //             // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+  //             html +="<tr>";
+              
+  //             html +="<td>"+ data[i].nombre +"</td>";
+  //             html +="<td>"+ data[i].celular +"</td>";
+  //             html +="<td>"+ data[i].empresa +"</td>";
+  //             html +="<td>"+ data[i].cargo +"</td>";
+  //             html +="<td>"+ data[i].correo +"</td>";
+            
+  //             html +="<td>";
+                
+  //                 if('<%- accesos.detalle_empleado %>') {
+                    
+  //                   html +=`<a onclick='editarInvitado(${data[i].id_invitado_externo})'><i class='fas fa-pencil-alt' style='font-size:20px;color:orange;margin-right:10px'></i></a>`;
+  //                   html +=`<a onclick='usarInvitado(${data[i].id_invitado_externo})'><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>`;
+  //                 }
+
+  //             html +="</td></tr>";  
+                  
+  //             k++;  
+  //             }
+            
+  //       var elementTabla_empleado = document.getElementById("tabla_invitado");
+  //       elementTabla_empleado.innerHTML = html;
+        
+    });
+ 
+  
+  
+
+</script>
+<style>
+body {
+    font-size: 14px;
+  }
+.fc-event-end{
+  color: #2d455c; 
+}
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+.ancho{
+  max-width: 80%;
+
+}
+
+
+
+</style>
+
+
+
+<%- include('partials/_footer') %>

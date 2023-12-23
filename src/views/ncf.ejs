@@ -1,0 +1,516 @@
+<%- include('partials/_header') %>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>NCF</h5>
+                        </div>
+                        <div class="card-body col-md-12">
+                            <div class="col-md-12" style="margin:0 auto">
+                                <form class="row g-3" action="empresa/" method="post">
+                                    <div class="col-md-2">
+                                        <label for="inputAddress2" class="form-label text-black">Id:</label>
+                                        <input type="text" class="form-control" name="id" id="id" value="Nuevo" readonly
+                                            placeholder="">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="descripcion" class="form-label text-black">Descripción</label>
+                                        <input type="text" class="form-control" name="descripcion" id="descripcion"
+                                            placeholder="">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="tipo_ncf" class="form-label text-black">Tipo de NCF</label>
+                                        <input type="text" class="form-control" name="tipo_ncf" id="tipo_ncf"
+                                            placeholder="">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="inputPassword4" class="form-label text-black">Parte Fija</label>
+                                        <input type="number" class="form-control" name="parte_fija" id="parte_fija"
+                                            placeholder="">
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3 pt-4">
+                                        <button type="button" id="btnNuevo"
+                                            class="btn btn-outline-primary col-md-12 pt-2 mt-1">NUEVO</button>
+                                    </div>
+
+                                    <div class="col-md-3 pt-4">
+                                        <button type="button" id="btnGuardar"
+                                            class="btn btn-primary col-md-12 pt-2 mt-1">GUARDAR</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <table class="table table-bordered table-hover mt-2">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>No.</th>
+                            <th>ID</th>
+                            <th>DESCRIPCIÓN</th>
+                            <th>TIPO DE NCF</th>
+                            <th>PARTE FIJA</th>
+                            <th>ESTADO</th>
+                            <th>SECUENCIA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_ncf">
+
+                    </tbody>
+                </table>
+                <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+                </div>
+            </div>
+
+            <!-- Modal para cambiar la imagen del cliente-->
+            <div class="modal fade" id="modalSecuencia" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered ancho" role="document">
+                    <div class="modal-content">
+
+                        <!-- Modal body -->
+
+                        <div class="card">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Secuencia <strong
+                                        id="elNCF"></strong></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="card-body col-md-12">
+                                <div class="col-md-12" style="margin:0 auto">
+                                    <form class="row g-3" action="categoria/add" method="post">
+
+                                        <div class="col-md-4">
+                                            <label for="fecha_solicitud" class="form-label text-black">Fecha de
+                                                solicitud</label>
+                                            <input type="date" class="form-control secuencia" name="fecha_solicitud"
+                                                id="fecha_solicitud" maxlength="200" placeholder="" required>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="vigencia_desde" class="form-label text-black">Vigencia
+                                                desde</label>
+                                            <input type="date" class="form-control secuencia" name="vigencia_desde"
+                                                id="vigencia_desde" maxlength="200" placeholder="" required>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="vigencia_hasta" class="form-label text-black">Vigencia
+                                                hasta</label>
+                                            <input type="date" class="form-control secuencia" name="vigencia_hasta"
+                                                id="vigencia_hasta" maxlength="200" placeholder="" required>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="secuencia_inicial" class="form-label text-black">Secuencia
+                                                inicial</label>
+                                            <input type="text" class="form-control secuencia" name="secuencia_inicial"
+                                                id="secuencia_inicial" maxlength="200" placeholder="Secuencia" required readonly>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="numero_final" class="form-label text-black secuencia">Número
+                                                final</label>
+                                            <input type="number" class="form-control secuencia" name="secuencia_final"
+                                                id="secuencia_final" maxlength="200"
+                                                placeholder="Última secuencia pedida" required>
+                                        </div>
+
+
+
+                                        <div class="col-md-4 text-center mt-4">
+                                            <input type="hidden" class="form-control" name="codncf" id="codncf"
+                                                maxlength="200" placeholder="Última secuencia pedida">
+                                            <button type="button" id="btnGenerarSecuencia" onclick="generarSecuencia()"
+                                                class="btn btn-primary col-md-12 mt-4">GENERAR</button>
+                                        </div>
+                                    </form>
+
+                                    <table class="table table-bordered table-hover mt-4">
+                                        <thead class="bg-dark text-white">
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>SECUENCIA</th>
+                                                <th>ESTADO</th>
+                                                <th>FECHA DE USO</th>
+                                                <th>ACCIÓN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla_secuencia">
+
+                                        </tbody>
+                                    </table>
+                                    <script>
+
+                                        function secuenciaList(codigoNCF, estado_secuencia, valor, inicio) { // el id que llega es el id del departamento
+                                            // :codigoNCF/:estadoSecuencia/:valor/:inicio
+                                            // console.log(codigoNCF,estado_secuencia,valor, inicio)
+                                            $.get(`/ncf/secuenciaList/${codigoNCF}/${estado_secuencia}/${valor}/${inicio}`, function (data) {
+                                                // console.log(data)
+                                                // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                                                var html = "";
+                                                let k = 1;
+                                                for (var i = 0; i < data.length - 1; i++) {
+                                                    html += "<tr>";
+                                                    html += "<td>" + k + "</td>";
+                                                    html += "<td>" + data[i].secncf + "</td>";
+                                                    html += `<td onclick='editarNCF("${data[i].codncf}")' style='color:blue;'>` + data[i].estncf + "</td>";
+                                                    html += "<td>" + (data[i].fecha_uso || '') + "</td>";
+
+                                                    html += `<td onclick='secuencia(${data[i].codncf})' class='text-center' style='color:blue;'><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></td>`;
+                                                    html += "</tr>";
+
+                                                    k++;
+                                                }
+                                                $.get(`/ncf/secuenciaInicial/${codigoNCF}`, function (codncf) {
+                                                    // console.log(codncf.secncf)
+                                                    if (codncf.secncf) {
+                                                        let secuenciaInicial = codncf.secncf.substr(3).replace(/^0+/, "");
+                                                        document.getElementById("secuencia_inicial").value = parseInt(secuenciaInicial, 10) + 1;
+                                                    }else{
+                                                        document.getElementById("secuencia_inicial").value = 1;
+                                                    }
+                                                });
+
+                                                var elementTabla_empleado = document.getElementById("tabla_secuencia");
+                                                elementTabla_empleado.innerHTML = html;
+                                                // cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+                                            });
+
+                                        }
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        async function generarSecuencia() {
+            try {
+                console.log(' entro a guardar secuencia front')
+                var secuenciaInputs = document.getElementsByClassName("secuencia");
+                let camposCompletos = 0;
+                for (var i = 0; i < secuenciaInputs.length; i++) {
+                    var input = secuenciaInputs[i];
+                    if (input.value === "") {
+                        input.focus();
+                        alert("El campo " + input.name + " es requerido");
+                        camposCompletos = 1;
+                        return;
+                    }
+                }
+
+                if (camposCompletos == 0) {
+
+                    let desde = parseInt(document.getElementById("secuencia_inicial").value);
+                    let hasta = parseInt(document.getElementById("secuencia_final").value);
+
+                    let vigencia_desde = document.getElementById("vigencia_desde").value;
+                    let vigencia_hasta = document.getElementById("vigencia_hasta").value;
+
+                    let codigoNCF = document.getElementById("codncf").value;
+                    let estado_secuencia = 'Disponible'
+
+                    let response = await fetch(`/ncf/saveSecuencia`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            desde: desde,
+                            hasta: hasta,
+                            codigoNCF: codigoNCF,
+                            vigencia_desde: vigencia_desde,
+                            vigencia_hasta: vigencia_hasta,
+                            estado: estado_secuencia,
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert("Secuencias generadas exitosamente");
+                    }
+
+
+                    secuenciaList(codigoNCF, estado_secuencia, "aaaaaaaaaaaa", '1')
+                }
+            } catch (ex) {
+                alert("ERROR al agregar Secuencias" + ex);
+            }
+        }
+        ////////////////////LOAD/////////////////////////////////////////////////////////////////////////////////////////////////
+        function editarNCF(id) {
+            $.get(`/ncf/buscar_ncf/${id}`, function (data) {
+                document.getElementById("id").value = id;
+                document.getElementById("descripcion").value = data.descncf;
+                document.getElementById("tipo_ncf").value = data.tipncf;
+                document.getElementById("parte_fija").value = data.parfij;
+                // document.getElementById("estado").value = data.estado;
+                document.getElementById("btnGuardar").innerText = 'EDITAR';
+                document.getElementById("descripcion").focus();
+            });
+        }
+
+        function secuencia(id) {
+            $.get(`/ncf/buscar_ncf/${id}`, function (data) {
+                document.getElementById("id").value = id;
+                document.getElementById("elNCF").innerText = `${data.descncf} (${data.tipncf} ${data.parfij})`;
+                document.getElementById("codncf").value = id;
+                secuenciaList(id, 'Disponible', "aaaaaaaaaaaa", '1')
+                // document.getElementById("estado").value = data.estado;
+                // document.getElementById("btnGuardar").innerText ='EDITAR';
+                // document.getElementById("descripcion").focus();
+            });
+            $('#modalSecuencia').modal('show');
+        }
+
+        let paginacion = 0;
+        window.addEventListener('load', function () {
+            paginacion = '<%- paginacion %>';
+            ncfList("aaaaaaaaaaaa", '1');
+
+            // PERMITE FILTRAR LA BUSQUEDA DE LOS ncfS EN LA PANTALLA PRINCIPAL
+            // document.getElementById("buscar").onkeyup = function (e) {
+            //     let valor = e.target.value;
+            //     if (valor == "") {
+            //         valor = "aaaaaaaaaaaa"
+            //     }
+            //     ncfList(valor, '1')
+            //     // document.getElementById("empresa").value = this.value;
+            // };
+
+
+            document.getElementById("btnGuardar").onclick = async function (e) {
+                try {
+                    let id = document.getElementById("id").value;
+                    let descripcion = document.getElementById("descripcion").value;
+                    let tipo_ncf = document.getElementById("tipo_ncf").value;
+                    let parte_fija = document.getElementById("parte_fija").value;
+                    let estado = 'Activo';//document.getElementById("estado").value;
+
+                    let response = await fetch(`/ncf/save_or_update`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: id,
+                            descripcion: descripcion,
+                            tipo_ncf: tipo_ncf,
+                            parte_fija: parte_fija,
+                            estado: estado,
+                        })
+                    });
+
+
+                    // console.log('No veo response: ' +response)
+                    // console.log('No veo response OKEY ' +response.ok)
+                    if (response.ok) {
+                        alert("fue ok")
+                    } else {
+                        // Hubo un error en la actualización
+                        throw new Error('Error en la actualización del pedido');
+                    }
+                    ncfList("aaaaaaaaaaaa", '1');
+                } catch (error) {
+                    // Manejo de errores
+                    console.error('será este ' + error);
+                }
+
+            };
+
+            document.getElementById("btnNuevo").onclick = async function (e) {
+                document.getElementById("id").value = 'Nuevo';
+                document.getElementById("descripcion").value = '';
+                document.getElementById("tipo_ncf").value = '';
+                document.getElementById("parte_fija").value = '';
+                document.getElementById("btnGuardar").innerText = 'GUARDAR';
+                // document.getElementById("estado").value = 'Activo';
+            };
+
+            function ncfList(valor, inicio) { // el id que llega es el id del departamento
+                //'UPDATE `jr_ncf` SET `descncf`=?,`tipncf`=?,`parfij`=?,`estado`=? WHERE  `codncf`=?';
+                $.get(`/ncf/filtro/${valor}/${inicio}`, function (data) {
+                    // console.log(data[data.length-1].registros)
+                    // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+                    var html = "";
+                    let k = 1;
+                    for (var i = 0; i < data.length - 1; i++) {
+                        html += "<tr>";
+                        html += "<td>" + k + "</td>";
+                        html += "<td>" + data[i].codncf + "</td>";
+                        html += `<td onclick='editarNCF("${data[i].codncf}")' style='color:blue;'>` + data[i].descncf + "</td>";
+                        html += "<td>" + data[i].tipncf + "</td>";
+                        html += "<td>" + data[i].parfij + "</td>";
+                        html += "<td>" + data[i].estado + "</td>";
+
+                        html += `<td onclick='secuencia(${data[i].codncf})' class='text-center' style='color:blue;'><i class='fas fa-pencil-alt' style='font-size:28px;color:green'></i></td>`;
+                        html += "</tr>";
+
+                        k++;
+                    }
+
+                    var elementTabla_empleado = document.getElementById("tabla_ncf");
+                    elementTabla_empleado.innerHTML = html;
+                    cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+                });
+
+            }
+
+
+            // var modal = document.getElementById('modalncf');
+            // var crearncf = document.getElementById('btnCrearncf');
+            // // Agregar evento 'click' al elemento previewImg
+            // crearncf.addEventListener('click', function () {
+            //     $('#modalncf').modal('show');
+            // });
+
+
+            // document.getElementById('').addEventListener('click', function() {
+            //   modal.style.display = "none";
+            // });
+
+            // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+            // window.addEventListener('click', function (event) {
+            //     if (event.target == modal) {
+            //         modal.style.display = "none";
+            //     }
+            // });
+
+
+            function ncfListPage(inicio) {
+                let valor = "";//document.getElementById('buscar').value;
+                if (valor == "") {
+                    valor = "aaaaaaaaaaaa";
+                }
+
+                ncfList(valor, inicio)
+            }
+
+            function cargaPaginacion(cantidad_registros, inicio) {
+                nrolink = Math.ceil(cantidad_registros / paginacion);
+                let ht = `<div class="btn-group me-2" role="group" aria-label="First group">`;
+                if (inicio == 1) {
+
+                } else {
+                    ht += `<button type="button" onclick='ncfListPage(1);' class="btn btn-secondary"><<</button>`
+                    ht += `<button type="button" onclick='ncfListPage(${inicio - 1});' class="btn btn-secondary"><</button>`
+                }
+                for (i = 1; i <= nrolink; i++) {
+                    if (inicio == i) {
+                        ht += `<button type="button" onclick='ncfListPage(${i});' class="btn btn-primary">${i}</button>`
+                    }
+                    else {
+                        ht += `<button type="button" onclick='ncfListPage(${i});' class="btn btn-secondary">${i}</button>`
+                    }
+
+                }
+                if (inicio == nrolink) {
+
+                } else {
+                    if (inicio == '') {
+                        ht += `No hay registro`;
+                    } else {
+                        if (nrolink != 0) {
+                            ht += `<button type="button" onclick='ncfListPage(${inicio + 1});' class="btn btn-secondary">></button>`
+                            ht += `<button type="button" onclick='ncfListPage(${nrolink});' class="btn btn-secondary">>></button>`
+                        }
+                        else {
+                            ht += `No hay registro`;
+                        }
+                    }
+                }
+                ht += `</div>`;
+                $('#paginacion').html(ht);
+                // alert(cantidad_registros)
+            }
+            // document.getElementById("contenido").onkeyup = function(e) {
+            //   let valor = e.target.value;
+
+            // if(valor.length == 0){
+            //   document.getElementById("caracteres").innerText = "0/2000";
+            // }else{
+            //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+            // }
+            //   // document.getElementById("empresa").value = this.value;
+            // };
+
+
+            // document.getElementById("btnGuardarncf").onclick = function(e) {
+            //   // limpiarCamposncf();
+            //   $('#modalncf').modal('show');
+            //   // $('#ModalHistorialCita').modal('hide');
+            //   // document.getElementById("empresa").value = this.value;
+            // };
+
+            // document.getElementById("btnGuardar").onclick = function (e) {
+
+            //     let id = document.getElementById("id").value;
+            //     let descripcion = document.getElementById("descripcion").value;
+            //     let tipo_ncf = document.getElementById("tipo_ncf").value;
+            //     let parte_fija = document.getElementById("parte_fija").value;
+            //     let estado = document.getElementById("estado").value;
+
+            //     $('#modalncf').modal('hide');
+            //     ///id/:codigo/:descripcion/:referencia/:factor_conversion/:existencia/:precio_compra/:precio_venta/:itbis/:descuento/:margen_ganancia/:cantidad_minima/:cantidad_maxima/:ubicacion/:color/:id_estado/:idmarca/:idcategoria
+            //     //   $.post(`/ncf/save_or_update/${id}/${descripcion}/${tipo_ncf}/${parte_fija}/${estado}`, function (data) {
+            //     //     ncfList("aaaaaaaaaaaa",'1')
+            //     //     // alert(data);
+            //     //     if(data =="ncf actualizado correctamente"){
+            //     //           Swal.fire({
+            //     //           position: 'top-end',
+            //     //           icon: 'success',
+            //     //           title: data,
+            //     //           showConfirmButton: false,
+            //     //           timer: 4000
+            //     //         })
+            //     //       }
+
+            //     //       if(data =="ncf guardado correctamente"){
+            //     //           Swal.fire({
+            //     //           position: 'top-end',
+            //     //           icon: 'success',
+            //     //           title: data,
+            //     //           showConfirmButton: false,
+            //     //           timer: 4000
+            //     //         })
+            //     //       }
+
+            //     //     limpiarCamposncf();
+            //     //     });
+            // };
+
+
+        });
+    </script>
+
+    <style>
+        .active {
+            background-color: yellow;
+        }
+
+        .ancho {
+            max-width: 80%;
+
+        }
+
+        .anchotabla {
+            max-width: 95%;
+
+        }
+    </style>
+    <%- include('partials/_footer') %>

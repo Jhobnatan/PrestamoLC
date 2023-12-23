@@ -1,0 +1,342 @@
+<%- include('partials/_header_facturacion') %>
+
+            <div class="containere mx-5 pt-5">
+                <div class="row">
+                    <div class="col-md-12">
+                      
+                    <div class="card">
+                      <div class="card-header text-black">
+                          <h5>LISTA DE SUPLIDORES</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="col-12 mt-3 d-flex text-right">
+                          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                          <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar" placeholder="Ingrese Nombre o descripción" >
+                          <% if(accesos.crear_empleado) {%>
+                            <button class="btn btn-primary col-md-2 py-3" id="btnCrearSuplidor" type="button">Crear suplidor</button>
+                          <% } %>
+                        </div>
+                        <div class="col-12 mt-2 text-right">
+                          <label for="inputEmail4" class="form-label text-black" style="color: black; font-size: 20px;">Total de registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>EMPRESA</th>
+                        <th>RNC</th>
+                        <th>DIRECCIÓN</th>
+                        <th>TELÉFONO</th>
+                        <th>EXT</th>
+                        <th>REPRESENTANTE</th>
+                        <th>FLOTA</th>
+                        <th>FECHA REGISTRO</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_suplidor">
+                    
+                </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+            </div>
+                      </div>
+                  </div>
+                        
+            
+<!-- Modal para cambiar la imagen del cliente-->
+  <div class="modal fade" id="modalSuplidor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <!-- Modal body -->
+     
+        <div class="card">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Suplidor</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="card-body col-md-12">
+              <div class="col-md-10" style="margin:0 auto">
+                  <form class="row g-3" action="suplidor/add" method="post">
+                    <div class="col-12">
+                      <input type="text" class="form-control d-none" name="no_suplidor" id="no_suplidor" value="0" placeholder="">
+                      <label for="inputAddress2" class="form-label text-black">Empresa</label>
+                      <input type="text" class="form-control" name="empresa" id="empresa" maxlength="100" placeholder="">
+                    </div>
+
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label text-black">RNC</label>
+                      <input type="text" class="form-control" name="rnc" id="rnc" maxlength="100" placeholder="">
+                    </div>
+
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label text-black">Dirección</label>
+                      <input type="text" class="form-control" name="direccion" id="direccion" maxlength="100" placeholder="">
+                    </div>
+
+                    <div class="col-md-8">
+                      <label for="inputPassword4" class="form-label text-black">Teléfono</label>
+                      <input type="text" class="form-control" name="telefono" id="telefono" onkeypress="handleMask(event, '999-999-9999')" size=13 value="" placeholder="000-000-0000">
+                    </div>  
+
+                    <div class="col-md-4">
+                      <label for="inputPassword4" class="form-label text-black">Extensión</label>
+                      <input type="number" class="form-control" name="extension" id="extension" maxlength="6" value="" placeholder="">
+                    </div>  
+
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label text-black">Representante</label>
+                      <input type="text" class="form-control" name="representante" id="representante" maxlength="100" placeholder="">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="inputPassword4" class="form-label text-black">Flota<strong style="color: red;">*</strong></label>
+                      <input type="text" class="form-control" name="flota" id="flota" onkeypress="handleMask(event, '999-999-9999')" size=13 placeholder="000-000-0000" value="" required>
+                    </div> 
+                        
+                     <div class="col-12 text-center">
+                       <button type="button" id="btnGuardarSuplidor" class="btn btn-primary col-8 my-3">GUARDAR</button>
+                     </div>
+                   </form>
+                 </div>
+          </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+        </div>
+        
+    </div>
+</div>
+<script >
+
+var modal = document.getElementById('modalSuplidor');
+  var crearSuplidor = document.getElementById('btnCrearSuplidor');
+  // Agregar evento 'click' al elemento previewImg
+  crearSuplidor.addEventListener('click', function() {
+    $('#modalSuplidor').modal('show');;
+  });
+
+  // document.getElementById('').addEventListener('click', function() {
+  //   modal.style.display = "none";
+  // });
+
+  // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  });
+
+   
+function suplidorListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }        
+        
+        suplidorList(valor,inicio)
+    }
+
+function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='suplidorListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='suplidorListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='suplidorListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='suplidorListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='suplidorListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='suplidorListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+
+  function editarsuplidor(id_suplidor) {
+    // alert(id_suplidor)
+    $.get(`/suplidor/buscar_suplidor/${id_suplidor}`, function (data) {
+           document.getElementById("no_suplidor").value = id_suplidor;
+           document.getElementById("empresa").value = data.empresa_sup;
+           document.getElementById("rnc").value = data.rnc_sup;
+           document.getElementById("direccion").value = data.direccion_sup;
+           document.getElementById("telefono").value = data.telefono;
+           document.getElementById("extension").value = data.extension;
+           document.getElementById("representante").value = data.representante;
+           document.getElementById("flota").value = data.flota;
+          $('#modalSuplidor').modal('show');
+        });
+  }
+
+  function limpiarCampossuplidor() {
+           
+    document.getElementById("no_suplidor").value = '0';
+          document.getElementById("nombre").value = '';
+          document.getElementById("descripcion").value = '';
+  }
+
+    
+  function suplidorList(valor, inicio) { // el id que llega es el id del departamento
+
+$.get(`/suplidor/filtro/${valor}/${inicio}`, function (data) {
+    // console.log(data[data.length-1].registros)
+    document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+    var html = "";
+    let k = 1;
+    for(var i =0;i < data.length-1;i++){ 
+          // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+          html +="<tr>";
+            //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_suplidor`, `id_estado`
+            html +="<td>"+ k +"</td>";
+          html +=`<td onclick='editarsuplidor(${data[i].id_suplidor})' style='color:blue;'>`+ data[i].empresa_sup +"</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html +="<td>"+ data[i].rnc_sup +"</td>";
+          html +="<td>"+ data[i].direccion_sup +"</td>";
+          html +="<td>"+ data[i].telefono +"</td>";
+          html +="<td>"+ data[i].extension +"</td>";
+          html +="<td>"+ data[i].representante +"</td>";
+          html +="<td>"+ data[i].flota +"</td>";
+          html +="<td>"+ data[i].fecha_regitro +"</td>";
+               
+          
+          html +="</tr>";  
+              
+          k++;  
+          }
+        
+    var elementTabla_empleado = document.getElementById("tabla_suplidor");
+    elementTabla_empleado.innerHTML = html;
+    cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+});
+
+}
+
+  let paginacion =0;
+window.addEventListener('load', function() {
+  paginacion ='<%- paginacion %>';
+    suplidorList("aaaaaaaaaaaa",'1')
+
+    //   document.getElementById("content").onchange = function(e) {
+    //   let valor = e.target.value;
+    //   var cursorPos = $('#contenido').prop('selectionStart');
+    // var v = $('#contenido').val();
+    // var textBefore = v.substring(0, cursorPos);
+    // var textAfter = v.substring(cursorPos, v.length);
+    // $('#contenido').val(textBefore + valor + textAfter);
+    //   document.getElementById("content").value = 0;
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      suplidorList(valor,'1')
+         // document.getElementById("empresa").value = this.value;
+    };
+
+    // document.getElementById("contenido").onkeyup = function(e) {
+    //   let valor = e.target.value;
+      
+    // if(valor.length == 0){
+    //   document.getElementById("caracteres").innerText = "0/2000";
+    // }else{
+    //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+    // }
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+
+    // document.getElementById("btnGuardarSuplidor").onclick = function(e) {
+    //   // limpiarCampossuplidor();
+    //   $('#modalSuplidor').modal('show');
+    //   // $('#ModalHistorialCita').modal('hide');
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("btnGuardarSuplidor").onclick = function(e) {
+
+      let no_suplidor = document.getElementById("no_suplidor").value;
+      
+      let empresa = document.getElementById("empresa").value;
+      // alert(tipo_suplidor)
+      let rnc = document.getElementById("rnc").value;
+
+      let direccion = document.getElementById("direccion").value;
+      // alert(tipo_suplidor)
+      let telefono = document.getElementById("telefono").value;
+
+      let extension = document.getElementById("extension").value;
+
+      let representante= document.getElementById("representante").value;
+
+      let flota = document.getElementById("flota").value;
+
+      $('#modalSuplidor').modal('hide');
+      ///:id/:empresa_sup/:direccion_sup/:rnc_sup/:representante/:flota/:telefono/:extension
+      $.post(`/suplidor/save_or_update/${no_suplidor}/${empresa}/${direccion}/${rnc}/${representante}/${flota}/${telefono}/${extension}`, function (data) {
+        suplidorList("aaaaaaaaaaaa",'1')
+        // alert(data);
+        if(data =="Suplidor actualizado correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+
+          if(data =="Suplidor guardado correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+    
+        limpiarCampossuplidor();
+        });
+      };
+    
+    
+    });
+</script>
+
+<style>
+  .ancho{
+    max-width: 80%;
+  
+  }
+  </style>
+<%- include('partials/_footer') %>

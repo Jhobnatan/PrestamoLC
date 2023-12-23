@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JHOBROSOFT</title>
+  <link rel="stylesheet" href="https://bootswatch.com/5/spacelab/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.1/css/all.min.css" integrity="sha512-9my9Mb2+0YO+I4PUCSwUYO7sEK21Y0STBAiFEYoWtd2VzLEZZ4QARDrZ30hdM1GlioHJ8o8cWQiy8IAb1hy/Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="/prueba">JHOBROSOFT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">INICIO
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+          <% if(accesos.modulo_cliente){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/cliente">CLIENTES</a>
+            </li>
+            <% } %>
+            <% if(accesos.modulo_facturacion){ %>
+              <li class="nav-item">
+                <a class="nav-link" href="/facturacion">FACTURACIÓN</a>
+              </li>
+              <% } %>
+          <% if(accesos.modulo_permiso){ %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false">PERMISO</a>
+              <div class="dropdown-menu">
+                <% if(1==1){ %>
+                  <a class="dropdown-item" href="/permiso/1">SOLICITUD DE PERMISO - EMPLEADO</a>
+                  <div class="dropdown-divider"></div>
+                  <% } %>
+                    <% if(accesos.modulo_encargado){ %>
+                      <a class="dropdown-item" href="/permiso/2">LISTA DE PERMISOS -ENCARGADO </a>
+                      <div class="dropdown-divider"></div>
+                      <% } %>
+                        <% if(accesos.modulo_reclutamiento){ %>
+                          <a class="dropdown-item" href="/permiso/3">LISTA DE PERMISOS - RRHH</a>
+                          <div class="dropdown-divider"></div>
+                          <% } %>
+
+
+              </div>
+            </li>
+            <% } %>
+
+              <% if(accesos.modulo_reclutamiento){ %>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">RECLUTAMIENTO</a>
+                  <div class="dropdown-menu">
+                    <% if(accesos.modulo_encargado){ %>
+                      <a class="dropdown-item" href="/reclutamiento">RECLUTAMIENTO - ENCARGADO</a>
+                      <div class="dropdown-divider"></div>
+                      <% } %>
+                        <% if(accesos.modulo_reclutamiento){ %>
+                          <a class="dropdown-item" href="/reclutamiento/rrhh">RECLUTAMIENTO - RRHH</a>
+                          <div class="dropdown-divider"></div>
+                          <% } %>
+
+
+                  </div>
+                </li>
+                <% } %>
+
+
+                  <% if(accesos.modulo_negocio){ %>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="false">EMPRESAS</a>
+                      <div class="dropdown-menu">
+                        <% if(accesos.modulo_negocio){ %>
+                          <a class="dropdown-item" href="/negocio">PROSPECTOS</a>
+                          <div class="dropdown-divider"></div>
+                          <% } %>
+
+                            <% if(accesos.modulo_ejecutivo_externo){ %>
+                              <a class="dropdown-item" href="/ejecutivo "> EJECUTIVOS EXTERNOS</a>
+                              <div class="dropdown-divider"></div>
+                              <% } %>
+                                <% if(accesos.modulo_amonestacion){ %>
+                                  <a class="dropdown-item d-none" href="/amonestacion"> AMONESTACIÓN</a>
+                                  <div class="dropdown-divider d-none"></div>
+                                  <% } %>
+
+                      </div>
+                    </li>
+                    <% } %>
+
+                  <% if(accesos.modulo_rrhh){ %>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="false">RRHH</a>
+                      <div class="dropdown-menu">
+                        <% if(accesos.modulo_empleado){ %>
+                          
+                          <a class="dropdown-item" href="/empleado">EMPLEADO</a>
+                          <div class="dropdown-divider"></div>
+                          <% } %>
+                          <% if(accesos.modulo_desarrollo){ %>
+                          
+                            <% if(1==1){ %>
+                              
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                  aria-expanded="false">AJUSTE DE EMPLEADO</a>
+                                <div class="dropdown-menu">
+                                  <% if(1==1){ %>
+                                    <a class="dropdown-item" href="/ajuste_empleado">GERENTE</a>
+                                    <div class="dropdown-divider"></div>
+                                    <% } %>
+                                      <% if(accesos.modulo_encargado){ %>
+                                        <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                        <div class="dropdown-divider"></div>
+                                        <% } %>
+                                          <% if(accesos.modulo_reclutamiento){ %>
+                                            <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                            <div class="dropdown-divider"></div>
+                                            <% } %>
+                  
+                  
+                                </div>
+                              <% } %>
+                            <div class="dropdown-divider"></div>
+                            
+
+                            <% if(accesos.modulo_empleado){ %>
+                          
+                              <% if(1==1){ %>
+                                
+                                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                    aria-expanded="false">PROMOCIÓN DE EMPLEADO</a>
+                                  <div class="dropdown-menu">
+                                    <% if(1==1){ %>
+                                      <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                      <div class="dropdown-divider"></div>
+                                      <% } %>
+                                        <% if(accesos.modulo_encargado){ %>
+                                          <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                          <div class="dropdown-divider"></div>
+                                          <% } %>
+                                            <% if(accesos.modulo_reclutamiento){ %>
+                                              <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                              <div class="dropdown-divider"></div>
+                                              <% } %>
+                    
+                    
+                                  </div>
+                                <% } %>
+                              <div class="dropdown-divider"></div>
+                              <% } %>
+                              <% if(accesos.modulo_empleado){ %>
+                          
+                                <% if(1==1){ %>
+                                  
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                      aria-expanded="false">FIJAR EMPLEADO</a>
+                                    <div class="dropdown-menu">
+                                      <% if(1==1){ %>
+                                        <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                        <div class="dropdown-divider"></div>
+                                        <% } %>
+                                          <% if(accesos.modulo_encargado){ %>
+                                            <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                            <div class="dropdown-divider"></div>
+                                            <% } %>
+                                              <% if(accesos.modulo_reclutamiento){ %>
+                                                <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                <div class="dropdown-divider"></div>
+                                                <% } %>
+                      
+                      
+                                    </div>
+                                  <% } %>
+                                <div class="dropdown-divider"></div>
+                                <% } %>
+
+                                <% if(accesos.modulo_empleado){ %>
+                          
+                                  <% if(1==1){ %>
+                                    
+                                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                        aria-expanded="false">CAMBIO DE EMPRESA</a>
+                                      <div class="dropdown-menu">
+                                        <% if(1==1){ %>
+                                          <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                          <div class="dropdown-divider"></div>
+                                          <% } %>
+                                            <% if(accesos.modulo_encargado){ %>
+                                              <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                              <div class="dropdown-divider"></div>
+                                              <% } %>
+                                                <% if(accesos.modulo_reclutamiento){ %>
+                                                  <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                  <div class="dropdown-divider"></div>
+                                                  <% } %>
+                        
+                        
+                                      </div>
+                                    <% } %>
+                                  <div class="dropdown-divider"></div>
+                                  <% } %>
+
+                                  <% if(accesos.modulo_empleado){ %>
+                          
+                                    <% if(1==1){ %>
+                                      
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                          aria-expanded="false">REQUSICIÓN DE PERSONAL</a>
+                                        <div class="dropdown-menu">
+                                          <% if(1==1){ %>
+                                            <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                            <div class="dropdown-divider"></div>
+                                            <% } %>
+                                              <% if(accesos.modulo_encargado){ %>
+                                                <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                                <div class="dropdown-divider"></div>
+                                                <% } %>
+                                                  <% if(accesos.modulo_reclutamiento){ %>
+                                                    <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <% } %>
+                          
+                          
+                                        </div>
+                                      <% } %>
+                                    <div class="dropdown-divider"></div>
+                                    <% } %>
+                                    <% if(accesos.modulo_empleado){ %>
+                          
+                                      <% if(1==1){ %>
+                                        
+                                          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                            aria-expanded="false">REQUSICIÓN DE SALIDA</a>
+                                          <div class="dropdown-menu">
+                                            <% if(1==1){ %>
+                                              <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                              <div class="dropdown-divider"></div>
+                                              <% } %>
+                                                <% if(accesos.modulo_encargado){ %>
+                                                  <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                                  <div class="dropdown-divider"></div>
+                                                  <% } %>
+                                                    <% if(accesos.modulo_reclutamiento){ %>
+                                                      <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                      <div class="dropdown-divider"></div>
+                                                      <% } %>
+                            
+                            
+                                          </div>
+                                        <% } %>
+                                      <div class="dropdown-divider"></div>
+                                      <% } %>
+                                      <% if(accesos.modulo_empleado){ %>
+                          
+                                        <% if(1==1){ %>
+                                          
+                                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                              aria-expanded="false">RECLASIFICACIÓN DE EMPLEADO</a>
+                                            <div class="dropdown-menu">
+                                              <% if(1==1){ %>
+                                                <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                                <div class="dropdown-divider"></div>
+                                                <% } %>
+                                                  <% if(accesos.modulo_encargado){ %>
+                                                    <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <% } %>
+                                                      <% if(accesos.modulo_reclutamiento){ %>
+                                                        <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <% } %>
+                              
+                              
+                                            </div>
+                                          <% } %>
+                                        <div class="dropdown-divider"></div>
+                                        <% } %>
+                                        <% if(accesos.modulo_empleado){ %>
+                          
+                                          <% if(1==1){ %>
+                                            
+                                              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                                aria-expanded="false">SOLICITUD DE DONATIVOS</a>
+                                              <div class="dropdown-menu">
+                                                <% if(1==1){ %>
+                                                  <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                                  <div class="dropdown-divider"></div>
+                                                  <% } %>
+                                                    <% if(accesos.modulo_encargado){ %>
+                                                      <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                                      <div class="dropdown-divider"></div>
+                                                      <% } %>
+                                                        <% if(accesos.modulo_reclutamiento){ %>
+                                                          <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                          <div class="dropdown-divider"></div>
+                                                          <% } %>
+                                
+                                
+                                              </div>
+                                            <% } %>
+                                          <div class="dropdown-divider"></div>
+                                          <% } %>
+
+                                          <% if(accesos.modulo_encargado){ %>
+                          
+                                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                                                  aria-expanded="false">CAMBIO DE EMPRESA</a>
+                                                <div class="dropdown-menu">
+                                                  <% if(accesos.modulo_encargado){ %>
+                                                    <a class="dropdown-item" href="/empleado">GERENTE</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <% } %>
+                                                      <% if(accesos.modulo_encargado){ %>
+                                                        <a class="dropdown-item" href="/ajuste_empleado">DIRECTOR</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <% } %>
+                                                          <% if(accesos.modulo_rrhh){ %>
+                                                            <a class="dropdown-item" href="/permiso/3">RRHH</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <% } %>
+                                  
+                                  
+                                                </div>
+                                              
+                                            <div class="dropdown-divider"></div>
+                                            <% } %>
+                                            <% } %>           
+                            <% if(accesos.modulo_licencia){ %>
+                              <a class="dropdown-item" href="/licencia"> LICENCIA</a>
+                              <div class="dropdown-divider"></div>
+                              <% } %>
+                                <% if(accesos.modulo_amonestacion){ %>
+                                  <a class="dropdown-item" href="/amonestacion"> AMONESTACIÓN</a>
+                                  <div class="dropdown-divider"></div>
+                                  <% } %>
+
+                      </div>
+                    </li>
+                    <% } %>
+                    <% if(accesos.modulo_configuracion){ %>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="false">CONFIGURACIÓN</a>
+                      <div class="dropdown-menu">
+                        <% if(accesos.modulo_empresa){ %>
+                          <a class="dropdown-item" href="/empresa">EMPRESA</a>
+                          <div class="dropdown-divider"></div>
+                          <% } %>
+                            <% if(accesos.modulo_departamento){ %>
+                              <a class="dropdown-item" href="/departamento">DEPARTAMENTO</a>
+                              <div class="dropdown-divider"></div>
+                              <% } %>
+                                <% if(accesos.modulo_puesto){ %>
+                                  <a class="dropdown-item" href="/puesto">PUESTO</a>
+                                  <div class="dropdown-divider"></div>
+                                  <% } %>
+                                    <% if(accesos.grupo_acceso){ %>
+                                      <a class="dropdown-item" href="/grupo_acceso">GRUPO DE ACCESOS</a>
+                                      <div class="dropdown-divider"></div>
+                                      <% } %>
+
+
+                      </div>
+                    </li>
+                    <% } %>
+                    <% if(accesos.modulo_agenda){ %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/agenda">AGENDA</a>
+                    </li>
+                    <% } %>
+                    <% if(accesos.modulo_desarrollo){ %>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/organigrama">ORGANIGRAMA</a>
+                      </li>
+                      <% } %>
+        </ul>
+        <form class="d-flex ">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                <%= accesos.nom %>
+              </a>
+              <div class="dropdown-menu">
+                  <div class="dropdown-divider"></div>
+            
+                    <a class="dropdown-item" href="/login/logout">CERRAR SESIÓN</a>
+
+              </div>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </nav>
+

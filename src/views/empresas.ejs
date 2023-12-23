@@ -1,0 +1,87 @@
+<%- include('partials/_header') %>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Empresa</h5>
+                    </div>
+                    <div class="card-body col-md-12">
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3" action="empresa/add" method="post">
+                                <div class="col-12">
+                                    <label for="inputAddress2" class="form-label text-black">Nombre de la Empresa</label>
+                                    <input type="text" class="form-control" name="nombre_empresa" id="nombre_empresa" placeholder="American Fidelium Group">
+                                  </div>
+                                  <div class="col-12">
+                                    <label for="inputAddress2" class="form-label text-black">Razón Social</label>
+                                    <input type="text" class="form-control" name="razon_social" id="razon social" placeholder="000000">
+                                  </div>
+                               <div class="col-md-4">
+                                 <label for="inputEmail4" class="form-label text-black">RNC</label>
+                                 <input type="number" class="form-control" name="rnc" id="rnc"  placeholder="0000000">
+                               </div>
+                               <div class="col-md-4">
+                                 <label for="inputPassword4" class="form-label text-black">Teléfono</label>
+                                 <input type="text" class="form-control" name="telefono" id="telefono" placeholder="000-000-0000">
+                               </div>    
+                               
+                               <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Categoria</label>
+                                <select class="form-control" name="categoria" id="categoria" required>
+                                   <option value="0">Seleccione</option>
+                                   <% if(cat) {%>
+                                    <% for(var i =0;i < cat.length;i++){ %>
+                                      <option value="<%= cat[i].id_categoria %>"><%= cat[i].categoria %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+                         
+                               <div class="col-12">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover mt-5">
+                <thead class="bg-dark text-white">
+                    <tr >
+                        <th>No.</th>
+                        <th>EMPRESA</th>
+                        <th>RAZON SOCIAL</th>
+                        <th>RNC</th>
+                        <th>TELEFONO</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(data) {%>
+                    <% for(var i =0;i < data.length;i++){ %>
+                        <tr>
+                            <td><%= i+1 %></td>
+                            <td><%= data[i].nombre_empresa %></td>
+                            <td><%= data[i].razon_social %></td>
+                            <td><%= data[i].rnc %></td>
+                            <td><%= data[i].telefono %></td>
+                            
+                            <td><a href="/empresa/update/<%= data[i].id_empresa %>" class="btn btn-info">UPDATE</a></td>
+                        </tr>
+
+
+                     <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+
+<%- include('partials/_footer') %>

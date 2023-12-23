@@ -1,0 +1,292 @@
+<%- include('partials/_header_facturacion') %>
+
+            <div class="container pt-5">
+                <div class="row">
+                    <div class="col-md-12">
+                      
+                    <div class="card">
+                      <div class="card-header text-black">
+                          <h5>LISTA DE CATEGORIAS</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="col-12 mt-3 d-flex text-right">
+                          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                          <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar" placeholder="Ingrese Nombre o descripción" >
+                          <% if(accesos.crear_empleado) {%>
+                            <button class="btn btn-primary col-md-2 py-3" id="btnCrearCategoria" type="button">Crear categoria</button>
+                          <% } %>
+                        </div>
+                        <div class="col-12 mt-2 text-right">
+                          <label for="inputEmail4" class="form-label text-black" style="color: black; font-size: 20px;">Total de registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_categoria">
+                    
+                </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+            </div>
+                      </div>
+                  </div>
+                        
+            
+<!-- Modal para cambiar la imagen del cliente-->
+  <div class="modal fade" id="modalCategoria" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <!-- Modal body -->
+     
+        <div class="card">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Categoria</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="card-body col-md-12">
+              <div class="col-md-10" style="margin:0 auto">
+                  <form class="row g-3" action="categoria/add" method="post">
+                    <div class="col-12">
+                      <input type="text" class="form-control d-none" name="no_categoria" id="no_categoria" value="0" placeholder="">
+                      <label for="inputAddress2" class="form-label text-black">Nombre</label>
+                      <input type="text" class="form-control" name="nombre" id="nombre" maxlength="100" placeholder="">
+                    </div>
+
+                    <div class="col-12"> 
+                      <label for="inputAddress2" class="form-label text-black">Descripción</label>
+                      <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="200" placeholder="">
+                    </div>
+                        
+                     <div class="col-12 text-center">
+                       <button type="button" id="btnGuardarCategoria" class="btn btn-primary col-8 my-3">GUARDAR</button>
+                     </div>
+                   </form>
+                 </div>
+          </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+        </div>
+        
+    </div>
+</div>
+<script >
+
+var modal = document.getElementById('modalCategoria');
+  var crearCategoria = document.getElementById('btnCrearCategoria');
+  // Agregar evento 'click' al elemento previewImg
+  crearCategoria.addEventListener('click', function() {
+    $('#modalCategoria').modal('show');;
+  });
+
+  // document.getElementById('').addEventListener('click', function() {
+  //   modal.style.display = "none";
+  // });
+
+  // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  });
+
+   
+function categoriaListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }        
+        
+        categoriaList(valor,inicio)
+    }
+
+function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='categoriaListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='categoriaListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='categoriaListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='categoriaListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='categoriaListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='categoriaListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+
+  function editarcategoria(id_categoria) {
+    // alert(id_categoria)
+    $.get(`/categoria/buscar_categoria/${id_categoria}`, function (data) {
+           document.getElementById("no_categoria").value = id_categoria;
+          document.getElementById("nombre").value = data.nombre;
+          document.getElementById("descripcion").value = data.descripcion;
+          $('#modalCategoria').modal('show');
+        });
+  }
+
+  function limpiarCamposcategoria() {
+           
+    document.getElementById("no_categoria").value = '0';
+          document.getElementById("nombre").value = '';
+          document.getElementById("descripcion").value = '';
+  }
+
+    
+  function categoriaList(valor, inicio) { // el id que llega es el id del departamento
+
+$.get(`/categoria/filtro/${valor}/${inicio}`, function (data) {
+    // console.log(data[data.length-1].registros)
+    document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+    // alert('entro a mi ruta'+data[0].nombre_persona_suc)
+    var html = "";
+    let k = 1;
+    for(var i =0;i < data.length-1;i++){ 
+          // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+          html +="<tr>";
+            //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_categoria`, `id_estado`
+            html +="<td>"+ k +"</td>";
+          html +=`<td onclick='editarcategoria(${data[i].id_categoria})' style='color:blue;'>`+ data[i].nombre +"</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html +="<td>"+ data[i].descripcion +"</td>";
+               
+          
+          html +="</tr>";  
+              
+          k++;  
+          }
+        
+    var elementTabla_empleado = document.getElementById("tabla_categoria");
+    elementTabla_empleado.innerHTML = html;
+    cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+});
+
+}
+
+  let paginacion =0;
+window.addEventListener('load', function() {
+  paginacion ='<%- paginacion %>';
+    categoriaList("aaaaaaaaaaaa",'1')
+
+    //   document.getElementById("content").onchange = function(e) {
+    //   let valor = e.target.value;
+    //   var cursorPos = $('#contenido').prop('selectionStart');
+    // var v = $('#contenido').val();
+    // var textBefore = v.substring(0, cursorPos);
+    // var textAfter = v.substring(cursorPos, v.length);
+    // $('#contenido').val(textBefore + valor + textAfter);
+    //   document.getElementById("content").value = 0;
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      categoriaList(valor,'1')
+         // document.getElementById("empresa").value = this.value;
+    };
+
+    // document.getElementById("contenido").onkeyup = function(e) {
+    //   let valor = e.target.value;
+      
+    // if(valor.length == 0){
+    //   document.getElementById("caracteres").innerText = "0/2000";
+    // }else{
+    //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+    // }
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+
+    // document.getElementById("btnGuardarCategoria").onclick = function(e) {
+    //   // limpiarCamposcategoria();
+    //   $('#modalCategoria').modal('show');
+    //   // $('#ModalHistorialCita').modal('hide');
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("btnGuardarCategoria").onclick = function(e) {
+
+      let no_categoria = document.getElementById("no_categoria").value;
+      
+      let nombre = document.getElementById("nombre").value;
+      // alert(tipo_categoria)
+      let descripcion = document.getElementById("descripcion").value;
+      $('#modalCategoria').modal('hide');
+      
+      $.post(`/categoria/save_or_update/${no_categoria}/${nombre}/${descripcion}`, function (data) {
+        categoriaList("aaaaaaaaaaaa",'1')
+        // alert(data);
+        if(data =="Categoria actualizada correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+
+          if(data =="Categoria guardada correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+    
+        limpiarCamposcategoria();
+        });
+      };
+    
+    
+    });
+
+  
+</script>
+
+<style>
+  .ancho{
+    max-width: 80%;
+  
+  }
+  </style>
+<%- include('partials/_footer') %>

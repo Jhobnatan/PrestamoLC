@@ -1,0 +1,166 @@
+<!-- index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Video Chat</title>
+    <style>
+      .video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#local-video {
+    width: 40%;
+    margin-right: 10px;
+    transform: scaleX(-1);
+}
+
+#remote-videos {
+    display: flex;
+    flex-wrap: wrap;
+    transform: scaleX(-1);
+}
+
+#remote-videos video {
+    width: 25%;
+    margin: 10px;
+}
+
+#message-form, #file-form {
+    display: flex;
+    margin-top: 20px;
+}
+
+#message-input, #file-input {
+    width: 70%;
+}
+
+#send-button, #upload-button {
+    margin-left: 10px;
+}
+
+
+
+
+#file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#file-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  display: flex;
+  align-items: center;
+}
+
+#file-list li a {
+  flex-grow: 1;
+  text-decoration: none;
+  color: #333;
+}
+
+#file-list li button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#file-list li button:hover {
+  background-color: #3e8e41;
+}
+
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video id="local-video" autoplay muted></video>
+        <div id="remote-videos"></div>
+    </div>
+
+    <form id="message-form">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button type="button" id="send-button">Send</button>
+    </form>
+
+    <form id="file-form">
+        <input type="file" id="file-input">
+        <button type="button" id="upload-button">Upload</button>
+    </form>
+
+    <ul id="file-list"></ul>
+
+    <!-- <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script> -->
+    <script >
+      const socket = io();
+let localStream;
+const remoteVideosContainer = document.getElementById('remote-videos');
+const messageForm = document.getElementById('message-form');
+const messageInput = document.getElementById('message-input');
+const fileForm = document.getElementById('file-form');
+const fileInput = document.getElementById('file-input');
+
+// Generate a random ID for the client
+const clientId = Math.floor(Math.random() * 1000000000);
+
+// Get access to the camera and microphone
+navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then((stream) => {
+        // Show the local video stream in the local video element
+        const localVideo = document.getElementById('local-video');
+        localVideo.srcObject = stream;
+        localStream = stream;
+
+        // Tell the server that a new client has joined
+        socket.emit('new-client', { id: clientId });
+
+        // Listen for incoming stream from other clients
+        socket.on('new-stream', ({ id, stream }) => {
+            // Create a new video element for the remote stream
+            const remoteVideo = document.createElement('video');
+            remoteVideo.srcObject = stream;
+            remoteVideo.autoplay = true;
+
+            // Add the new video element to the container
+            remoteVideosContainer.appendChild(remoteVideo);
+        });
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
+// Listen for incoming messages from the server
+socket.on('new-message', ({ id, message }) => {
+    console.log(`Received message from client ${id}: ${message}`);
+});
+
+// Listen for incoming files from the server
+socket.on('new-file', ({ id, fileName, fileUrl }) => {
+  console.log(`Received new file: ${fileName} with ID ${id}`);
+  
+  // Add new file to the file list
+  const fileList = document.getElementById('file-list');
+  const li = document.createElement('li');
+  li.innerHTML = `
+    <a href="${fileUrl}" target="_blank">${fileName}</a>
+    <button onclick="downloadFile('${fileUrl}')">Download</button>
+  `;
+  fileList.appendChild(li);
+});
+
+    </script>
+</body>
+</html>

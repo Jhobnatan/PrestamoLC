@@ -1,0 +1,2073 @@
+<%- include('partials/_header_facturacion') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.7.21/jquery.zoom.min.js"></script>
+
+            <div class="containere mx-5 pt-5">
+                <div class="row">
+                    <div class="col-md-12">
+                      
+                    <div class="card">
+                      <div class="card-header text-black">
+                          <h5>LISTA DE ODENES</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="col-12 mt-3 d-flex text-right">
+                          
+                          <% if(accesos.crear_empleado) {%>
+                            <button class="btn btn-warning col-md-2 py-3 mx-2" id="btnCrearOrdenDeCompra" type="button">Crear orden de compra</button>
+                          <% } %>
+                      
+                          <% if(accesos.crear_empleado) {%>
+                            <button class="btn btn-success col-md-2 py-3 mx-2" id="btnIngresarProducto" type="button">Ingresar producto</button>
+                          <% } %>
+                        </div>
+
+                        <div class="col-12 mt-3 d-flex text-right">
+                          <label for="buscar" class="form-label text-black">Buscar:</label>
+                          <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar" placeholder="Ingrese código, descripción ó referencia" >
+  
+                        </div>
+                        <div class="col-12 mt-2 text-right">
+                          <label for="buscar" class="form-label text-black" style="color: black; font-size: 20px;">Total de registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-dark text-white">
+                    <tr>
+                     
+                        <th>No.</th>
+                        <th>ORDEN</th>
+                        <th>SIPLIDOR</th>
+                        <th>RNC</th>                        
+                        <th>REPRESENTANTE</th>
+                        <th>CONDICIÓN</th>
+                        <th>FECHA_REQUERIDA</th>
+                        <th>FECHA_PEDIDO</th>
+                        <th>EMPLEADO</th>
+                        <th>ACCIÓN</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_producto">
+                    
+                </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+            </div>
+                      </div>
+                  </div>
+                        
+            
+<!-- Modal para cambiar la imagen del cliente-->
+
+<!-- Modal para cambiar la imagen del cliente-->
+<div class="modal fade" id="modalCrearOrdenDeCompra" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered anchotabla" role="document">
+  <div class="modal-content ">
+    
+    <!-- Modal body -->
+   
+      <div class="card col-md-12 fixed-top">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Crear orden de compra</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div class="card-body col-md-12">
+            <div class="col-md-12" style="margin:0 auto">
+                <form class="row g-2" action="producto/add" method="post">
+                  <div class="row col-md-12 sticky-top">
+                    <div class="col-md-9">
+                      <div class="col-md-12 table-responsive" style="max-height: 500px; overflow-y: auto;">
+                      <table class="table table-bordered table-hover" id="tablaDatos">
+                          <thead class="bg-dark text-white">
+                  <tr>
+                   
+                      <th>No.</th>
+                      <th>CÓDIGO</th>
+                      <th>DESCRIPCIÓN</th>
+                      <th>REFERENCIA</th>
+                      <th>EXISTENCIA</th>
+                      <th>CANTIDAD</th>
+                      <th>PROCESAR</th>
+                      <th>ELIMINAR</th>
+                  </tr>
+              </thead>
+              <tbody id="tabla_producto_orden">
+                  
+              </tbody>
+          </table>
+        </div>           
+                          
+                       
+                      <!-- /////////////////// -->
+                    </div>
+                    <div class="col-md-3">
+                      <div class="card">
+                        <div class="card-header">
+                          <h5 id="suplidorNumeroDeOrden" class="card-title">Datos del suplidor</h5>
+                        </div>
+                        <div class="card-body row g-2">
+                          
+                            <div class="col-md-12">
+                              <input type="text" class="form-control d-none" name="no_suplidor" id="no_suplidor" value="0" placeholder="">
+                              <input type="text" class="form-control d-none" name="no_orden" id="no_orden" value="0" placeholder="">
+                              <label for="empresa" class="form-label text-black">Empresa</label>
+                              <input type="text" class="form-control" name="empresa" id="empresa" maxlength="100" placeholder="" readonly>
+                            </div>
+                
+                            <div class="col-md-12">
+                              <label for="direccion" class="form-label text-black">Dirección</label>
+                              <input type="text" class="form-control" name="direccion" id="direccion" maxlength="100" placeholder="" readonly>
+                            </div>
+
+                            <div class="col-md-8">
+                              <label for="telefono" class="form-label text-black">Teléfono</label>
+                              <input type="text" class="form-control" name="telefono" id="telefono" onkeypress="handleMask(event, '999-999-9999')" size=13 value="" placeholder="000-000-0000" readonly>
+                            </div>  
+        
+                            <div class="col-md-4">
+                              <label for="extension" class="form-label text-black">Extensión</label>
+                              <input type="number" class="form-control" name="extension" id="extension" maxlength="6" value="" placeholder="" readonly>
+                            </div>  
+        
+                            <div class="col-md-12">
+                              <label for="representante" class="form-label text-black">Representante</label>
+                              <input type="text" class="form-control" name="representante" id="representante" maxlength="100" placeholder="" readonly>
+                            </div>
+        
+                            <div class="col-md-12">
+                              <label for="flota" class="form-label text-black">Flota<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="flota" id="flota" onkeypress="handleMask(event, '999-999-9999')" size=13 placeholder="000-000-0000" value="" readonly>
+                            </div> 
+                                
+                             <div class="col-md-12 text-center pt-1">
+                               <button type="button" id="btnBuscarSuplidor" class="btn btn-info col-md-12 my-3">BUSCAR SUPLIDOR</button>
+                             </div>
+
+
+
+                             <div class="col-md-12 text-center pt-3">
+                              <div class="col-md-12 d-flex text-center">
+                                <input type="text" class="form-control ml-5 mx-2 col" name="codigoProducto" id="codigoProducto" pattern="[a-zA-Z0-9-]+" title="Ingrese solo números, letras y guiones" placeholder="Código del producto" disabled>        
+                              </div>
+                            </div>
+
+                            <div class="col-md-12 text-center pt-1">
+                              <button type="button" id="btnBuscarProducto" class="btn btn-success col-md-12" disabled>BUSCAR PRODUCTO</button>
+                            </div>
+
+                            <div class="col-md-12 text-center py-1">
+                              <button type="button" id="btnProcesarOrden" class="btn btn-primary col-12 " disabled>PROCESAR ORDEN</button>
+                            </div>
+                            <div class="col-md-12 text-center py-1">
+                              <button type="button" id="btnCancelar" class="btn btn-secondary col-12 close" data-dismiss="modal" aria-label="Close">CERRAR</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <script>
+              
+                      document.getElementById('btnBuscarProducto').addEventListener('click', function() {
+                        
+                        $('#modalBuscarProducto').modal('show');
+                      });
+
+                      document.getElementById('btnBuscarSuplidor').addEventListener('click', function() {
+                        
+                        $('#modalBuscarSuplidor').modal('show');
+                      });
+
+                      document.getElementById('btnProcesarOrden').addEventListener('click', function() {
+                        
+                        $('#modalProcesarOrden').modal('show');
+                      });
+
+  //                     document.getElementById('btnProcesarOrden').addEventListener('click', function() {
+                        
+  //                       // document.getElementById('tabla_producto_orden')
+  //                       var tabla = document.getElementById('tabla_producto_orden');
+  // var filas = tabla.getElementsByTagName('tr');
+  // var datos = [];
+
+  // // Recorrer las filas de la tabla (omitir la primera fila de encabezados)
+  // for (var i = 1; i < filas.length; i++) {
+  //   var checkbox = filas[i].querySelector('.fila-checkbox');
+  //   if (checkbox.checked) {
+  //     var celdas = filas[i].getElementsByTagName('td');
+  //     var filaDatos = {
+  //       id: celdas[1].innerText,
+  //       nombre: celdas[2].innerText,
+  //       descripcion: celdas[3].innerText
+  //     };
+  //     datos.push(filaDatos);
+  //   }
+  // }
+
+  // var datosJSON = JSON.stringify(datos);
+  // console.log(datosJSON);
+                        
+  //                     });
+
+ 
+
+                      
+                    </script>
+                    <!-- ///////////////////////////////////////////////////// -->
+                  </div>
+                    
+
+                    
+                    
+                  
+                 </form>
+                 
+                 </div>
+               </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+<!-- ///////////////////////////////MODAL PARA INGRESAR PRODUCTOS/////////////////////////////////////// -->
+
+<!-- Modal para cambiar la imagen del cliente-->
+<div class="modal fade" id="modalIngresoProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ancho" role="document">
+  <div class="modal-content ">
+    
+    <!-- Modal body -->
+   
+      <div class="card">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Ingreso de Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="card-body col-md-12">
+            <div class="col-md-10" style="margin:0 auto">
+                <form class="row g-3" action="producto/add" method="post">
+                  
+                  <div class="col-md-4">
+                    <input type="text" class="form-control d-none" name="no_producto" id="no_producto" value="0" placeholder="">
+                    <label for="codigo" class="form-label text-black">Código</label>
+                    <input type="text" class="form-control" name="codigo" id="codigo" maxlength="100" placeholder="">
+                  </div>
+                 
+                  <div class="col-8">
+                    <label for="descripcion" class="form-label text-black">Descripción</label>
+                    <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="referencia" class="form-label text-black">Referencia</label>
+                    <input type="text" class="form-control" name="referencia" id="referencia" value="" placeholder="">
+                  </div>  
+
+                  <div class="col-md-4">
+                    <label for="factor_conversion" class="form-label text-black">Factor de Conversión</label>
+                    <input type="text" class="form-control" name="factor_conversion" id="factor_conversion" maxlength="6" value="" placeholder="">
+                  </div>  
+
+                  <div class="col-md-4">
+                    <label for="existencia" class="form-label text-black">Existencia</label>
+                    <input type="text" class="form-control" name="existencia" id="existencia" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="precio_compra" class="form-label text-black">Precio de compra</label>
+                    <input type="text" class="form-control" name="precio_compra" id="precio_compra" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="precio_detalle" class="form-label text-black">Precio de detalle</label>
+                    <input type="text" class="form-control" name="precio_detalle" id="precio_detalle" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="precio_al_por_mayor" class="form-label text-black">Precio al por mayor</label>
+                    <input type="text" class="form-control" name="precio_al_por_mayor" id="precio_al_por_mayor" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="precio_especial" class="form-label text-black">Precio especial</label>
+                    <input type="text" class="form-control" name="precio_especial" id="precio_especial" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="itbis" class="form-label text-black">Itbis</label>
+                    <input type="text" class="form-control" name="itbis" id="itbis" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="descuento" class="form-label text-black">Descuento</label>
+                    <input type="text" class="form-control" name="descuento" id="descuento" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="margen_ganancia" class="form-label text-black">Margen de ganancia</label>
+                    <input type="text" class="form-control" name="margen_ganancia" id="margen_ganancia" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="cantidad_minima" class="form-label text-black">Cantidad mínima</label>
+                    <input type="text" class="form-control" name="cantidad_minima" id="cantidad_minima" maxlength="100" placeholder="">
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <label for="cantidad_maxima" class="form-label text-black">Cantidad máxima</label>
+                    <input type="text" class="form-control" name="cantidad_maxima" id="cantidad_maxima" maxlength="100" placeholder="">
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="ubicacion" class="form-label text-black">Ubicación</label>
+                    <input type="text" class="form-control" name="ubicacion" id="ubicacion" maxlength="200" placeholder="Dónde colocaste el producto">
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <label for="marca" class="form-label text-black">Marca <strong style="color: red;">*</strong></label>
+                    <select class="form-control" name="marca" id="marca" required>
+                       <option value="">Seleccione</option>
+                        <% if(marca) {%>
+                          <% for(var i =0;i < marca.length;i++){ %>
+                              <option value="<%= marca[i].id_marca %>"><%= marca[i].nombre %></option>
+                             
+                           <% } %>
+                          <% } %>
+                     </select>
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <label for="categoria" class="form-label text-black">Categoría <strong style="color: red;">*</strong></label>
+                    <select class="form-control" name="categoria" id="categoria" required>
+                       <option value="">Seleccione</option>
+                        <% if(categoria) {%>
+                          <% for(var i =0;i < categoria.length;i++){ %>
+                              <option value="<%= categoria[i].id_categoria %>"><%= categoria[i].nombre %></option>
+                             
+                           <% } %>
+                          <% } %>
+                     </select>
+                  </div>
+                  
+                  <div class="col-md-4">
+                    <label for="estado" class="form-label text-black">Estado <strong style="color: red;">*</strong></label>
+                    <select class="form-control" name="estado" id="estado" required>
+                       <option value="">Seleccione el Estado</option>
+                        <% if(est) {%>
+                          <% for(var i =0;i < est.length;i++){ %>
+                              <option value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                             
+                           <% } %>
+                          <% } %>
+                     </select>
+                  </div>
+                      
+                   <div class="col-md-12 text-center py-5">
+                     <button type="button" id="btnGuardarProducto" class="btn btn-primary col-4 ">GUARDAR</button>
+                   </div>
+                 </form>
+                 <div class="col-md-12">
+                  <div class="card-header mt-5 bg-dark text-white">
+                    <h5><strong>Galeria</strong></h5>
+                </div>
+                    <div id="galeriaContainer" class="col-md-12">
+                      
+
+                      <div class="gallery">
+                        <div class="thumbnail-container">
+
+                          <img class="thumbnail" src="https://media.istockphoto.com/id/513920379/es/foto/l%C3%A1mparas-de-cebolla.jpg?s=612x612&w=0&k=20&c=Rb3mq1i6rCUUIzVtKVQkciKarVF_C4JWJLoz3Cfnr_E=">
+                          <img class="thumbnail" src="https://agroactivocol.com/wp-content/uploads/2020/07/cebolla-yellow-1.jpg">
+                          <img class="thumbnail" src="data:image/jpeg;base64,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">
+
+                        </div>
+                        <div class="main-image-container position-relative d-flex justify-content-center align-items-center" style="width: 60vw; height: 600px;">
+                          <div class="text-center col-md-12 laimagen">
+                            <img id="main-image" class="img-fluid mx-5" src="https://media.istockphoto.com/id/513920379/es/foto/l%C3%A1mparas-de-cebolla.jpg?s=612x612&w=0&k=20&c=Rb3mq1i6rCUUIzVtKVQkciKarVF_C4JWJLoz3Cfnr_E=">
+                          </div>
+                          <div id="zoom-container" class="position-absolute top-50 start-50 translate-middle">
+                            <button class="btn btn-outline-primary" id="zoom-in">Zoom +</button>
+                            <button class="btn btn-outline-primary" id="zoom-reset">Reset</button>
+                            <button class="btn btn-outline-primary" id="zoom-out">Zoom -</button>
+                          </div>
+                        </div>
+                        
+                      </div>
+                      
+<script>
+// // Obtener elementos HTML
+// const imageContainer = document.getElementById('main-image-container');
+// const image = document.getElementById('main-image');
+// const zoomInButton = document.getElementById('zoom-in');
+// const zoomResetButton = document.getElementById('zoom-reset');
+// const zoomOutButton = document.getElementById('zoom-out');
+
+// // Definir variables
+// let scale = 1;
+// let zoom = '+';
+
+// // Función para obtener las coordenadas del clic en relación a la imagen
+// function getClickCoordinates(event) {
+// const rect = image.getBoundingClientRect();
+// const offsetX = event.clientX - rect.left;
+// const offsetY = event.clientY - rect.top;
+// return { x: offsetX, y: offsetY };
+// }
+
+// // Función para controlar el zoom
+// function handleZoom(event) {
+// const { x, y } = getClickCoordinates(event);
+
+// if (zoom === '+') {
+//   if (scale < 2) {
+//     scale += 0.1;
+//     image.style.transformOrigin = `${x}px ${y}px`;
+//     image.style.transform = `scale(${scale})`;
+//   }
+// } else {
+//   if (scale > 0.5) {
+//     scale -= 0.1;
+//     image.style.transformOrigin = `${x}px ${y}px`;
+//     image.style.transform = `scale(${scale})`;
+//   }
+// }
+// }
+
+// // Agregar eventos a los botones de zoom
+// image.addEventListener('click', function(event) {
+// handleZoom(event);
+// });
+
+// zoomResetButton.addEventListener('click', function() {
+// scale = 1;
+// image.style.transformOrigin = 'center center';
+// image.style.transform = 'scale(1)';
+// });
+
+// zoomInButton.addEventListener('click', function(event) {
+// zoom = '+';
+// });
+
+// zoomOutButton.addEventListener('click', function(event) {
+// zoom = '-';
+// });
+
+</script>
+<form class="row g-3 pb-5" action="/cliente/update/id_producto/0" enctype="multipart/form-data" method="post">
+<div class="col-md-4">
+  <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="producto" required>
+  <input type="hidden" class="form-control" name="id" id="id">
+</div>
+<div class="col-md-4">
+<label class="form-control">
+  <input type="file" style="display:none;" name="file" id="file" accept=".png, .jpeg, .jpg">
+  Seleccionar imagen
+</label>
+</div>
+
+<div class="col-md-4 text-center ">
+  <div id="message"></div>
+  <button type="button" id="btnGuardarProducto" class="btn btn-primary col-4 ">SUBIR</button>
+</div>
+</form>
+<div id="image-preview"></div>
+                    </div> 
+                    
+                    
+
+                  
+                 
+<script>
+
+</script>
+                 </div>
+               </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+
+
+
+
+<!-- ///////////////////////////////MODAL PARA INGRESAR PRODUCTOS/////////////////////////////////////// -->
+
+<!-- Modal para cambiar la imagen del cliente-->
+<div class="modal fade" id="modalRecibirOrden" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered anchotablafull" role="document">
+  <div class="modal-content ">
+    
+    <!-- Modal body -->
+   
+      <div class="card">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Recibir Orden</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="card-body col-md-12">
+            <div class="col-md-12" style="margin:0 auto">
+                <form class="row" action="producto/add" method="post">
+                  
+                  <div class="card col-4">
+                    <div class="card-header">
+                      <h5 id="suplidorNumeroDeOrden" class="card-title">Datos del suplidor</h5>
+                    </div>
+                    <div class="card-body row g-2">
+                      
+                        <div class="col-md-12">
+                          <input type="text" class="form-control d-none" name="no_suplidorp" id="no_suplidorp" value="0" placeholder="">
+                          <input type="text" class="form-control d-none" name="no_ordenp" id="no_ordenp" value="0" placeholder="">
+                          <label for="empresa" class="form-label text-black">Empresa</label>
+                          <input type="text" class="form-control" name="empresap" id="empresap" maxlength="100" placeholder="" readonly>
+                        </div>
+            
+                        <div class="col-md-12">
+                          <label for="direccion" class="form-label text-black">Dirección</label>
+                          <input type="text" class="form-control" name="direccionp" id="direccionp" maxlength="100" placeholder="" readonly>
+                        </div>
+
+                        <div class="col-md-8">
+                          <label for="telefono" class="form-label text-black">Teléfono</label>
+                          <input type="text" class="form-control" name="telefonop" id="telefonop" onkeypress="handleMask(event, '999-999-9999')" size=13 value="" placeholder="000-000-0000" readonly>
+                        </div>  
+    
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Extensión</label>
+                          <input type="number" class="form-control" name="extensionp" id="extensionp" maxlength="6" value="" placeholder="" readonly>
+                        </div>  
+    
+                        <div class="col-md-12">
+                          <label for="representante" class="form-label text-black">Representante</label>
+                          <input type="text" class="form-control" name="representantep" id="representantep" maxlength="100" placeholder="" readonly>
+                        </div>
+    
+                        <div class="col-md-12">
+                          <label for="flota" class="form-label text-black">Flota<strong style="color: red;">*</strong></label>
+                          <input type="text" class="form-control" name="flotap" id="flotap" onkeypress="handleMask(event, '999-999-9999')" size=13 placeholder="000-000-0000" value="" readonly>
+                        </div> 
+                         
+                    </div>
+                  </div>
+                
+        
+          
+                  <div class="card col-8">
+                    <div class="card-header">
+                      <h5 id="suplidorNumeroDeOrden" class="card-title">Datos del pedido</h5>
+                    </div>
+                    <div class="card-body row g-2">
+                      
+                        <div class="col-md-4">
+                    
+                          <label for="empresa" class="form-label text-black">Fecha del pedido</label>
+                          <input type="text" class="form-control" name="fecha_pedidop" id="fecha_pedidop" maxlength="100" placeholder="" readonly>
+                        </div>
+            
+                        <div class="col-md-2">
+                          <label for="direccion" class="form-label text-black">Fecha requerida</label>
+                          <input type="text" class="form-control" name="fecha_requeridap" id="fecha_requeridap" maxlength="100" placeholder="" readonly>
+                        </div>
+    
+                        <div class="col-md-2">
+                          <label for="extension" class="form-label text-black">Numero de Orden</label>
+                          <input type="number" class="form-control" name="numero_de_ordenp" id="numero_de_ordenp" maxlength="6" value="" placeholder="" readonly>
+                        </div> 
+    
+    
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Pedido por:</label>
+                          <input type="text" class="form-control" name="pedidoporp" id="pedidoporp" maxlength="100" value="" placeholder="" readonly>
+                        </div> 
+                        
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Comprobante suplidor</label>
+                          <input type="text" class="form-control" name="comprobante_suplidorp" id="comprobante_suplidorp" maxlength="6" value="" placeholder="" required>
+                        </div>    
+                         
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Numero de Factura</label>
+                          <input type="decimal" class="form-control" name="nomero_factura" id="nomero_factura" maxlength="6" value="" placeholder="" required>
+                        </div>  
+    
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Total ITBIS</label>
+                          <input type="decimal" class="form-control" name="total_itbisp" id="total_itbisp" maxlength="6" value="" placeholder="" required>
+                        </div>  
+
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Total Descuento</label>
+                          <input type="decimal" class="form-control" name="total_descuentop" id="total_descuentop" maxlength="6" value="" placeholder="" required>
+                        </div>  
+
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Total importe</label>
+                          <input type="decimal" class="form-control" name="total_importep" id="total_importep" maxlength="6" value="" placeholder="" required>
+                        </div>
+    
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Total pagado</label>
+                          <input type="decimal" class="form-control" name="total_pagadop" id="total_pagadop" maxlength="6" value="" placeholder="" required>
+                        </div> 
+
+                        <div class="col-md-4">
+                          <label for="extension" class="form-label text-black">Monto pendiente</label>
+                          <input type="decimal" class="form-control" name="monto_pendientep" id="monto_pendientep" maxlength="6" value="" placeholder="" required>
+                        </div> 
+
+                        
+              <div class="col-md-4">
+                <label for="condicionp" class="form-label text-black">Condición</label>
+                <select class="form-control" name="condicionp" id="condicionp" required>
+                  <option value="">Seleccione</option>
+                  <option value="credito">Credito</option>
+                  <option value="normal">Normal</option>
+                  <option value="urgente">Urgente</option>
+                  <option value="retrasado">Retrasado</option>
+                  <option value="personalisado">Personalizado</option>
+                  <option value="estpera_stock">En espera de stock</option>
+                  <option value="condiciones_especiales">Condiciones especiales</option>
+                  <option value="pendiente_aprobacion">Pendiente de aprobación</option>
+                  <option value="devolucion_autorizada">Devolución autorizada</option>
+                  <option value="personalisado">Personalizado</option>
+                 </select>
+              </div>
+
+
+              <div class="col-md-4">
+                <label for="estadoOrden" class="form-label text-black">Estado</label>
+                <select class="form-control" name="estadoOrden" id="estadoOrden" required>
+                  <option value="">Seleccione</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="en_proceso">En proceso</option>
+                  <option value="aprobado">Aprobado</option>
+                  <option value="rechazado">Rechazado</option>
+                  <option value="en_transito">En tránsito</option>
+                  <option value="entregado">Entregado</option>
+                  <option value="cancelado">Cancelado</option>
+                  <option value="completado">Completado</option>
+                  <option value="devolucion">Devolución</option>
+                  <option value="esperando_pago">Esperando pago</option>
+                  <option value="en_espera">En espera</option>
+
+                 
+                 </select>
+              </div>
+
+              <div class="col-md-12">
+                <label for="notaOrdenp" class="form-label text-black" >Nota<strong style="color: red;">*</strong></label>
+                <textarea class="col-md-12" name="notaOrdenp" id="notaOrdenp" cols="auto" rows="3" maxlength="225" required></textarea>                                
+              </div>
+
+                      
+                          
+                    </div>
+                  </div>
+                
+        
+          
+                  <div class="row pt-4">
+                    <div class="col-md-4 text-left">
+                      <label for="btnBuscarComponente" class="form-label text-black col-md-12" style="color: black; font-size: 20px;">Cantidad de componentes: <strong id="registrostotalesc" style="color: black; font-size: 20px;"></strong></label>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <button type="button" id="btnBuscarComponente" class="btn btn-info col-md-8 d-none">AGREGAR COMPONENTE</button>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-control" name="estadoOrden" id="estadoOrden" required>
+                        <option value="">Seleccione almacen</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_proceso">En proceso</option>
+                        <option value="aprobado">Aprobado</option>
+                        <option value="rechazado">Rechazado</option>
+                        <option value="en_transito">En tránsito</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                        <option value="completado">Completado</option>
+                        <option value="devolucion">Devolución</option>
+                        <option value="esperando_pago">Esperando pago</option>
+                        <option value="en_espera">En espera</option>
+      
+                       
+                       </select>
+                    </div>
+                  </div>
+                  <table class="table table-bordered table-hover">
+                      <thead class="bg-dark text-white">
+              <tr>
+               
+                  <th>No.</th>
+                  <th>CÓDIGO</th>
+                  <th>DESCRIPCIÓN</th>
+                  <th>REFERENCIA</th>
+                  <th>PEDIDO</th>
+                  <th>CANTIDAD</th>
+                  <th>PENDIENTE</th>
+                  <th>PRECIO COMPRA</th>
+                  <th>DESCUENTO</th>
+                  <th>ITBIS</th>
+                  <th>IMPORTE</th>
+                  <th>FECHA PRODUCCION</th>
+                  <th>FECHA VENCIMIENTO</th>
+                  
+              </tr>
+          </thead>
+          <tbody id="tabla_pedido_list">
+              
+          </tbody>
+      </table>
+      <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      
+                      
+                   <div class="col-md-12 text-center py-2">
+                    
+                   </div>
+                 </form>
+                 
+                 <script>
+                  document.getElementById('btnBuscarComponente').addEventListener('click', function() {
+                    
+                    $('#modalBuscarComponente').modal('show');
+                  });
+                  
+                </script>
+                 </div>
+               </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+
+<!-- Segundo Modal -->
+<div class="modal fade" id="modalBuscarComponente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ancho" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Datos del producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="hidden" class="form-control" id="id_producto_componente">
+          <input type="text" class="form-control" placeholder="Buscar componente" id="buscarComponente" aria-label="Buscar componente" aria-describedby="btnBuscar">
+        </div>
+        <table class="table table-bordered table-hover">
+          <thead class="bg-dark text-white">
+            <tr>
+              <th>No.</th>
+              <th>CÓDIGO</th>
+              <th>DESCRIPCIÓN</th>
+              <th>REFERENCIA</th>
+              <th>EXISTENCIA</th>
+              <th>CANTIDAD</th>
+              <th>ACCIÓN</th>
+            </tr>
+          </thead>
+          <tbody id="tabla_componente">
+            <!-- Aquí se cargarán los resultados de la búsqueda -->
+          </tbody>
+        </table>
+        <script>
+         async function detallePedidoList(id_ingreso,id_suplidor,id_pedido) { // el id que llega es el id del departamento
+
+          $.get(`/orden/ingreso/${id_ingreso}`, function (data) {
+  if (data == "Este ingreso no contiene detalle") {
+    datosDelPedido(id_suplidor, id_pedido);
+  }
+
+  var elementTabla_empleado = document.getElementById("tabla_pedido_list");
+
+  if (data == 'Este producto no contiene componentes') {
+    document.getElementById("precio_costoc").value = '';
+    elementTabla_empleado.innerHTML = "<tr class='text-center'><td colspan='9'>" + data + "</td></tr>";
+  } else {
+    var html = "";
+    let k = 1;
+    let precio = 0;
+
+    for (var i = 0; i < data.length; i++) {
+      html += "<tr>";
+      html += "<td>" + k + "</td>";
+      html += "<td>" + data[i].codigo + "</td>";
+      html += "<td>" + data[i].descripcion + "</td>";
+      html += "<td>" + data[i].referencia + "</td>";
+      html += "<td>" + data[i].cantidad + "</td>";
+      html += "<td contenteditable='true'>" + data[i].cantidad + "</td>";
+      html += "<td></td>";
+      html += "<td contenteditable='true'></td>";
+      html += "<td contenteditable='true'></td>";
+      html += "<td contenteditable='true'></td>";
+      html += "<td ></td>";
+      html += "<td><input type='date' class='fecha-produccion' value='" + (data[i].fecha_produccion || "") + "' ></td>";
+      html += "<td><input type='date' class='fecha-vencimiento' value='" + (data[i].fecha_vencimiento || "") + "' ></td>";
+      
+      html += "<td class = 'd-none'>" + data[i].id_producto + "</td>";
+      html += "</tr>";
+
+      k++;
+      precio += (data[i].precio_compra * data[i].cantidad);
+    }
+
+    elementTabla_empleado.innerHTML = html;
+    document.getElementById("registrostotalesc").innerText = data.length;
+
+    // Agregar eventos de escucha y función de actualización de campos
+    var cantidadFields = document.querySelectorAll("#tabla_pedido_list td:nth-child(6)");
+    cantidadFields.forEach(function (field) {
+      field.addEventListener("input", actualizarCampos);
+    });
+
+    var precioFields = document.querySelectorAll("#tabla_pedido_list td:nth-child(8)");
+    var descuentoFields = document.querySelectorAll("#tabla_pedido_list td:nth-child(9)");
+    var itbisFields = document.querySelectorAll("#tabla_pedido_list td:nth-child(10)");
+
+    precioFields.forEach(function (field) {
+      field.setAttribute("inputmode", "decimal"); // Establecer el atributo inputmode a decimal
+      field.addEventListener("keydown", validarDecimal);
+      field.addEventListener("keydown", actualizarCampos);
+    });
+
+    descuentoFields.forEach(function (field) {
+      field.setAttribute("inputmode", "decimal"); // Establecer el atributo inputmode a decimal
+      field.addEventListener("keydown", validarDecimal);
+      field.addEventListener("keydown", actualizarCampos);
+    });
+
+    itbisFields.forEach(function (field) {
+      field.setAttribute("inputmode", "decimal"); // Establecer el atributo inputmode a decimal
+      field.addEventListener("keydown", validarDecimal);
+      field.addEventListener("keydown", actualizarCampos);
+    });
+
+    // Agregar eventos onchange a los inputs de fecha
+    var fechaProduccionInputs = document.querySelectorAll("#tabla_pedido_list .fecha-produccion");
+    fechaProduccionInputs.forEach(function (input) {
+      input.addEventListener("change", actualizarCampos);
+    });
+
+    var fechaVencimientoInputs = document.querySelectorAll("#tabla_pedido_list .fecha-vencimiento");
+    fechaVencimientoInputs.forEach(function (input) {
+      input.addEventListener("change", actualizarCampos);
+    });
+
+   
+    function validarDecimal(event) {
+  var td = event.target.closest('td'); // Obtener el <td> actual
+  var columnIndex = td.cellIndex; // Obtener el índice de columna (cellIndex)
+
+  var string = td.textContent;
+  var value = string.replace(/\n/g, '');
+  var isValid = /^-?\d*(\.\d{0,2})?$/.test(value);
+
+  if (!isValid) {
+    td.textContent = '';
+  } else {
+    td.textContent = value;
+  }
+
+  if (event.key === 'Enter' && event.target.tagName !== 'INPUT') { // Verificar si se presionó Enter y no es un <input>
+    event.preventDefault(); // Evitar el comportamiento predeterminado del Enter
+
+    // Obtener el siguiente <td> en la misma fila (siguiente columna)
+    // var siguienteTd = td.nextElementSibling;
+
+    // if (!siguienteTd) {
+    //   // Si no hay siguiente <td> en la misma fila, obtener el primer <td> de la siguiente fila
+    //   var siguienteFila = td.parentNode.nextElementSibling;
+    //   siguienteTd = siguienteFila ? siguienteFila.cells[0] : null;
+    // }
+
+    // Si existe un siguiente <td>, establecer el enfoque en él
+    // if (siguienteTd) {
+    //   siguienteTd.focus();
+    // }
+  }
+
+  
+}
+
+// var tabla = document.getElementById('tabla_pedido_list'); // Reemplaza 'tabla_pedido_list' con el ID de tu tabla
+// tabla.addEventListener('keydown', validarDecimal);
+
+
+
+
+
+
+
+
+
+    function actualizarCampos() {
+  var rows = document.querySelectorAll("#tabla_pedido_list tr");
+  var totalITBIS = 0;
+  var totalDescuento = 0;
+  var totalImporte = 0;
+  var focusedField = document.activeElement; // Campo en el que se encuentra el cursor
+  var cursorPosition = getCursorPosition(focusedField); // Obtener la posición del cursor antes de las actualizaciones
+  var cantidadValue = focusedField.textContent; // Valor actual del campo cantidad
+
+  rows.forEach(function (row) {
+    var pedido = parseInt(row.cells[4].textContent);
+    var cantidadField = row.cells[5];    
+    var precioCompra = parseFloat(row.cells[7].textContent) || 0;
+    var descuentoPorcentaje = parseFloat(row.cells[8].textContent) || 0;
+    var itbisPorcentaje = parseFloat(row.cells[9].textContent) || 0;
+
+    let fechaproduccion = row.querySelector(".fecha-produccion").value || null;
+    let fechavencimiento = row.querySelector(".fecha-vencimiento").value || null;
+
+    var cantidad = cantidadField.textContent.trim();
+
+    if (cantidad === "" || isNaN(cantidad)) {
+      cantidadField.textContent = "";
+      cantidad = 0;
+    } else {
+      cantidad = parseInt(cantidad);
+      cantidad = Math.min(cantidad, pedido); // Restringir a ser menor o igual al pedido
+      cantidad = Math.max(cantidad, 0); // Restringir a ser igual o mayor a cero
+      cantidadField.textContent = cantidad;
+    }
+
+    var pendiente = pedido - cantidad;
+    row.cells[6].textContent = pendiente === 0 ? "0" : (pendiente || "0");
+
+    var descuento = (precioCompra * descuentoPorcentaje / 100) * cantidad;
+    var itbis = (precioCompra * itbisPorcentaje / 100) * cantidad;
+    var importe = (precioCompra * cantidad) - descuento + itbis;
+
+    if (isNaN(importe)) {
+      row.cells[10].textContent = "";
+    } else {
+      row.cells[10].textContent = formatearNumero(importe);
+      totalITBIS += itbis;
+      totalDescuento += descuento;
+      totalImporte += importe;
+    }
+
+    let id_almacen = 0;
+    let id_producto = row.cells[13].textContent.trim();
+    let elrow = [id_almacen, pedido, cantidad, (pedido - cantidad), precioCompra, itbis, fechaproduccion, fechavencimiento, descuento, importe, id_ingreso, id_producto];
+
+    if (row.contains(focusedField)) {
+      console.log('datos de el row ' + elrow);
+    }
+  });
+
+  document.getElementById("total_itbisp").value = formatearNumero(totalITBIS);
+  document.getElementById("total_descuentop").value = formatearNumero(totalDescuento);
+  document.getElementById("total_importep").value = formatearNumero(totalImporte);
+
+  focusedField.focus();
+  setCursorPosition(focusedField, cursorPosition);
+
+  if (focusedField.textContent !== cantidadValue && cursorPosition > 0) {
+    setCursorPosition(focusedField, cursorPosition - 1);
+  }
+}
+
+function formatearNumero(numero) {
+  const separadorDecimal = ".";
+  const separadorMiles = ",";
+  const decimales = 2;
+
+  let numeroFormateado = numero.toFixed(decimales).toString();
+
+  let partes = numeroFormateado.split(".");
+  partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, separadorMiles);
+  numeroFormateado = partes.join(separadorDecimal);
+
+  return numeroFormateado;
+}
+
+
+// Función para obtener la posición del cursor en un campo editable
+function getCursorPosition(element) {
+  var position = 0;
+  var isSupported = typeof element.selectionStart === "number";
+  if (isSupported) {
+    position = element.selectionStart;
+  }
+  return position;
+}
+
+// Función para establecer la posición del cursor en un campo editable
+function setCursorPosition(element, position) {
+  var isSupported = typeof element.selectionStart === "number";
+  if (isSupported) {
+    element.focus();
+    element.setSelectionRange(position, position);
+  }
+}
+
+
+
+
+
+
+actualizarCampos();
+
+
+
+
+  }
+});
+
+
+}
+
+function toggleButtonVisibility(input) {
+  var index = input.dataset.index;
+  var button = document.getElementById(`btnAgregar_${index}`);
+
+  if (parseFloat(input.value) > 0) {
+    button.classList.remove("d-none");
+  } else {
+    button.classList.add("d-none");
+  }
+}
+        function productoListComponente(valor, inicio) { // el id que llega es el id del departamento
+
+        $.get(`/producto/filtro/${valor}/${inicio}`, function (data) {
+            // console.log(data[data.length-1].registros)
+            // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+            var html = "";
+            let k = 1;
+            for(var i =0;i < data.length-1;i++){ 
+                  // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                  html +="<tr>";
+                    //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+                    html +="<td>"+ k +"</td>";
+                  html +=`<td>`+ data[i].codigo +"</td>";
+                  // html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].referencia +"</td>";
+                  html +="<td>"+ data[i].existencia +"</td>";
+                  
+                  html += `<td><input type="number" inputmode="decimal" name='cantidadComponente' class='cantidadComponente' min="1" style="text-align: right; padding-right: 5px; width: 100px" pattern="[0-9,.]*" title="Solo se permiten números, puntos y comas" data-index="${i}" onkeyup="toggleButtonVisibility(this)" /></td>`;
+                  html += `<td><button id="btnAgregar_${i}" onclick="componenteBtnAdd(${data[i].id_producto}, ${i})" class='btn btn-primary d-none'>Agregar</button></td>`;
+                  html +="</tr>";  
+                      
+                  k++;  
+                  }
+                  
+                
+            var elementTabla_empleado = document.getElementById("tabla_componente");
+            elementTabla_empleado.innerHTML = html;
+            // Obtén todos los elementos con la clase 'cantidadComponente'
+const cantidadInputs = document.getElementsByClassName('cantidadComponente');
+
+// Recorre cada elemento y agrega el event listener para el evento 'input'
+for (let i = 0; i < cantidadInputs.length; i++) {
+  const input = cantidadInputs[i];
+  
+  input.addEventListener('keydown', function(event) {
+    // Verificar si la tecla presionada es "Enter" y si el elemento activo es un input de cantidad
+  if (event.key === 'Enter' && event.target.classList.contains('cantidadComponente')) {
+    // Obtener el valor del input
+    const cantidad = event.target.value;
+    
+    // Ejecutar la función deseada con el valor del input
+    componenteAdd(data[event.target.dataset.index].id_producto, cantidad);
+  }
+  });
+}
+
+
+            // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+        });
+
+        }
+
+        
+          productoListComponente("aaaaaaaaaaaa",'1')          
+          document.getElementById("buscarComponente").onkeyup = function(e) {
+            let valor = e.target.value;
+            if(valor == ""){
+              valor = "aaaaaaaaaaaa"
+            }
+            console.log(valor)
+            productoListComponente(valor,'1')
+              // document.getElementById("empresa").value = this.value;
+          };
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+<!-- Segundo Modal -->
+<div class="modal fade" id="modalBuscarProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ancho" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="hidden" class="form-control" id="id_producto_componente">
+          <input type="text" class="form-control" placeholder="Buscar producto: Codigo Ó Descripción" id="buscarProducto" aria-label="Buscar componente" aria-describedby="btnBuscar">
+        </div>
+        <table class="table table-bordered table-hover">
+          <thead class="bg-dark text-white">
+            <tr>
+              <th>No.</th>
+              <th>CÓDIGO</th>
+              <th>DESCRIPCIÓN</th>
+              <th>REFERENCIA</th>
+              <th>MARCA</th>
+              <th>CATEGORIA</th>
+              <th>CLASE</th>
+              <th>EXISTENCIA</th>
+              <th>CANTIDAD</th>
+              <th>ACCIÓN</th>
+            </tr>
+          </thead>
+          <tbody id="tabla_productos">
+            <!-- Aquí se cargarán los resultados de la búsqueda -->
+          </tbody>
+        </table>
+        <script>
+//           function componenteList(producto) { // el id que llega es el id del departamento
+
+// $.get(`/producto/componentes/${producto}`, function (data) {
+//     console.log(data)
+//     var elementTabla_empleado = document.getElementById("tabla_pedido_list");
+//     if(data=='Este producto no contiene componentes'){
+//       document.getElementById("precio_costoc").value ='';
+//       elementTabla_empleado.innerHTML = "<tr class='text-center'><td colspan='9'>"+data+"</td></tr>";
+//     } else{
+//     var html = "";
+//     let k = 1;
+//     let precio = 0;
+//     for(var i =0;i < data.length;i++){ 
+//           //`id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+//           html +="<tr>";
+//             //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+//             html +="<td>"+ k +"</td>";
+//           html +=`<td>`+ data[i].codigo +"</td>";
+//           // html +="<td>"+ data[i].empresa +"</td>";
+//           html +="<td>"+ data[i].descripcion +"</td>";
+//           html +="<td>"+ data[i].referencia +"</td>";
+//           html +="<td>"+ data[i].existencia +"</td>";
+//           html +="<td>"+ data[i].cantidad +"</td>";
+//           html +="<td>"+ data[i].precio_compra +"</td>";
+//           html +="<td>"+(data[i].precio_compra * data[i].cantidad) +"</td>";
+//           html +=`<td class='text-center' onclick='componenteElimina(${data[i].id_producto})' style='color:red;'>`+ "<i class='fas fa-trash'></i>" +"</td>";
+//           html +="</tr>";  
+              
+//           k++;  
+//           precio += (data[i].precio_compra * data[i].cantidad)
+//           }
+//           document.getElementById("precio_costoc").value = precio;
+    
+//     elementTabla_empleado.innerHTML = html;
+//     document.getElementById("registrostotalesc").innerText = data.length;
+//   }
+//     // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+// });
+
+// }
+        function productosList(valor, inicio) { // el id que llega es el id del departamento
+
+        $.get(`/producto/filtro/${valor}/${inicio}`, function (data) {
+            // console.log(data[data.length-1].registros)
+            // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+            var html = "";
+            let k = 1;
+            for(var i =0;i < data.length-1;i++){ 
+                  // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                  html +="<tr>";
+                    //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+                    html +="<td>"+ k +"</td>";
+                  html +=`<td>`+ data[i].codigo +"</td>";
+                  // html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].referencia +"</td>";
+                  html +="<td>"+ data[i].marca +"</td>";
+                  html +="<td>"+ data[i].categoria +"</td>";
+                  html +="<td>"+ data[i].clase +"</td>";
+                  html +="<td>"+ data[i].existencia +"</td>";
+                  
+                  html +=`<td>`+ `<input type="number" inputmode="decimal" name='cantidadProducto' class='cantidadProducto' min="1" style="text-align: right; padding-right: 5px; width: 100px" pattern="[0-9,.]*" title="Solo se permiten números, puntos y comas" />` +"</td>";
+                      
+                  html += `<td><button type="button" onclick='productoAdd("${data[i].codigo}",${i})' style="display: none;" class="btn btn-primary agregarTexto">Agregar</button></td>`
+                  
+                  html +="</tr>";  
+                      
+                  k++;  
+                  }
+                
+            var elementTabla_empleado = document.getElementById("tabla_productos");
+            elementTabla_empleado.innerHTML = html;
+            ///////////////////////////////////////////////////////////////////////////
+            var table = document.getElementById("tabla_productos");
+            var inputs = table.querySelectorAll(".cantidadProducto");
+            var agregarTextos = table.querySelectorAll(".agregarTexto");
+
+            for (var i = 0; i < inputs.length; i++) {
+              inputs[i].addEventListener("input", createInputHandler(i));
+              inputs[i].addEventListener("click", function() {
+                var previousInput = document.querySelector(".cantidadProducto.active");
+                var previousBoton = document.querySelector(".agregarBoton.active");
+                
+                if (previousInput !== null && previousInput !== this) {
+                  previousInput.value = "";
+                  previousInput.classList.remove("active");
+                }
+
+                for (var i = 0; i < agregarTextos.length; i++) {
+                  var boton = agregarTextos[i];
+                    if (boton.style.display === "inline") {
+                      boton.style.display = "none";
+                    }
+                  }
+                this.classList.add("active");
+              });
+            }
+
+            // Suponiendo que tienes un arreglo llamado 'data' con la información de los productos
+
+function createInputHandler(index) {
+  return function(event) {
+    var currentInput = inputs[index];
+    var currentBoton = agregarTextos[index];
+
+    for (var i = 0; i < agregarTextos.length; i++) {
+      var boton = agregarTextos[i];
+
+      if (i !== index) {
+        if (boton.style.display === "inline") {
+          boton.style.display = "none";
+        }
+      }
+    }
+
+    if (event.key === "Enter" && currentInput.value !== "") {
+      productoAdd(data[index].codigo, index);
+      currentInput.value ="";
+    }
+
+    if (currentInput.value !== "") {
+      currentBoton.style.display = "inline";
+    } else {
+      currentBoton.style.display = "none";
+    }
+  };
+}
+
+// Asignar event listeners a los inputs
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener("input", createInputHandler(i));
+  inputs[i].addEventListener("keypress", createInputHandler(i));
+  inputs[i].addEventListener("keydown", createInputHandler(i));
+  inputs[i].addEventListener("click", function() {
+    // Resto del código
+  });
+}
+
+
+
+            
+            // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+        });
+
+        }
+
+          productosList("aaaaaaaaaaaa",'1')          
+          document.getElementById("buscarProducto").onkeyup = function(e) {
+            let valor = e.target.value;
+            if(valor == ""){
+              valor = "aaaaaaaaaaaa"
+            }
+            console.log(valor)
+            productosList(valor,'1')
+              // document.getElementById("empresa").value = this.value;
+          };
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA INGRSAR PRODUCTOS////////////////////////////////////////////////////// -->
+
+
+
+<!-- Segundo Modal -->
+<div class="modal fade" id="modalBuscarSuplidor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ancho" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalCenterTitle">Lista de suplidores</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Buscar suplidor" id="buscarSuplidor" aria-label="Buscar suplidor" aria-describedby="btnBuscar">
+        </div>
+        <table class="table table-bordered table-hover">
+          <thead class="bg-dark text-white">
+            <tr>
+              <th>No.</th>
+              <th>EMPRESA</th>
+              <th>RNC</th>
+              <th>DIRECCIÓN</th>
+              <th>TELÉFONO</th>
+              <th>EXT</th>
+              <th>REPRESENTANTE</th>
+              <th>FLOTA</th>
+              <th>ACCIÓN</th>
+          </tr>
+            
+          </thead>
+          <tbody id="tablaSuplidores">
+            <!-- Aquí se cargarán los resultados de la búsqueda -->
+          </tbody>
+        </table>
+        <script>
+          
+        function suplidoresList(valor, inicio) { // el id que llega es el id del departamento
+
+          $.get(`/suplidor/filtro/${valor}/${inicio}`, function (data) {
+            // console.log(data[data.length-1].registros)
+            // document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+            var html = "";
+            let k = 1;
+            for(var i =0;i < data.length-1;i++){ 
+                  // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+                  html +=`<tr onclick='seleccionarSuplidor(${data[i].id_suplidor})'>`;
+                    //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_suplidor`, `id_estado`
+                    html +="<td>"+ k +"</td>";
+                  html +=`<td>`+ data[i].empresa_sup +"</td>";
+                  // html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].rnc_sup +"</td>";
+                  html +="<td>"+ data[i].direccion_sup +"</td>";
+                  html +="<td>"+ data[i].telefono +"</td>";
+                  html +="<td>"+ data[i].extension +"</td>";
+                  html +="<td>"+ data[i].representante +"</td>";
+                  html +="<td>"+ data[i].flota +"</td>";
+                  html +="<td>"+ data[i].fecha_regitro +"</td>";
+                      
+                  
+                  html +="</tr>";  
+                      
+                  k++;  
+                  }
+                
+            var elementTabla_empleado = document.getElementById("tablaSuplidores");
+            elementTabla_empleado.innerHTML = html;
+            // cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+        });
+
+        }
+
+        function seleccionarSuplidor(id_suplidor) {
+            // alert(id_suplidor)
+            $.get(`/suplidor/buscar_suplidor/${id_suplidor}`, function (data) {
+                  if(data){
+                    document.getElementById("no_orden").value = data.numero_de_orden +1;
+                    document.getElementById("no_suplidor").value = id_suplidor;
+                    document.getElementById("empresa").value = data.empresa_sup;
+                    document.getElementById("direccion").value = data.direccion_sup;
+                    document.getElementById("telefono").value = data.telefono;
+                    document.getElementById("extension").value = data.extension;
+                    document.getElementById("representante").value = data.representante;
+                    document.getElementById("flota").value = data.flota;
+                    document.getElementById("suplidorNumeroDeOrden").innerText = 'Orden No. (' + (data.numero_de_orden +1)+ ") del Suplidor:" ;
+                    $('#modalBuscarSuplidor').modal('hide');
+
+                    buscarSuplidorPedidoTemporal(id_suplidor);
+
+                    document.getElementById("codigoProducto").disabled = false;
+                    document.getElementById("btnBuscarProducto").disabled = false;
+                  }
+                  else{
+                    document.getElementById("codigoProducto").disabled = true;
+                    document.getElementById("btnBuscarProducto").disabled = true;
+                  }
+                });
+          }
+
+          function eliminarProductoDelPedido(id_producto,id_suplidor) {
+
+                Swal.fire({
+                title: 'Estas seguro?',
+                text: "Deseas eliminar éste producto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, bórralo!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+
+                  $.post(`/producto/eliminarProductoDelPedido/${id_producto}/${id_suplidor}`, function (data) {
+                            buscarSuplidorPedidoTemporal(id_suplidor)
+                              if(data =="Producto eliminado de la lista de éste suplidor"){
+                                    Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: data,
+                                    showConfirmButton: false,
+                                    timer: 4000
+                                  })
+                                }else if(data =="Error al eliminar producto éste suplidor"){
+                                  Swal.fire({
+                                      icon: 'error',
+                                      title: 'Oops...',
+                                      text: data,
+                                      footer: '<a href="">Why do I have this issue?</a>'
+                                    })
+                                }
+                              });
+                            }
+                 })
+          }
+
+          function buscarSuplidorPedidoTemporal(id_suplidor) {
+            // alert(id_suplidor)
+            $.get(`/producto/suplidorPedidoTemporal/${id_suplidor}`, function (data) {
+            // console.log(data)
+            var html = "";
+            let k = 1;
+            for(var i =0;i < data.length;i++){ 
+                  // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+                  html +="<tr>";
+                    //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+                    html +="<td>"+ k +"</td>";
+                  html +=`<td onclick='editarproducto(${data[i].id_producto})' style='color:blue;'>`+ data[i].codigo +"</td>";
+                  // html +="<td>"+ data[i].empresa +"</td>";
+                  html +="<td>"+ data[i].descripcion +"</td>";
+                  html +="<td>"+ data[i].referencia +"</td>";
+                  html +="<td>"+ data[i].existencia +"</td>";
+                  html +="<td>"+ data[i].cantidad +"</td>";
+                  html +=`<td><input type="checkbox" name='fila-checkbox' class="fila-checkbox" checked></td>`;                      
+                  html +=`<td onclick='eliminarProductoDelPedido("${data[i].id_producto}","${id_suplidor}")' style='color:blue;'>`+ "Eliminar" +"</td>";
+                  html +=`<input type="hidden" class="noProductoOrden" value="${data[i].id_producto}"></tr>`;  
+                      
+                  k++;  
+                  }
+                  if(data.length < 1){
+                    document.getElementById('btnProcesarOrden').disabled = true;
+                  }else{
+                    document.getElementById('btnProcesarOrden').disabled = false;
+                  }
+            var elementTabla_empleado = document.getElementById("tabla_producto_orden");
+            elementTabla_empleado.innerHTML = html;
+          });
+          }
+          suplidoresList("aaaaaaaaaaaa",'1')          
+          document.getElementById("buscarSuplidor").onkeyup = function(e) {
+            let valor = e.target.value;
+            if(valor == ""){
+              valor = "aaaaaaaaaaaa"
+            }
+            console.log(valor)
+            suplidoresList(valor,'1')
+              // document.getElementById("empresa").value = this.value;
+          };
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA BUSCAR SUPLIDOR////////////////////////////////////////////////////// -->
+
+<!-- Segundo Modal -->
+<div class="modal fade" id="modalProcesarOrden" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleProcesarOrden" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered ancho" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalCenterTitleProcesarOrden">Procesar orden</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          
+          <div class="card-body row g-2">
+            
+              <div class="col-md-4">
+                <label for="fechaRequeridao" class="form-label text-black">Fecha requerida</label>
+                <input type="date" class="form-control" name="fechaRequeridao" id="fechaRequeridao">
+              </div>
+  
+              <div class="col-md-4">
+                <label for="condicionOrdeno" class="form-label text-black">Condición</label>
+                <select class="form-control" name="condicionOrdeno" id="condicionOrdeno" required>
+                  <option value="">Seleccione</option>
+                  <option value="credito">Credito</option>
+                  <option selected value="normal">Normal</option>
+                  <option value="urgente">Urgente</option>
+                  <option value="retrasado">Retrasado</option>
+                  <option value="personalisado">Personalizado</option>
+                  <option value="estpera_stock">En espera de stock</option>
+                  <option value="condiciones_especiales">Condiciones especiales</option>
+                  <option value="pendiente_aprobacion">Pendiente de aprobación</option>
+                  <option value="devolucion_autorizada">Devolución autorizada</option>
+                  <option value="personalisado">Personalizado</option>
+                 </select>
+              </div>
+
+
+              <div class="col-md-4">
+                <label for="estadoOrdeno" class="form-label text-black">Estado</label>
+                <select class="form-control" name="estadoOrdeno" id="estadoOrdeno" required>
+                  <option value="">Seleccione</option>
+                  <option selected value="pendiente">Pendiente</option>
+                  <option value="en_proceso">En proceso</option>
+                  <option value="aprobado">Aprobado</option>
+                  <option value="rechazado">Rechazado</option>
+                  <option value="en_transito">En tránsito</option>
+                  <option value="entregado">Entregado</option>
+                  <option value="cancelado">Cancelado</option>
+                  <option value="completado">Completado</option>
+                  <option value="devolucion">Devolución</option>
+                  <option value="esperando_pago">Esperando pago</option>
+                  <option value="en_espera">En espera</option>
+
+                 
+                 </select>
+              </div>
+
+              <div class="col-md-12">
+                <label for="notaOrdeno" class="form-label text-black" >Nota<strong style="color: red;">*</strong></label>
+                <textarea class="col-md-12" name="notaOrdeno" id="notaOrdeno" cols="auto" rows="3" maxlength="225" required></textarea>                                
+              </div>
+               
+                  
+               <div class="col-md-12 text-center pt-1">
+                 <button type="button" id="btnGuardarOrden" class="btn btn-warning col-md-4 my-3">GUARDAR ORDEN</button>
+               </div>
+
+          </div>
+        </div>
+        
+        <script>
+           function obtenerDatosTabla() {
+                let fechaRequerida = document.getElementById('fechaRequeridao').value;
+                let condicionOrden = document.getElementById('condicionOrdeno').value;
+                let estadoOrden = document.getElementById('estadoOrdeno').value;
+                let notaOrden = document.getElementById('notaOrdeno').value;
+                var tabla = document.getElementById('tablaDatos');
+                var filas = tabla.getElementsByTagName('tr');
+                var datos = [];
+
+                // Recorrer las filas de la tabla (omitir la primera fila de encabezados)
+                for (var i = 1; i < filas.length; i++) {
+                  var checkbox = filas[i].querySelector('.fila-checkbox');
+                  if (checkbox.checked) {
+                    var celdas = filas[i].getElementsByTagName('td');
+                    var filaDatos = {
+                      no: celdas[0].innerText,
+                      codigo: celdas[1].innerText,
+                      descripcion: celdas[2].innerText,
+                      referencia: celdas[3].innerText,
+                      existencia: celdas[4].innerText,
+                      cantidad: celdas[5].innerText,
+                      id_producto: filas[i].querySelector('.noProductoOrden').value
+                    };
+                    datos.push(filaDatos);
+                  }
+                }
+
+                if (datos.length > 0 ) {
+                  if(fechaRequerida =='' || condicionOrden =='' || estadoOrden ==''){
+                    alert("Los campos fecha, condicion y estado, no pueden ser nulos")
+                  }
+                  else{
+                    ///AQUI SE PROCESARIA LA ORDEN
+                    var datosJSON = JSON.stringify(datos);
+                    //
+                    let suplidor = document.getElementById("no_suplidor").value;
+                    let no_orden= document.getElementById("no_orden").value;
+                    $.post(`/producto/guardarOrden/${fechaRequerida}/${condicionOrden}/${estadoOrden}/${notaOrden}/${suplidor}/${no_orden}/${datosJSON}`, function (_data) {
+                       if(_data == "Orden procesada correctamente"){
+                        document.getElementById("suplidorNumeroDeOrden").innerText = 'Orden No. (' + (Number(no_orden) +1)+ ") del Suplidor:" ;
+                          Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: _data,
+                            showConfirmButton: false,
+                            timer: 4000
+                          })
+                       }else{
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "Error al procesar orden",
+                            footer: '<a href="">Debes revisar la orden! </a>'
+                          })
+                       }
+                       $('#modalProcesarOrden').modal('hide');
+                       buscarSuplidorPedidoTemporal(suplidor)
+                      });
+
+                  console.log(datos);
+
+                  }
+                  
+                } else {
+                  alert('No hay datos seleccionados.');
+                }
+          }
+          
+          document.getElementById('btnGuardarOrden').addEventListener('click', obtenerDatosTabla);
+    
+         
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////FINAL DEL MODAL PARA PROCESAR ORDEN////////////////////////////////////////////////////// -->
+
+        </div>
+        
+    </div>
+</div>
+<script >
+
+const fileInput = document.getElementById('file');
+  const messageDiv = document.getElementById('message');
+
+  fileInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    
+    if (file) {
+      messageDiv.textContent = `Imagen seleccionada: ${file.name}`;
+      // Realizar alguna acción adicional, como mostrar una vista previa de la imagen, cargarla en el servidor, etc.
+    } else {
+      messageDiv.textContent = 'No se seleccionó ninguna imagen';
+    }
+  });
+
+
+  var modalCrearOrdenDeCompra = document.getElementById('modalCrearOrdenDeCompra');
+  var crearOrden = document.getElementById('btnCrearOrdenDeCompra');
+  // Agregar evento 'click' al elemento previewImg
+  crearOrden.addEventListener('click', function() {
+    $('#modalCrearOrdenDeCompra').modal('show');
+  });
+
+  var modalIngresoProducto = document.getElementById('modalIngresoProducto');
+  var ingresarProducto = document.getElementById('btnIngresarProducto');
+  // Agregar evento 'click' al elemento previewImg
+  ingresarProducto.addEventListener('click', function() {
+    $('#modalIngresoProducto').modal('show');
+  });
+  // document.getElementById('').addEventListener('click', function() {
+  //   modal.style.display = "none";
+  // });
+
+
+   
+function productoListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }        
+        
+        productoList(valor,inicio)
+    }
+
+function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='productoListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='productoListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='productoListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='productoListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='productoListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='productoListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+   async function datosDelPedido(id_suplidor,id_pedido) {
+      alert("Componentes"+id_pedido)
+      let id_producto=id_suplidor
+      $('#modalRecibirOrden').modal('show');
+      await $.get(`/suplidor/buscar_suplidor/${id_suplidor}`, function (data) {
+
+          document.getElementById("no_suplidorp").value = id_suplidor;
+          document.getElementById("empresap").value = data.empresa_sup;
+          document.getElementById("direccionp").value = data.direccion_sup;
+          document.getElementById("telefonop").value = data.telefono;
+          document.getElementById("extensionp").value = data.extension;
+          document.getElementById("representantep").value = data.representante;
+          document.getElementById("flotap").value = data.flota;
+          
+        });
+        // console.log("Busco datos del pedido")
+        await $.get(`/orden/buscarPedidoSuplidor/${id_suplidor}/${id_pedido}`, function (ingreso) {
+          // console.log(ingreso)
+          document.getElementById("no_suplidorp").value = id_suplidor;
+          document.getElementById("comprobante_suplidorp").value = ingreso.comprobante;
+          document.getElementById("fecha_pedidop").value = ingreso.fecha_pedido;
+          document.getElementById("fecha_requeridap").value = ingreso.fecha_requerida;
+          document.getElementById("numero_de_ordenp").value = ingreso.numero_de_orden;
+          document.getElementById("pedidoporp").value = ingreso.realizadopor;
+
+
+
+          
+
+          detallePedidoList(ingreso.id_ingreso, id_suplidor,id_pedido)
+        });
+        
+   }
+
+   function seleccionarSuplidor(id_suplidor) {
+            // alert(id_suplidor)
+            $.get(`/suplidor/buscar_suplidor/${id_suplidor}`, function (data) {
+                  if(data){
+                    document.getElementById("no_orden").value = data.numero_de_orden +1;
+                    document.getElementById("no_suplidor").value = id_suplidor;
+                    document.getElementById("empresa").value = data.empresa_sup;
+                    document.getElementById("direccion").value = data.direccion_sup;
+                    document.getElementById("telefono").value = data.telefono;
+                    document.getElementById("extension").value = data.extension;
+                    document.getElementById("representante").value = data.representante;
+                    document.getElementById("flota").value = data.flota;
+                    document.getElementById("suplidorNumeroDeOrden").innerText = 'Orden No. (' + (data.numero_de_orden +1)+ ") del Suplidor:" ;
+                    $('#modalBuscarSuplidor').modal('hide');
+
+                    buscarSuplidorPedidoTemporal(id_suplidor);
+
+                    document.getElementById("codigoProducto").disabled = false;
+                    document.getElementById("btnBuscarProducto").disabled = false;
+                  }
+                  else{
+                    document.getElementById("codigoProducto").disabled = true;
+                    document.getElementById("btnBuscarProducto").disabled = true;
+                  }
+                });
+          }
+
+   function componenteBtnAdd(id_producto,i) {
+      const cantidad = document.querySelector(`#tabla_componente tr:nth-child(${i + 1}) .cantidadComponente`).value;
+      componenteAdd(id_producto,cantidad)
+   }
+   function componenteAdd(id_componente,cantidad) {
+      
+      const producto = document.getElementById("no_productoc").value
+      // const cantidad = document.querySelector(`#tabla_componente tr:nth-child(${i + 1}) .cantidadComponente`).value;
+
+      $('#modalBuscarComponente').modal('hide');
+      $.post(`/producto/guardar_componente/${producto}/${id_componente}/${cantidad}`, function (_data) {
+        productoListComponente("aaaaaaaaaaaa",'1') 
+          componenteList(producto)
+        });
+        
+   }
+   function componenteElimina(id_componente) {
+      let del = confirm('Deseas eliminar éste componente?')
+      if(del){
+        const producto = document.getElementById("no_productoc").value
+      
+      $.post(`/producto/elimina_componente/${producto}/${id_componente}`, function (_data) {
+          
+          componenteList(producto)
+        });
+      }
+   }
+
+   function productoAdd(codigo,i) {
+    const cantidad = document.querySelector(`#tabla_productos tr:nth-child(${i + 1}) .cantidadProducto`).value;
+    // console.log(cantidad)
+    // $('#modalBuscarProducto').modal('hide');
+    document.getElementById('buscarProducto').value = '';
+    buscarCodigoProducto(codigo,cantidad);        
+   }
+
+  function ordenList(valor, inicio) { // el id que llega es el id del departamento
+
+    let estado = "Pendiente"
+$.get(`/orden/filtro/${valor}/${inicio}/${estado}`, function (data) {
+    // console.log(data[data.length-1].registros)
+    document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+    var html = "";
+    let k = 1;
+    for(var i =0;i < data.length-1;i++){ 
+          // `id_producto`, `codigo`, `codigo_barra`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_venta`, `itbis`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`
+          html +="<tr>";
+            //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_producto`, `id_estado`
+            html +="<td>"+ k +"</td>";
+          html +=`<td onclick='editarproducto(${data[i].id_producto})' style='color:blue;'>`+ data[i].numero_de_orden +"</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html +="<td>"+ data[i].empresa_sup +"</td>";
+          html +="<td>"+ data[i].rnc_sup +"</td>";
+          html +="<td>"+ data[i].representante +"</td>";
+          html +="<td>"+ data[i].condicion +"</td>";
+          html +="<td>"+ data[i].fecha_requerida +"</td>";
+          html +="<td>"+ data[i].fecha_pedido +"</td>";
+          html +="<td>"+ data[i].realizadopor +"</td>";               
+          html +=`<td onclick='datosDelPedido("${data[i].id_suplidor}","${data[i].id_pedido}")' style='color:blue;'>`+ "Recibir" +"</td>";
+          html +="</tr>";  
+              
+          k++;  
+          }
+        
+    var elementTabla_empleado = document.getElementById("tabla_producto");
+    elementTabla_empleado.innerHTML = html;
+    cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+});
+
+}
+
+function buscarCodigoProducto(codigo,cantidad) {
+  let suplidor = document.getElementById("no_suplidor").value
+  $.get(`/producto/buscarCodigoProducto/${codigo}/${cantidad}/${suplidor}`, function (data) {
+      // console.log(data)
+      buscarSuplidorPedidoTemporal(suplidor)
+  });
+}
+
+
+////////////////////LOAD/////////////////////////////////////////////////////////////////////////////////////////////////
+  let paginacion =0;
+window.addEventListener('load', function() {
+  paginacion ='<%- paginacion %>';
+    ordenList("aaaaaaaaaaaa",'1')
+    
+    function isValidInput(input) {
+      var regex = /^[a-zA-Z0-9-]+$/;
+      return regex.test(input);
+    }
+   
+    //EVITO QUE AL INPUT DE CODIGO PRODUCTO SE LE INTRODUZCA ESPACIOS AL PEGAR TEXTO
+    let codigoProducto = document.getElementById("codigoProducto")
+      codigoProducto.addEventListener("paste", function(event) {
+        event.preventDefault(); // Evitar la acción de pegar predeterminada
+
+        let clipboardData = event.clipboardData || window.clipboardData;
+        let pastedText = clipboardData.getData("text/plain");
+        
+        
+              // Eliminar espacios del texto pegado
+            let processedText = pastedText.replace(/\s/g, "");
+            let validoTexo = isValidInput(processedText);
+      if(validoTexo){
+            // Insertar el texto procesado en el input
+            let startPosition = codigoProducto.selectionStart;
+            let endPosition = codigoProducto.selectionEnd;
+            let currentValue = codigoProducto.value;
+            let updatedValue = currentValue.substring(0, startPosition) + processedText + currentValue.substring(endPosition);
+
+            codigoProducto.value = updatedValue;
+        }else{
+          alert('El texto que intenta copiar no es válido!')
+        }
+      });
+
+      //VERIFICO QUE EL TEXTO INTRODUCIDO SEA CORRECTO Y QUE AL PRECIONAR LA TECLA ENTER SE BUSQUE EL PRODUCTO AL AGREGAR UN PRODUCTO A UN PEDIDO
+    codigoProducto.onkeypress = function(e) {
+      if (event.keyCode === 13 && isValidInput(e.target.value)) {
+        // La tecla Enter fue presionada
+        let valor = e.target.value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      buscarCodigoProducto(valor,1);
+      codigoProducto.value = "";
+      }else{
+        var key = event.key;
+        key = key.trim();
+        var regex = /^[a-zA-Z0-9-]+$/;
+        return regex.test(key);
+      }
+    };
+
+
+    // PERMITE FILTRAR LA BUSQUEDA DE LOS PRODUCTOS EN LA PANTALLA PRINCIPAL
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      ordenList(valor,'1')
+         // document.getElementById("empresa").value = this.value;
+    };
+
+    // document.getElementById("contenido").onkeyup = function(e) {
+    //   let valor = e.target.value;
+      
+    // if(valor.length == 0){
+    //   document.getElementById("caracteres").innerText = "0/2000";
+    // }else{
+    //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+    // }
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+
+    // document.getElementById("btnGuardarProducto").onclick = function(e) {
+    //   // limpiarCamposproducto();
+    //   $('#modalProducto').modal('show');
+    //   // $('#ModalHistorialCita').modal('hide');
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    });
+
+    $(document).ready(function() {
+  var slideIndex = 0;
+  var slides = $('.slide');
+
+  showSlide(slideIndex);
+
+  $('.prev-button').click(function() {
+    showSlide(slideIndex -= 1);
+  });
+
+  $('.next-button').click(function() {
+    showSlide(slideIndex += 1);
+  });
+
+  function showSlide(index) {
+    if (index >= slides.length) {
+      slideIndex = 0;
+    } else if (index < 0) {
+      slideIndex = slides.length - 1;
+    } else {
+      slideIndex = index;
+    }
+
+    slides.removeClass('active');
+    slides.eq(slideIndex).addClass('active');
+  }
+});
+
+
+
+
+
+
+
+const thumbnails = document.querySelectorAll('.thumbnail');
+const mainImage = document.querySelector('#main-image');
+
+thumbnails.forEach(thumbnail => {
+  thumbnail.addEventListener('click', () => {
+    const src = thumbnail.getAttribute('src');
+    mainImage.setAttribute('src', src);
+  });
+});
+
+
+</script>
+
+<style>
+  .active {
+    background-color: yellow;
+  }
+
+  .ancho{
+    max-width: 80%;
+  
+  }
+
+  .anchotabla{
+    max-width: 95%;
+  
+  }
+  .anchotablafull{
+    max-width: 100vw;
+  
+  }
+
+  .gallery {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 80vh;
+}
+
+.thumbnail-container {
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+  overflow-y: auto;
+  width: 130px;
+  overflow-x: hidden;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.laimagen {
+  height: 650px;
+  overflow-y: auto;
+  max-width: 100%; /* Ajusta el ancho máximo deseado */
+  max-height: 100%; /* Ajusta la altura máxima deseada */
+  overflow-x: auto;
+}
+.fixed-size-image {
+  
+  width: auto;
+  height: auto;
+  position: flex-end;
+  height: auto;
+  overflow-y: auto;
+}
+
+  </style>
+<%- include('partials/_footer') %>

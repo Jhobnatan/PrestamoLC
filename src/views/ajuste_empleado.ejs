@@ -1,0 +1,273 @@
+<%- include('partials/_header') %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="containero">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3" action="/ajusteempleado/add" method="post">
+                              <div class="card-header bg-dark text-white d-flex pt-3">
+                                <div class="col-9"><h5>Formato de ajuste de empleados: F001-PG-GH-006 <br>Versión: 003</h5></div>
+                                
+                                <label for="inputAddress2" name="fech" id="fech" class="form-label text-white">Fecha</label>
+                                    <input type="hidden" class="form-control bg-dark text-white" name="fecha" id="fecha" required >
+                                  
+                            </div>
+                            
+                                <div class="col-3 ">
+                                    <label for="inputAddress2" class="form-label text-black">Código</label>
+                                    <input type="text" class="form-control" name="codigo" id="codigo" maxlength="150" value="AFG-JR111" placeholder="Ingrese el código del empleado"  required>
+                                    <input type="hidden" class="form-control" name="empleado" id="empleado">
+                                    
+                                  </div>
+                                  <div id="buscar" class="col-1 pt-4 fs-3 text-dark">
+                                    <i class="fas fa-search" ></i>
+                                  </div>
+
+                                  <div class="col-8"></div>
+                                  <div class="col-6">
+                                    <label for="inputAddress2" class="form-label text-black">Nombre</label>
+                                    <input type="text" class="form-control" name="nombre" id="nombre" maxlength="255" readonly>
+                                  </div>
+
+                                  <div class="col-3">
+                                    <label for="inputAddress2" class="form-label text-black">Cédula</label>
+                                    <input type="text" class="form-control" name="cedula" id="cedula" maxlength="255" readonly>
+                                  </div>
+
+                                  <div class="col-3">
+                                    <label for="inputAddress2" class="form-label text-black">Fecha de ingreso a la empresa</label>
+                                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso"  readonly required>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                    <label for="inputEmail4" class="form-label text-black">Grado actual</label>
+                                    <select class="form-control" name="grado_actual" id="grado_actual" required>
+                                      <option value="0">Seleccione</option>
+                                     
+                                      <% if(grado) {%>
+                                        <% for(var i =0;i < grado.length;i++){ %>
+                                          <option value="<%= grado[i].id_grado %>"><%= grado[i].grado %></option>
+                                           
+                                         <% } %>
+                                        <% } %>
+                                       
+                                     </select>
+                                  </div>
+
+                      
+                              <div class="col-md-3">
+                                <label for="inputEmail4" class="form-label text-black">Grado nuevo</label>
+                                <select class="form-control" name="grado_nuevo" id="grado_nuevo" required>
+                                  <option value="0">Seleccione</option>
+                                 
+                                  <% if(grado) {%>
+                                    <% for(var i =0;i < grado.length;i++){ %>
+                                      <option value="<%= grado[i].id_grado %>"><%= grado[i].grado %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                   
+                                 </select>
+                              </div>
+
+                              
+
+                              <div class="col-md-3">
+                                <label for="inputEmail4" class="form-label text-black">Salario actual</label>
+                                <select class="form-control" name="salario_actual" id="salario_actual" required>
+                                  <option value="0">Seleccione</option>
+                                 
+                                  <% if(sueldo) {%>
+                                    <% for(var i =0;i < sueldo.length;i++){ %>
+                                      <option value="<%= sueldo[i].id_sueldo %>"><%= sueldo[i].sueldo %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                   
+                                 </select>
+                              </div>
+                              <div class="col-md-3">
+                                <label for="inputEmail4" class="form-label text-black">Nuevo salario</label>
+                                <select class="form-control" name="nuevo_salario" id="nuevo_salario" required>
+                                  <option value="0">Seleccione</option>
+                                 
+                                  <% if(sueldo) {%>
+                                    <% for(var i =0;i < sueldo.length;i++){ %>
+                                      <option value="<%= sueldo[i].id_sueldo %>"><%= sueldo[i].sueldo %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                   
+                                 </select>
+                              </div>
+                          <div class="col-3">
+                            <label for="inputAddress2" class="form-label text-black">Fecha efectiva del cambio</label>
+                            <input type="date" class="form-control" name="fecha_efectiva_cambio" id="fecha_efectiva_cambio" maxlength="25" placeholder="ingrese cuenta acreedor">
+                          </div>
+                              <div class="col-md-12">
+                                <label for="inputPassword4" class="form-label text-black">Motivo</label>
+                                <textarea class="form-control" name="motivo" id="motivo" placeholder="" cols="30" rows="4" ></textarea>
+                                
+                              </div>                       
+                              
+                               <div class="col-12 pt-5">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script >
+
+function handleCodigoEmpleado() {
+  var codigo = document.getElementById("codigo").value;
+console.log(codigo)
+$.get(`/form_data/ajusteempleado/${codigo}`  , function (data) {
+    console.log(data)
+  //  alert(codigo)
+  document.getElementById("nombre").value = 'Datos no encontrados';
+    document.getElementById("cedula").value = '';
+    document.getElementById("fecha_ingreso").value = '';
+    document.getElementById("grado_actual").value = '';
+    document.getElementById("grado_nuevo").value = '0';
+    document.getElementById("salario_actual").value = '';
+    document.getElementById("nuevo_salario").value = '0';
+    document.getElementById("fecha_efectiva_cambio").value = null;
+    document.getElementById("motivo").value = '';
+    document.getElementById("empleado").value = '';
+
+    document.getElementById("nombre").value = data[0].nombres+" "+data[0].apellidos;
+    document.getElementById("cedula").value = data[0].cedula;
+    document.getElementById("fecha_ingreso").value = data[0].fecha_entrada;
+    document.getElementById("grado_actual").value = data[0].id_grado;
+    document.getElementById("salario_actual").value = data[0].id_sueldo;
+    document.getElementById("empleado").value = data[0].id_empleado;
+
+    // elementCodigoPostal.value = data[0].codigo_postal;
+});
+}
+
+
+function handleEncargado(e) { // el id que llega es el id del departamento
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/encargado/" + e.target.value, function (data) {
+      console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el encargado</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_empleado+">"+data[i].nombres+" "+data[i].apellidos+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementEncargado = document.getElementById("encargado");
+      elementEncargado.innerHTML = html;
+      
+  });
+}
+
+function fechaActual(){
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  return  day + "/" + month + "/" + year;
+  
+}
+
+
+  function eliminar_elemento(e){
+    let del = confirm("¿Deseas eliminar éste afiliado?");
+    if(del){
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+}
+function eliminar_producto(e){
+    let del = confirm("¿Deseas eliminar éste producto?");
+    if(del){
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+}
+window.addEventListener('load', function() {
+  // funcionInit()
+  // $(":input").inputmask();
+  //const nacionalidad = document.getElementById("nacionalidad");
+  //$("#fecha").val(fechaActual());name="fecha" id="fecha"
+  document.getElementById("fecha").value = new Date().toLocaleDateString();
+  document.getElementById("fech").innerHTML = "Fecha: " + new Date().toLocaleDateString();
+  
+  
+  
+  let buscar = document.getElementById("buscar"); // Encuentra el elemento "p" en el sitio
+  buscar.onclick = handleCodigoEmpleado; // Agrega función onclick al elemento
+    
+  function afiliadoAdd(evento) {
+    evento.preventDefault();
+    
+    let boton = '<div class="col-2 pt-2 delete"><a onclick="eliminar_elemento(this);">&times;</a><label for="inputAddress2" class="form-label text-black">Afiliado</label><input type="number" class="form-control" name="afiliado" id="afiliado" placeholder="0" required></li></div>';
+    document.getElementById('afiliadoid').insertAdjacentHTML("beforeend",boton); 
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+ 
+  function agregaResponsable(evento) {
+    evento.preventDefault();
+    // alert('funciona')   
+    html ='<div class="row"><div class="card-header mt-5">';
+    html +='<h5>Sucursal - Personal Responsable</h5> ';
+    html +='</div><a class="text-end" onclick="eliminar_elemento(this);">X</a>';
+    html +='<div class="col-md-12 col-md-4 ">';
+    html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" placeholder="Nombre y apellido">';
+    html +='</div>';  
+
+    html +='<div class="col-md-4 mt-2">';
+      html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+      html +='<input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo que Ocupa">';
+      html +='</div> ';
+
+      html +='<div class="col-md-4 mt-2 d-none">';
+        html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+        html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-0000000-0">';
+        html +='</div> ';
+
+        html +='<div class="col-md-4 mt-2">';
+          html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+          html +='<input type="text" class="form-control" name="tel_persona" id="tel_persona" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-000-0000">';
+          html +='</div> ';
+
+          html +='<div class="col-md-4 mt-2">';
+            html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+            html +='<input type="email" class="form-control" name="email_persona" id="email_persona" placeholder="ingrese correo">';
+            html +='</div> </div>';
+
+    document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+  
+
+});
+</script>
+
+
+
+<%- include('partials/_footer') %>

@@ -1,0 +1,165 @@
+<%- include('partials/_header') %>
+
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header text-black">
+              <h5>LISTA DE RECLUTAMIENTO</h5>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 mt-5 d-flex text-right">
+          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+          <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Ingrese puesto">
+          <% if(accesos.modulo_reclutamiento) {%>
+            <a class="btn btn-primary" href="reclutamiento/new/"><i class='fas fa-plus mx-3' style='font-size:18px;color:white'> Crear
+                Solicitud</i></a>
+            <% } %>
+        </div>
+
+        <table class="table table-bordered table-hover mt-4">
+          <thead class="bg-dark text-white">
+            <tr>
+              <th>No.</th>
+              <th>EMPRESA</th>
+              <th>DEPARTAMENTO</th>
+              <th>PUESTO</th>
+              <th>ESTADO</th>
+              <th class="text-center col-1">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="tabla_empleado">
+            <% if(data) {%>
+              <% for(var i=0;i < data.length;i++){ %>
+
+                <% if(data[i].id_empresa==3) {%>
+                  <% if(accesos.empleados_awm) {%>
+                    <tr class="table-success">
+                      <td>
+                        <%= i+1 %>
+                      </td>
+                      <td>
+                        <%= data[i].empresa %>
+                      </td>
+                      <td>
+                        <%= data[i].departamento %>
+                      </td>
+                      <td>
+                        <%= data[i].puesto %>
+                      </td>
+                      <td>
+                        <%= data[i].estado %>
+                      </td>
+
+                      <td class="text-center">
+                        <a href="/reclutamiento/update/<%= data[i].id_reclutamiento %>"><i class='fas fa-pencil-alt'
+                            style='font-size:18px;color:green'></i></a>
+                      </td>
+                    </tr>
+                    <% } %>
+                      <% }else{%>
+                        <% if(accesos.empleados_afg) {%>
+                          <tr class="table-info">
+                            <td>
+                              <%= i+1 %>
+                            </td>
+                            <td>
+                              <%= data[i].empresa %>
+                            </td>
+                            <td>
+                              <%= data[i].departamento %>
+                            </td>
+                            <td>
+                              <%= data[i].puesto %>
+                            </td>
+                            <td>
+                              <%= data[i].estado %>
+                            </td>
+                            <td class="text-center">
+                              <a href="/reclutamiento/update/<%= data[i].id_reclutamiento %>"><i
+                                  class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>
+                            </td>
+                          </tr>
+                          <% } %>
+                            <% } %>
+                              <% } %>
+                                <% } %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+
+
+    function reclutamientoList(valor) { 
+      const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+      var accesos = JSON.parse(jsonAccesos);
+      $.get("/form_data/reclutamiento/" + valor + "/1", function (data) {
+        // console.log(data)
+        var html = "";
+        let k = 1;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].id_empresa == 3) {
+            if (accesos.empleados_awm) {
+              html += "<tr class='table-success'>";
+              html += "<td>" + k + "</td>";
+              html += "<td>" + data[i].empresa + "</td>";
+              html += "<td>" + data[i].departamento + "</td>";
+              html += "<td>" + data[i].descripcion + "</td>";
+              html += "<td>" + data[i].motivo + "</td>";
+
+              html += "<td>";
+              html += "<a href='/reclutamiento/update/" + data[i].id_reclutamiento + "'><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+              html += "</td></tr>";
+
+              k++;
+            }
+          } else {
+            if (accesos.empleados_afg) {
+              html += "<tr class='table-info'>";
+              html += "<td>" + k + "</td>";
+              html += "<td>" + data[i].empresa + "</td>";
+              html += "<td>" + data[i].departamento + "</td>";
+              html += "<td>" + data[i].descripcion + "</td>";
+              html += "<td>" + data[i].motivo + "</td>";
+
+              html += "<td>";
+              html += "<a href='/reclutamiento/update/" + data[i].id_reclutamiento + "' ><i class='fas fa-pencil-alt' style='font-size:20px;color:green'></i></a>";
+              html += "</td></tr>";
+
+              k++;
+            }
+          }
+        }
+        var elementTabla_empleado = document.getElementById("tabla_empleado");
+        elementTabla_empleado.innerHTML = html;
+      });
+    }
+    function fechaActual() {
+      date = new Date();
+      year = date.getFullYear();
+      month = date.getMonth() + 1;
+      day = date.getDate();
+      return day + "/" + month + "/" + year;
+
+    }
+
+    window.addEventListener('load', function () {
+      document.getElementById("buscar").onkeyup = function (e) {
+        let valor = e.target.value;
+        if (valor == "") {
+          valor = "aaaaaaaaaaaa";
+        }
+        reclutamientoList(valor);
+      };
+    });
+  </script>
+  <%- include('partials/_footer') %>

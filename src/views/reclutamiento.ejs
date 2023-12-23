@@ -1,0 +1,254 @@
+<%- include('partials/_header') %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3" action="/reclutamiento/add" method="post">
+                              
+                              <div class="card-header bg-dark text-white d-flex">
+                                <div class="col-9"><h5>Solicitud - Reclutamiento</h5></div>
+                                
+                                <label for="inputAddress2" class="form-label text-white">Fecha:</label>
+                                    <input type="text" class="form-control bg-dark text-white" name="fecha" id="fecha" required readonly>
+                                  
+                            </div>
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Causa de la Solicitud</label>
+                              <select class="form-control" name="motivo" id="motivo">
+                                 <option value="0">Seleccione</option>
+                                 <option value="Puesto de nueva creación">Puesto de nueva creación</option>
+                                 <option value="Puesto vacante">Puesto vacante</option>
+                                 <option value="Incapacidad">Incapacidad</option>
+                                </select>
+                            </div>
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Empresa</label>
+                                <select class="form-control" name="empresa" id="empresa" disabled>
+                                   <option value="0">Seleccione la empresa</option>
+                                   <% if(emp) {%>
+                                    <% for(var i =0;i < emp.length;i++){ 
+                                      if(emp[i].id_empresa == data.id_empresa){%>
+                                      <option selected value="<%= emp[i].id_empresa %>"><%= emp[i].nombre_empresa %></option>
+                                      <% }else{ %>
+                                        <option value="<%= emp[i].id_empresa %>"><%= emp[i].nombre_empresa %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Departamento</label>
+                                <select class="form-control" name="departamento" id="departamento" disabled>
+                                   <option value="0">Seleccione el departamento</option>
+                                   <% if(dep) {%>
+                                    <% for(var i =0;i < dep.length;i++){ 
+                                      if(dep[i].id_departamento == data.id_departamento){%>
+                                      <option selected value="<%= dep[i].id_departamento %>"><%= dep[i].descripcion %></option>
+                                       <% }else {%>
+                                        <option value="<%= dep[i].id_departamento %>"><%= dep[i].descripcion %></option>
+                                     <% }
+                                    } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Puesto</label>
+                                <select class="form-control" name="puesto" id="puesto" required>
+                                   <option value="0">Seleccione el puesto</option>
+                                   <% if(pue) {%>
+                                    <% for(var i =0;i < pue.length;i++){ %>
+                                      <option value="<%= pue[i].id_puesto %>"><%= pue[i].descripcion %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Supervisa</label>
+                                <select class="form-control" name="supervisa" id="supervisa" required>
+                                   <option value="0">Seleccione</option>
+                                   <option value="si">Si</option>
+                                   <option value="no">No</option>
+                                 </select>
+                              </div>
+
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">No. de posiciones a supervisar</label>
+                                <input type="number" class="form-control" name="cant_supervisa" id="cant_supervisa" placeholder="Ejemplo: 2" required>
+                              </div> 
+
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Modalidad</label>
+                                <select class="form-control" name="tipo_empleado" id="tipo_empleado" required>
+                                   <option value="0">Seleccione la Modalidad</option>
+                                   <% if(mod) {%>
+                                    <% for(var i =0;i < mod.length;i++){ %>
+                                      <option value="<%= mod[i].id_tipo_empleado %>"><%= mod[i].tipo_empleado %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                              
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Rango de Edad</label>
+                                <input type="text" class="form-control" name="rango_edad" id="rango_edad" placeholder="Ejemplo: de 18 - 30 años" required>
+                              </div> 
+                             
+                           
+                           <div class="col-md-4">
+                            <label for="inputEmail4" class="form-label text-black">Sexo</label>
+                            <select class="form-control" name="sexo" id="sexo" required>
+                               <option value="0">Seleccione el Sexo</option>
+                               <option value="M">Masculino</option>
+                               <option value="F">Femenino</option>
+                             </select>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="inputEmail4" class="form-label text-black">Grado Académico</label>
+                            <select class="form-control" name="grado_ac" id="grado_ac" required>
+                               <option value="0">Seleccione el grado académico</option>
+                               <% if(graac) {%>
+                                <% for(var i =0;i < graac.length;i++){ %>
+                                  <option value="<%= graac[i].id_grado_ac %>"><%= graac[i].descripcion %></option>
+                                   
+                                 <% } %>
+                                <% } %>
+                             </select>
+                          </div>
+
+                          <div class="col-md-4">
+                            <label for="inputEmail4" class="form-label text-black">Nivel</label>
+                            <select class="form-control" name="nivel" id="nivel" required>
+                               <option value="0">Seleccione el nivel</option>
+                               <% if(niv) {%>
+                                <% for(var i =0;i < niv.length;i++){ %>
+                                  <option value="<%= niv[i].id_nivel %>"><%= niv[i].descripcion %></option>
+                                   
+                                 <% } %>
+                                <% } %>
+                             </select>
+                          </div>
+
+                          <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label text-black">Conocimientos</label>
+                            <textarea class="form-control" name="conocimiento" id="conocimiento" placeholder="Ejemplo: Manejo del paquete Office..." cols="30" rows="4"></textarea>
+                            
+                          </div>  
+                          <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label text-black">Conocimientos deseados</label>
+                            <textarea class="form-control" name="conocimiento_deseable" id="conocimiento_deseable" placeholder="Ejemplo: Manejo del paquete Office..." cols="30" rows="4"></textarea>
+                            
+                          </div>  
+                              <div class="col-md-12">
+                                <label for="inputPassword4" class="form-label text-black">Justificación</label>
+                                <textarea class="form-control" name="justificacion" id="justificacion" placeholder="Ejemplo: renuncia del empleado en la posicición" cols="30" rows="4"></textarea>
+                                
+                              </div>  
+
+                              
+                              <div class="col-md-4 d-none">
+                                <label for="inputEmail4" class="form-label text-black">Estado de la Solicitud</label>
+                                <select class="form-control" name="estado" id="estado" required>
+                                   <option value="0">Seleccione el Estado</option>
+                                   <% if(est) {%>
+                                    <% for(var i =0;i < est.length;i++){ %>
+                                      <option value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                               <div class="col-12 mt-4">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<script >
+
+
+
+
+
+
+function fechaActual(){
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  return  day + "/" + month + "/" + year;
+  
+}
+
+function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+
+window.addEventListener('load', function() {
+  // $(":input").inputmask();
+  //const nacionalidad = document.getElementById("nacionalidad");
+  //$("#fecha").val(fechaActual());
+  document.getElementById("fecha").value = new Date().toLocaleDateString();
+ 
+});
+</script>
+
+
+
+<%- include('partials/_footer') %>

@@ -1,0 +1,1748 @@
+<%- include('partials/_header') %>
+
+
+<link href='lib/main.css' rel='stylesheet' />
+<script src='lib/main.js'></script>
+<script src='lib/locales-all.js'></script>
+
+            <div class="container">
+                <div class="row mt-4 text-center">
+                    <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center mx-1 cale text-black">
+                          <div id='calendar'></div>
+                        </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+
+<div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog ancho" role="document">
+  <div class="modal-content">
+
+
+
+    <div id="modalId" class="modal-body row g-3 d-none">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="card-header text-black">
+                <h5>AGREGAR INVITADO</h5>
+            </div>
+        </div>
+    </div>
+      <div class="col-md-12 col-md-4 "> 
+      <label for="inputPassword4" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label> 
+      <input type="text" class="form-control" name="nombre_persona" id="nombre_persona" placeholder="Nombre y apellido" required> 
+      <input type="hidden" class="form-control" name="persona" id="persona" value="" placeholder=""> 
+      </div>   
+
+      <div class="col-md-4 mt-2"> 
+        <label for="inputPassword4" class="form-label text-black">Cargo<strong style="color: red;">*</strong></label> 
+        <input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo que Ocupa" required> 
+        </div>  
+
+        <div class="col-md-4 mt-2 d-none"> 
+          <label for="inputPassword4" class="form-label text-black">Cédula</label> 
+          <input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, '999-9999999-9')" size=13  placeholder="000-0000000-0"> 
+          </div>  
+
+          <div class="col-md-4 mt-2"> 
+            <label for="inputPassword4" class="form-label text-black">Celular<strong style="color: red;">*</strong></label> 
+            <input type="text" class="form-control" name="celular" id="celular" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000" required> 
+            </div>  
+
+            <div class="col-md-4 mt-2"> 
+              <label for="inputPassword4" class="form-label text-black">Correo</label> 
+              <input type="email" class="form-control" name="correo" id="correo" placeholder="ingrese correo"> 
+              </div> 
+              <div class="col-4 pt-4">
+                <button id="invitadoBtn" class="btn btn-primary">GUARDAR</button>
+                <button id="cancelarInvitadosBtn" class="btn btn-secondary">CANCELAR</button>
+              </div>
+            </div> 
+
+
+
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header text-black">
+                            <h5>LISTA DE INVITADOS</h5>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 mt-5 d-flex text-right">
+                  <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                  <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Nombre o empresa del invitado a buscar" >
+                  
+                  <a id="crearInvitadosBtn"><i class='fas fa-plus mx-3' style='font-size:18px;color:black'> Crear invitado</i></a>
+                  
+                </div>
+    
+                
+    
+    
+                <div class="col-12 mt-3 d-flex text-right">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>CELULAR</th>
+                            <!-- <th>EMPRESA</th> -->
+                            <th>CARGO</th>
+                            <th>CORREO</th>
+                            <th class="text-center">ACCION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_invitado">
+                       
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog ancho" role="document">
+  <div class="modal-content ">
+  <form class="row g-3" action="/agenda/add" method="post">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel">Cita</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    </div>
+    <div class="col-md-12 ">
+    <div class="modal-body row g-3  mx-5">
+    
+      <div class="col-8">
+        <label for="inputAddress2" class="form-label text-black">Titulo<strong style="color: red;">*</strong></label>
+        <input type="text" class="form-control" name="titulo" id="titulo" maxlength="100" required>
+      </div>
+
+      <div class="col-4">
+        <label for="inputAddress2" class="form-label text-black">Empresa (Registrada)<strong style="color: red;">*</strong></label>
+        <input type="checkbox" name="empresa_registrada" id="empresa_registrada">
+        <input type="text" class="form-control" name="empresa" id="empresa" value="" placeholder="Con qué empresa es la Cita" required>
+        <select class="form-control d-none" name="emps" id="emps" >
+          <option value="0">Seleccione</option>
+         <% if(empresas) {%>
+           <% for(var i =0;i < empresas.length;i++){ %>
+             <option value="<%= empresas[i].razon_social %>"><%= empresas[i].razon_social %></option>
+              
+            <% } %>
+           <% } %>
+        </select>
+      </div>
+
+      <div class="col-4">
+        <label for="inputAddress2" class="form-label text-black">Fecha<strong style="color: red;">*</strong></label>
+        <input type="date" class="form-control" name="fecha" id="fecha" required>
+      </div>
+
+        <div class="col-2">
+            <label for="inputAddress2" class="form-label text-black">Hora de Inicio<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="inicio" id="inicio" required>
+          </div>
+
+          <div class="col-2">
+            <label for="inputAddress2" class="form-label text-black">Hora Final<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="fin" id="fin" required>
+          </div>
+
+          <div class="col-4">
+            <label for="inputAddress2" class="form-label text-black">Geo localización</label>
+            <input type="text" class="form-control" onclick="funcionInit(this)" name="geo" id="geo" onkeypress="handleMask(event, '|||||')" placeholder="Click aqui para agregar ubicación">
+          </div>
+
+          <div class="col-12">
+            <label for="inputAddress2" class="form-label text-black">Lugar<strong style="color: red;">*</strong></label>
+            <input type="text" class="form-control" name="lugar" id="lugar" value="" max="255" placeholder="Dónde se realizará la reunión" required>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo interno<strong style="color: red;">*</strong></label>
+            <select class="form-control" name="ejecutivointerno" id="ejecutivointerno" required>
+               <option value="">Seleccione</option>
+              <% if(ejec) {%>
+                <% for(var i =0;i < ejec.length;i++){ %>
+                  <option value="<%= ejec[i].id_empleado %>"><%= ejec[i].ejecutivointerno %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo de banco</label>
+            <select class="form-control" name="externo" id="externo">
+               <option value="0">Seleccione</option>
+              <% if(externo) {%>
+                <% for(var i =0;i < externo.length;i++){ %>
+                  <option value="<%= externo[i].id_ejecutivo %>"><%= externo[i].nombre+" - "+externo[i].nombre_empresa %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo de pago</label>
+            <select class="form-control" name="ejecutivo_pago" id="ejecutivo_pago">
+               <option value="0">Seleccione</option>
+              <% if(pago) {%>
+                <% for(var i =0;i < pago.length;i++){ %>
+                  <option value="<%= pago[i].id_ejecutivo %>"><%= pago[i].nombre+" - "+pago[i].nombre_empresa %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+          <div class=" mt-2" id="responsable">
+                            </div>
+
+                            <div class="col-4 pt-4">
+                              <button type="button" id="responsableBtn" class="btn btn-primary">Agregar invitado<strong style="color: red;">*</strong></button>
+                              
+                            </div>
+
+          
+          
+          <div class="col-md-12">
+            <label for="inputPassword4" class="form-label text-black" >Motivo<strong style="color: red;">*</strong></label>
+            <textarea class="col-md-12" name="motivo" id="motivo" cols="auto" rows="3" maxlength="225" required></textarea>                                
+          </div>
+
+          <div class="col-md-12 d-none">
+            <label for="inputPassword4" class="form-label text-black" required>Minuta</label>
+            <textarea class="col-md-12" name="minuta" id="minuta" cols="auto" rows="3"></textarea>                                
+          </div>
+
+          <div class="col-4">
+            <label for="inputAddress2" class="form-label text-black">Recordatorio (Tiempo antes de la Cita)<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="recordatorio" id="recordatorio" required>
+          </div>
+          <div class="col-4">
+            <label for="inputAddress2" class="form-label text-black">Color</label>
+            <input type="color" class="form-control py-1" name="color" id="color" value="#ffdd00" disabled>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" id="guardarCitaBtn" class="btn btn-primary d-none">Guardar</button>
+            </div>
+          </div>            
+    </div>
+    
+  </form>
+  </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="ModalEditCita" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog ancho" role="document">
+  <div class="modal-content ">
+  <form class="row g-3" action="/agenda/update/0/0/0" enctype="multipart/form-data" method="post">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel">Editar Cita</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    </div>
+    <div class="col-md-12 ">
+    <div class="modal-body row g-3  mx-5">
+    
+      <div class="col-8">
+        <label for="inputAddress2" class="form-label text-black">Titulo<strong style="color: red;">*</strong></label>
+        
+        <input type="hidden" class="form-control" name="id_cita" id="id_cita" value="" required>
+        <input type="hidden" class="form-control" name="files_cita" id="files_cita" value="files_cita" required>
+        <input type="text" class="form-control" name="titulo" id="titulo" value="" required>
+      </div>
+
+      <div class="col-4">
+        <label for="inputAddress2" class="form-label text-black">Empresa (Registrada)<strong style="color: red;">*</strong></label>
+        <input type="checkbox" name="empresa_registrada1" id="empresa_registrada1">
+        <input type="text" class="form-control" name="empresa" id="empresa" value="" placeholder="Con qué empresa es la Cita" required>
+        <select class="form-control d-none" name="emps1" id="emps1" >
+          <option value="0">Seleccione</option>
+         <% if(empresas) {%>
+           <% for(var i =0;i < empresas.length;i++){ %>
+             <option value="<%= empresas[i].razon_social %>"><%= empresas[i].razon_social %></option>
+              
+            <% } %>
+           <% } %>
+        </select>
+      </div>
+
+      <div class="col-4">
+        <label for="inputAddress2" class="form-label text-black">Fecha<strong style="color: red;">*</strong></label>
+        <input type="date" class="form-control" name="fecha" id="fecha" required>
+      </div>
+
+        <div class="col-2">
+            <label for="inputAddress2" class="form-label text-black">Hora de Inicio<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="inicio" id="inicio" required>
+          </div>
+
+          <div class="col-2">
+            <label for="inputAddress2" class="form-label text-black">Hora Final<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="fin" id="fin" required>
+          </div>
+
+          <div class="col-4">
+            <label for="inputAddress2" class="form-label text-black">Geo localización</label>
+            <input type="text" class="form-control" onclick="funcionInit(this)" name="geo" id="geo" onkeypress="handleMask(event, '|||||')" placeholder="Click aqui para agregar ubicación">
+          </div>
+
+          <div class="col-12">
+            <label for="inputAddress2" class="form-label text-black">Lugar<strong style="color: red;">*</strong></label>
+            <input type="text" class="form-control" name="lugar" id="lugar" value="" placeholder="Dónde se realizará la reunión" required>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo interno<strong style="color: red;">*</strong></label>
+            <select class="form-control" name="ejecutivointerno" id="ejecutivointerno" required>
+               <option value="">Seleccione</option>
+              <% if(ejec) {%>
+                <% for(var i =0;i < ejec.length;i++){ %>
+                  <option value="<%= ejec[i].id_empleado %>"><%= ejec[i].ejecutivointerno %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo de banco</label>
+            <select class="form-control" name="externo" id="externo">
+               <option value="0">Seleccione</option>
+              <% if(externo) {%>
+                <% for(var i =0;i < externo.length;i++){ %>
+                  <option value="<%= externo[i].id_ejecutivo %>"><%= externo[i].nombre+" - "+externo[i].nombre_empresa %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="inputEmail4" class="form-label text-black">Ejecutivo de pago</label>
+            <select class="form-control" name="ejecutivo_pago" id="ejecutivo_pago">
+               <option value="0">Seleccione</option>
+              <% if(pago) {%>
+                <% for(var i =0;i < pago.length;i++){ %>
+                  <option value="<%= pago[i].id_ejecutivo %>"><%= pago[i].nombre+" - "+pago[i].nombre_empresa %></option>
+                   
+                 <% } %>
+                <% } %>
+             </select>
+          </div>
+          <div class=" mt-2" id="responsableCita">
+                            </div>
+
+                            <div class="col-4 pt-4">
+                              <button type="button" id="responsableBtnCita" class="btn btn-primary">Agregar invitado<strong style="color: red;">*</strong></button>
+                              
+                            </div>
+
+          <div class="col-md-12">
+            <label for="inputPassword4" class="form-label text-black" >Motivo<strong style="color: red;">*</strong></label>
+            <textarea class="col-md-12" name="motivo" id="motivo" cols="auto" rows="3" required></textarea>                                
+          </div>
+
+          <div class="col-md-12">
+            <label for="inputPassword4" class="form-label text-black">Minuta</label>
+            <textarea class="col-md-12" name="minuta" id="minuta" cols="auto" rows="3"></textarea>                                
+          </div>
+
+          <div id="docs_cita" class="col-md-12">
+            <label for="inputPassword4" class="form-label text-black">Archivos: </label>
+            
+          </div> 
+          
+          <div class="col-8">
+            <label for="inputAddress2" class="form-label text-black">Descripción del archivo a subir</label>
+            <input type="text" class="form-control" name="descripcion" id="descripcion">
+          </div>
+          <div class="col-md-4">
+            <label for="inputPassword4" class="form-label text-black">Subir Archivo</label>
+            <input type="file" class="form-control" name="file" id="file" >
+          </div> 
+
+          
+
+          <div class="col-4 pt-2">
+            <label for="inputAddress2" class="form-label text-black">Recordatorio (Tiempo antes de la Cita)<strong style="color: red;">*</strong></label>
+            <input type="time" class="form-control" name="recordatorio" id="recordatorio" required>
+          </div>
+          <div class="col-4 pt-2 d-none">
+            <label for="inputAddress2" class="form-label text-black">Color</label>
+            <input type="color" class="form-control py-1" name="color" id="color" readonly>
+          </div>
+
+          <div class="col-md-4 pt-2">
+            <label for="inputEmail4" class="form-label text-black">Estado</label>
+            <select class="form-control" name="estado" id="estado">
+                  <option value="Agendada">Agendada</option>
+                  <option value="Completada">Completada</option>
+                  <option value="Reagendada">Reagendada</option>
+                  <option value="Cancelada">Cancelada</option>               
+             </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="historialCitaBtn" class="btn btn-outline-primary">Historial</button>
+            <button type="submit" id="guardarCitaBtn" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>            
+    </div>
+    
+  </form>
+  </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="modal fade" id="ModalHistorialCita" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog ancho" role="document">
+  <div class="modal-content ">
+  <form class="row g-3" action="/agenda/update/0/0/0" enctype="multipart/form-data" method="post">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel">Historial Cita</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+    </div>
+    <div class="col-md-12 ">
+    <div class="modal-body row g-3  mx-5">
+    
+      <div class="btn-group col-12  mt-4 fs-5" role="group" aria-label="bs-component">
+               
+        <div class="col-4">
+          <label class="form-label" for="fecha_desde">
+            DESDE:
+          </label>
+          <input class="form-input" type="datetime-local" name="fecha_desde" value="" id="fecha_desde">
+        </div>
+
+          <div class="col-4">
+            <label class="form-label" for="fecha_hasta">
+              HASTA:
+            </label>
+            <input class="form-input" type="datetime-local" name="fecha_hasta" value="" id="fecha_hasta">
+          </div>
+
+            <div class="col-4">
+              <input class="btn btn-primary" type="button" value="BUSCAR" id="btnBuscar">
+            </div>
+
+      </div>
+
+      <div class="col-12 mt-3 d-flex text-right" style="overflow: auto;">
+        <table id="mitabla" class="table table-bordered table-hover mitabla" style="white-space: nowrap;">
+            <thead class="bg-dark text-white header" >
+                <tr style="position: sticky;top: 0;">
+                  <th>FECHA</th>
+                    <th>TÍTULO</th>
+                    <th>EMPRESA</th>
+                    <th>FECHA CITA</th>
+                    <th>HORA INICIO</th>
+                    <th>HORA FINAL</th>
+                    <th>GEO LOCALIZACIÓN</th>
+                    <th>LUGAR</th>
+                    <th>EJECUTIVO INTERNO</th>
+                    <th>EJECUTIVO BANCO</th>
+                    <th>EJECUTIVO PAGO</th>
+                    <th style="white-space: nowrap" >INVITADOS</th>
+                    <th>MOTIVO</th>
+                    <th>MINUTA</th>
+                    <th>RECORDATORIO</th>
+                    <th>ESTADO</th>
+                    <th>CREADO POR</th>
+                    <th>EDITADO POR</th>
+                    <th class="text-center">VER</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_cita">
+
+            </tbody>
+          </table>
+          
+          </div>
+          <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          
+        </div>
+
+
+
+
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" id="cancelarCitaBtn">Atrás</button>
+            <button type="submit" id="aceptarCitaBtn" class="btn btn-primary">Aceptar</button>
+            </div>
+          </div>            
+    </div>
+    
+  </form>
+  </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<html>
+<head>
+
+<script>
+// <link rel="stylesheet" type="text/css" href="css/style.css">
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    document.getElementById("cancelarCitaBtn").onclick = function(e) {
+      $('#ModalEditCita').modal('show');
+      $('#ModalHistorialCita').modal('hide');
+    }
+
+    document.getElementById("btnBuscar").onclick = function(e) {
+      let fecha_desde = document.getElementById('fecha_desde').value;
+        let fecha_hasta = document.getElementById('fecha_hasta').value;
+        if(fecha_desde == ''){
+          alert("La fecha DESDE no puede ser nula");
+        }else if(fecha_hasta == ''){
+          alert("La fecha HASTA no puede ser nula");
+        }else if(fecha_hasta<fecha_desde){
+          alert("la fecha inicial no puede ser mayor que la fecha final");          
+        }else{
+          inicio = 1;
+          citaHistorial(inicio);
+        }
+    }
+    
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    invitadoList("aaaaaaaaaaaa"); 
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+      
+      invitadoList(valor); 
+      // alert(valor);
+    };
+
+    document.getElementById("historialCitaBtn").onclick = function(e) {
+      citaHistorial(1)
+    };
+
+    
+    document.getElementById("cancelarInvitadosBtn").onclick = function(e) {
+      let del = confirm("¿Deseas cancelar la creación de éste registro?");
+    if(del){
+      document.getElementById('persona').value = "";
+      document.getElementById('nombre_persona').value = "";
+      document.getElementById('cargo').value = "";
+      document.getElementById('celular').value = "";
+      document.getElementById('correo').value = "";
+
+      document.getElementById('modalId').classList.add('d-none');
+    }
+      
+    };
+
+    document.getElementById("crearInvitadosBtn").onclick = function(e) {
+      // document.getElementById('modalId').classList.add('nueva_clase');
+      document.getElementById('persona').value = "";
+      document.getElementById('nombre_persona').value = "";
+      document.getElementById('cargo').value = "";
+      document.getElementById('celular').value = "";
+      document.getElementById('correo').value = "";
+      document.getElementById('modalId').classList.remove('d-none');
+    };
+
+    document.getElementById("invitadoBtn").onclick = function(e) {
+      
+      let persona = document.getElementById('persona').value;
+      let nombre = document.getElementById('nombre_persona').value;
+      let cargo = document.getElementById('cargo').value;
+      let celular = document.getElementById('celular').value;
+      let correo = document.getElementById('correo').value;
+      let cedula = "000";
+
+      if( persona == ""){
+        $.get("/form_data/responsable/add/" + nombre+"/"+cargo+"/"+cedula+"/"+celular+"/"+correo, function (data) {
+          // console.log(data)
+          invitadoList(nombre); 
+          document.getElementById('persona').value = "";
+          document.getElementById('nombre_persona').value = "";
+          document.getElementById('cargo').value = "";
+          document.getElementById('celular').value = "";
+          document.getElementById('correo').value = "";
+          
+        });
+      } else{
+        $.get("/form_data/invitados/update/" + nombre+"/"+cargo+"/"+cedula+"/"+celular+"/"+correo+"/"+persona, function (data) {
+          // console.log(data)
+          invitadoList(""); 
+          document.getElementById('persona').value = "";
+          document.getElementById('nombre_persona').value = "";
+          document.getElementById('cargo').value = "";
+          document.getElementById('celular').value = "";
+          document.getElementById('correo').value = "";
+          
+        });
+      }
+
+      document.getElementById('modalId').classList.add('d-none');
+    
+    };
+    document.getElementById("emps").onchange = function(e) {
+      let valor = e.target.value;
+      document.getElementById("empresa").value = this.value;
+    };
+    document.getElementById("emps1").onchange = function(e) {
+      let valor = e.target.value;
+      $('#ModalEditCita #empresa').val(this.value);
+    };
+////////////////////EL CALENDARIO//////////////////////////////
+    var calendarEl = document.getElementById('calendar');
+    var initialLocaleCode = 'es';
+
+    const jsonCitas = '<%- JSON.stringify(citas) %>';
+    var citas = JSON.parse(jsonCitas);
+    // console.log(citas)
+    let eventos =[];
+    var evento={};
+    for(var i =0;i < citas.length;i++){
+          
+      evento = {
+        id: citas[i].id_cita,
+        title: citas[i].titulo,
+        start: citas[i].fecha+"T"+citas[i].hora_inicio,
+        end:citas[i].fecha+"T"+citas[i].hora_fin,
+        description:citas[i].motivo,
+        status:citas[i].estado,
+        color: citas[i].color,
+        lugar: citas[i].lugar,
+        geo: citas[i].geo,
+        recordatorio: citas[i].recordatorio,
+        minuta: citas[i].minuta,
+        empresa: citas[i].empresa,
+        registradapor:citas[i].registrada_por
+      }
+      // console.log(evento)'2022-10-16T16:00:00',
+      eventos.push(evento);   
+      // evento={};       
+    } 
+    // console.log(eventos)
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      },
+      initialDate: new Date(),
+      locale: initialLocaleCode,
+      navLinks: true, // can click day/week names to navigate views
+      selectable: true,
+      selectMirror: true,
+      initialView: 'dayGridMonth',
+      
+      select: function(arg) {
+        // leemos las fechas de inicio de evento y hoy
+      let check = moment(arg.start).format('YYYY-MM-DD T HH:mm:ss');
+      let today = moment(new Date()).format('YYYY-MM-DD T HH:mm:ss');
+
+      // si el inicio de evento ocurre hoy o en el futuro mostramos el modal
+      if (check >= today) {
+        $('#id_cita').val(""); // elimino el id_cita para controlar como agregar invitado
+        $('#ModalEdit #fecha').val(moment(arg.start).format('YYYY-MM-DD'));
+        $('#ModalEdit #inicio').val(moment(arg.start).format('HH:mm:ss'));
+        $('#ModalEdit #fin').val(moment(arg.end).format('HH:mm:ss'));
+        // console.log(moment().format())
+        $('#ModalEdit').modal('show');
+        var title = $('#motivo').val();//prompt('Event Title:');
+        var id_event = 1;
+        var lugar = "";
+        var id_empleado = 2;
+        var desc = "";
+        var estado = "";
+        var geo = "";
+        recordatorio = "";
+        var ejecutivointerno = 0;
+        var ejecutivobanco = 0;
+        var ejecutivo_pago = 0;
+        var minuta = "";
+        var empresa = "";
+        var registradapor = 0;
+
+        if (title) {
+          calendar.addEvent({
+            title: title,
+            id:id_event,
+            start: arg.start,
+            end: arg.end,
+            allDay: arg.allDay,
+            description: desc,
+            lugar: lugar,
+            empleado: id_empleado,
+            status: estado,
+            geo: geo,
+            recordatorio: recordatorio,
+            ejecutivointerno: ejecutivointerno,
+            ejecutivobanco: ejecutivobanco,
+            ejecutivo_pago: ejecutivo_pago,
+            minuta: minuta,
+            empresa: empresa,
+            registradapor: registradapor,
+
+          })
+          
+        }
+                
+      }
+      // si no, mostramos una alerta de error
+      else {
+          alert("No se pueden crear eventos en el pasado!");
+      }
+        calendar.unselect()
+      },
+      eventClick: function(arg) {
+        // console.log('Evento',arg.event)
+        let ck = moment(arg.event.start).format('YYYY-MM-DD');
+      let ahora = moment(new Date()).format('YYYY-MM-DD T HH:mm:ss');
+
+      // si el inicio de evento ocurre hoy o en el futuro mostramos el modal
+        $('#ModalEditCita #id_cita').val(arg.event.id);
+        $('#ModalEditCita #titulo').val(arg.event.title);
+        $('#ModalEditCita #fecha').val(moment(arg.event.start).format('YYYY-MM-DD'));
+        $('#ModalEditCita #inicio').val(moment(arg.event.start).format('HH:mm'));
+        $('#ModalEditCita #fin').val(moment(arg.event.end).format('HH:mm'));
+        $('#ModalEditCita #motivo').val(arg.event.extendedProps.description);
+        $('#ModalEditCita #geo').val(arg.event.extendedProps.geo);
+        $('#ModalEditCita #recordatorio').val(arg.event.extendedProps.recordatorio);
+        $('#ModalEditCita #lugar').val(arg.event.extendedProps.lugar);
+        $('#ModalEditCita #color').val(arg.event.backgroundColor);
+        $('#ModalEditCita #estado').val(arg.event.extendedProps.status);
+        $('#ModalEditCita #minuta').val(arg.event.extendedProps.minuta);
+        $('#ModalEditCita #empresa').val(arg.event.extendedProps.empresa);
+        
+        let detalle = cita_detalle(arg.event.id,moment(arg.event.start).format('YYYY-MM-DD'),arg.event.extendedProps.registradapor =='<%- id_empleado %>');
+        check_edit_cita(arg.event.id,moment(arg.event.start).format('YYYY-MM-DD')) // verifico la fecha y el id, si no coninciden pongo el id en cero y mando a insertar
+        
+        $('#ModalEditCita').modal('show');
+        if (moment().format('YYYY-MM-DD') > ck) {//aqui evito que se edite una fecha pasada
+          // alert('fecha valida')
+          if(arg.event.extendedProps.registradapor =='<%- id_empleado %>' || '<%- accesos.editar_cita %>'=='true'){
+            $('#ModalEditCita #file').removeAttr('disabled', 'disabled');
+            $('#ModalEditCita #descripcion').removeAttr('disabled', 'disabled');
+            $('#ModalEditCita #guardarCitaBtn').removeAttr('disabled', 'disabled');
+            $('#ModalEditCita #responsableBtnCita').prop('disabled', true);
+
+          }else{
+            $('#ModalEditCita #file').attr('disabled', 'disabled');
+            $('#ModalEditCita #descripcion').attr('disabled', 'disabled');
+            $('#ModalEditCita #guardarCitaBtn').attr('disabled', 'disabled');
+            $('#ModalEditCita #responsableBtnCita').prop('disabled', true);
+          }
+          
+          // $('#ModalEditCita #id_cita').attr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').attr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').attr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').attr('disabled', 'disabled');
+          $('#ModalEditCita #fin').attr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').attr('disabled', 'disabled');
+          $('#ModalEditCita #geo').attr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').attr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').attr('disabled', 'disabled');
+          $('#ModalEditCita #color').attr('disabled', 'disabled');
+          $('#ModalEditCita #estado').attr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').attr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').attr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', true);
+          $('#ModalEditCita #externo').prop('disabled', true);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', true);
+          
+          // $('#ModalEditCita #guardarCitaBtn').prop('disabled', true);
+        }else{
+          if(arg.event.extendedProps.registradapor !='<%- id_empleado %>'){
+            if('<%- accesos.editar_cita %>'=='true'){ //si tiene permiso para editar_cita
+              $('#ModalEditCita #cerrar').hide();
+          // $('#ModalEditCita #id_cita').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fin').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #geo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #color').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #estado').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', false);
+          $('#ModalEditCita #externo').prop('disabled', false);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', false);
+          $('#ModalEditCita #responsableBtnCita').prop('disabled', false);
+          $('#ModalEditCita #guardarCitaBtn').prop('disabled', false);
+            }else{
+              if(arg.event.extendedProps.registradapor !='<%- id_empleado %>'){ // si el que esta loqueado no es quien creo la cita
+            $('#ModalEditCita #file').attr('disabled', 'disabled');
+            $('#ModalEditCita #descripcion').attr('disabled', 'disabled');
+            $('#ModalEditCita #guardarCitaBtn').attr('disabled', 'disabled');
+          }
+          
+          // $('#ModalEditCita #id_cita').attr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').attr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').attr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').attr('disabled', 'disabled');
+          $('#ModalEditCita #fin').attr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').attr('disabled', 'disabled');
+          $('#ModalEditCita #geo').attr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').attr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').attr('disabled', 'disabled');
+          $('#ModalEditCita #color').attr('disabled', 'disabled');
+          $('#ModalEditCita #estado').attr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').attr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').attr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', true);
+          $('#ModalEditCita #externo').prop('disabled', true);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', true);
+          $('#ModalEditCita #responsableBtnCita').prop('disabled', true);
+            }
+            
+          }
+          else{
+            $('#ModalEditCita #cerrar').hide();
+          // $('#ModalEditCita #id_cita').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fin').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #geo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #color').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #estado').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', false);
+          $('#ModalEditCita #externo').prop('disabled', false);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', false);
+          $('#ModalEditCita #responsableBtnCita').prop('disabled', false);
+          $('#ModalEditCita #guardarCitaBtn').prop('disabled', false);
+          }
+          
+        }
+
+        
+      
+        // if (confirm('Are you sure you want to delete this event?')) {
+        //   arg.event.remove()
+        // }
+      },
+      eventDrop: function(event, delta, revertFunc) { 
+        let check = moment(event.event.start).format('YYYY-MM-DD T HH:mm:ss');
+      let today = moment(new Date()).format('YYYY-MM-DD T HH:mm:ss');
+
+      // si el inicio de evento ocurre hoy o en el futuro mostramos el modal
+        if (check >= moment().format('YYYY-MM-DD T HH:mm:ss')) {
+              // alert('mover fecha')
+            if (confirm('Deseas mover esta cita?')) {
+              // event.event.remove()
+              $('#ModalEditCita #id_cita').val(0);
+        $('#ModalEditCita #titulo').val(event.event.title);
+        $('#ModalEditCita #fecha').val(moment(event.event.start).format('YYYY-MM-DD'));
+        $('#ModalEditCita #inicio').val(moment(event.event.start).format('HH:mm'));
+        $('#ModalEditCita #fin').val(moment(event.event.end).format('HH:mm'));
+        $('#ModalEditCita #motivo').val(event.event.extendedProps.description);
+        $('#ModalEditCita #geo').val(event.event.extendedProps.geo);
+        $('#ModalEditCita #recordatorio').val(event.event.extendedProps.recordatorio);
+        $('#ModalEditCita #lugar').val(event.event.extendedProps.lugar);
+        $('#ModalEditCita #color').val(event.event.backgroundColor);
+        $('#ModalEditCita #estado').val(event.event.extendedProps.status);
+        $('#ModalEditCita #minuta').val(event.event.extendedProps.minuta);
+        $('#ModalEditCita #empresa').val(event.event.extendedProps.empresa);
+        
+        let detalle = cita_detalle(event.event.id,moment(event.event.start).format('YYYY-MM-DD'),event.event.extendedProps.registradapor !='<%- id_empleado %>');
+        
+        $('#ModalEditCita').modal('show');
+              
+        if (moment().add(-1, 'd').format('YYYY-MM-DD T HH:mm:ss') >= check) {//aqui evito que se edite una fecha pasada
+          // alert('fecha valida')
+          $('#ModalEditCita #cerrar').prop('disabled', true);
+          $('#ModalEditCita #id_cita').attr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').attr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').attr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').attr('disabled', 'disabled');
+          $('#ModalEditCita #fin').attr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').attr('disabled', 'disabled');
+          $('#ModalEditCita #geo').attr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').attr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').attr('disabled', 'disabled');
+          $('#ModalEditCita #color').attr('disabled', 'disabled');
+          $('#ModalEditCita #estado').attr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').attr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').attr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', true);
+          $('#ModalEditCita #externo').prop('disabled', true);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', true);
+          $('#ModalEditCita #responsableBtnCita').prop('disabled', true);
+          $('#ModalEditCita #guardarCitaBtn').prop('disabled', true);
+        }else{
+          $('#ModalEditCita #cerrar').prop('disabled', false);
+          $('#ModalEditCita #id_cita').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #titulo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fecha').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #inicio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #fin').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #motivo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #geo').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #recordatorio').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #lugar').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #color').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #estado').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #minuta').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #empresa').removeAttr('disabled', 'disabled');
+          $('#ModalEditCita #ejecutivointerno').prop('disabled', false);
+          $('#ModalEditCita #externo').prop('disabled', false);
+          $('#ModalEditCita #ejecutivo_pago').prop('disabled', false);
+          $('#ModalEditCita #responsableBtnCita').prop('disabled', false);
+          $('#ModalEditCita #guardarCitaBtn').prop('disabled', false);
+        }
+
+            }else{
+              location.reload();
+            }
+        }else {
+            alert("No se pueden crear eventos en el pasado!");
+            location.reload();
+        }
+        
+			// console.log(event);
+      // arg=event;
+      // // $('#ModalEditCita #id_cita').val(arg.event.id);
+      //   $('#ModalEdit #titulo').val(arg.event.title);
+      //   $('#ModalEdit #fecha').val(moment(arg.event.start).format('YYYY-MM-DD'));
+      //   $('#ModalEdit #inicio').val(moment(arg.event.start).format('HH:mm'));
+      //   $('#ModalEdit #fin').val(moment(arg.event.end).format('HH:mm'));
+      //   $('#ModalEdit #motivo').val(arg.event.extendedProps.description);
+      //   $('#ModalEdit #geo').val(arg.event.extendedProps.geo);
+      //   $('#ModalEdit #recordatorio').val(arg.event.extendedProps.recordatorio);
+      //   $('#ModalEdit #lugar').val(arg.event.extendedProps.lugar);
+      //   $('#ModalEdit #color').val(arg.event.backgroundColor);
+      //   $('#ModalEdit #estado').val(arg.event.extendedProps.status);
+      //   $('#ModalEdit #minuta').val(arg.event.extendedProps.minuta);
+      //   $('#id_cita').val("")
+      //   let detalle = cita_detalle(arg.event.id);
+
+      //   $('#ModalEdit').modal('show');
+		},
+					
+		eventResize: function(event,dayDelta,minuteDelta,revertFunc) { 
+      alert('hola')
+      let arg=event;
+			let check = moment(arg.start).format('YYYY-MM-DD T HH:mm:ss');
+          let today = moment(new Date()).format('YYYY-MM-DD T HH:mm:ss');
+
+      // si el inicio de evento ocurre hoy o en el futuro mostramos el modal
+            if (check >= today) {
+            }else {
+                alert("No se pueden crear eventos en el pasado!");
+            }
+		},
+      editable: true,
+      dayMaxEvents: true, // allow "more" link when too many events
+      
+      events: eventos
+      
+        
+      
+      // events: [
+      //   {
+      //     id: 1,
+      //     title: 'All Day Event',
+      //     start: '2022-10-01',
+      //     description: 'All Day Event 1',
+      //     cliente: 1,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 2,
+      //     title: 'Long Event',
+      //     start: '2022-10-07',
+      //     end: '2022-10-10',
+      //     description: 'All Day Event 2',
+      //     cliente: 2,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 3,
+      //     groupId: 999,
+      //     title: 'Repeating Event',
+      //     start: '2022-10-09T16:00:00',
+      //     description: 'All Day Event 3',
+      //     cliente: 3,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 4,
+      //     groupId: 999,
+      //     title: 'Repeating Event',
+      //     start: '2022-10-16T16:00:00',
+      //     description: 'All Day Event 4',
+      //     cliente: 4,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 5,
+      //     title: 'Conference',
+      //     start: '2022-10-11',
+      //     end: '2022-10-13',
+      //     description: 'All Day Event 5',
+      //     cliente: 5,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 6,
+      //     title: 'Meeting',
+      //     start: '2022-10-12T10:30:00',
+      //     end: '2022-10-12T12:30:00',
+      //     description: 'All Day Event 6',
+      //     cliente: 6,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 7,
+      //     title: 'Lunch',
+      //     start: '2022-10-12T12:00:00',
+      //     description: 'All Day Event 7',
+      //     cliente: 7,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 8,
+      //     title: 'Meeting',
+      //     start: '2022-10-12T14:30:00',
+      //     description: 'All Day Event 8',
+      //     cliente: 8,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 9,
+      //     title: 'Happy Hour',
+      //     start: '2022-10-12T17:30:00',
+      //     description: 'All Day Event 9',
+      //     cliente: 9,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 10,
+      //     title: 'Dinner',
+      //     start: '2022-10-12T20:00:00',
+      //     description: 'All Day Event 10',
+      //     cliente: 10,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 11,
+      //     title: 'Birthday Party',
+      //     start: '2022-10-13T07:00:00',
+      //     description: 'All Day Event 11',
+      //     cliente: 11,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 12,
+      //     title: 'Click for Google',
+      //     url: 'http://google.com/',
+      //     start: '2022-10-28',
+      //     description: 'All Day Event 12',
+      //     cliente: 12,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 13,
+      //     title: 'Birthday Party',
+      //     start: '2022-9-13T07:00:00',
+      //     description: 'All Day Event 13',
+      //     cliente: 13,
+      //     empleado: 3,
+      //     status: 1
+      //   },
+      //   {
+      //     id: 14,
+      //     title: 'Click for Google',
+      //     url: 'http://google.com/',
+      //     start: '2022-11-28',
+      //     description: 'All Day Event 14',
+      //     cliente: 14,
+      //     empleado: 3,
+      //     status: 1
+      //   }
+      // ]
+    });
+
+    calendar.render();
+  });
+
+  const fechas = document.querySelectorAll('input[name="fecha"]');
+    for (const fecha of fechas) {
+      fecha.addEventListener('change', showSelected);
+    }
+    
+    function showSelected(e) {
+      let valor = document.getElementById('fecha').value;
+      if(this.value>moment().format('YYYY-MM-DD')){
+        
+      }else{
+        alert('La fecha seleccionada no puede ser menor a la fecha actual');
+        this.value = moment().format('YYYY-MM-DD');
+      }
+    }
+
+  function check_edit_cita(id_cita,fecha){
+    // alert(fecha)
+    $.get(`/form_data/cita_id_fecha/${id_cita}/${fecha}`, function (data) {
+
+      if(data.length ==0){
+        $('#ModalEditCita #id_cita').val(0);
+      }
+      });
+  }
+
+  function cita_detalle(id_cita,fecha,edita){
+    // alert(id_cita)
+    document.getElementById('responsableCita').innerHTML ="";
+    $.get("/form_data/cita/" + id_cita, function (data) {
+      // alert(fecha)
+      $('#ModalEditCita #ejecutivointerno').val(data[0][0].id_ejecutivo_interno);
+      $('#ModalEditCita #externo').val(data[0][0].id_ejecutivo_banco);
+      $('#ModalEditCita #ejecutivo_pago').val(data[0][0].id_ejecutivo_pago);
+
+      // console.log(data[1])
+      let ht = ``;
+      let docs = data[1];
+      // console.log('verifico data 1 ------------>',data[1])
+      if(docs) {
+        for(var i =0;i < docs.length;i++){
+          ht +=`<a class="btn btn-outline-primary" href="/../${docs[i].path}" target="_blank" style='font-size:16px;'>${docs[i].descripcion}</a>`;
+              }
+            } 
+            document.getElementById('docs_cita').innerHTML ="";
+            document.getElementById('docs_cita').insertAdjacentHTML("beforeend",ht);
+
+      if(data[0].length==1){
+        usarInvitadoCita(data[0][0].id_invitado_externo,fecha,edita)
+        // console.log('usando cita unica')
+      }else{
+        for(var i =0;i < data[0].length;i++){ 
+          // console.log(data[0][i].id_invitado_externo)
+          usarInvitadoCita(data[0][i].id_invitado_externo,fecha,edita)
+          // console.log('usando cita dinamica')
+        }
+      }
+
+      });
+  }
+  function eliminar_elemento(e, fecha){
+    
+    let del = confirm("¿Deseas eliminar éste registro?");
+    if(del){
+      document.getElementById('guardarCitaBtn').classList.add('d-none');
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+  }
+
+  /////////////////////////////////////////////////
+  function editarInvitado(id_invitado_externo){
+      $.get("/form_data/responsable/" + id_invitado_externo, function (data) {
+        document.getElementById('persona').value = data[0].id_persona;
+        document.getElementById('nombre_persona').value = data[0].nombre_persona_suc;
+        document.getElementById('cargo').value = data[0].cargo_pers_suc;
+        document.getElementById('celular').value = data[0].telefono_pers_suc;
+        document.getElementById('correo').value = data[0].correo;
+        document.getElementById('modalId').classList.remove('d-none');
+      });
+}
+
+function usarInvitadoCita(id_invitado_externo, fecha,edita){
+  let disable = '';
+        if(moment().format('YYYY-MM-DD')>fecha){
+          disable = 'd-none';
+        }else
+        // console.log('<%- accesos.editar_cita %>')
+        if('<%- accesos.editar_cita %>' == 'true'){
+                    disable = '';
+                  }
+                  else if(!edita){
+                    disable = 'd-none';
+                  }
+        // alert(disable)
+
+      $.get("/form_data/invitado/" + id_invitado_externo, function (data) {
+        if(data[0] !=undefined){
+        let persona = data[0].id_persona;
+        let nombre_persona = data[0].nombre_persona_suc;
+        // let empresa = data[0].empresa;
+        let cargo = data[0].cargo_pers_suc;
+        let celular = data[0].telefono_pers_suc;
+        let correo = data[0].correo;
+
+    // evento.preventDefault();
+       
+    // if()
+    html ='<div class="row"><div class="card-header mt-5">';
+    html +='<h5>Invitado</h5> ';
+    html +=`</div><a  id="cerrar" class="text-end ${disable}" onclick="eliminar_elemento(this);">X</a>`;
+    html +='<div class="col-md-12 col-md-4 mt-2">';
+    html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" value="'+nombre_persona+'" placeholder="Nombre y apellido" disabled>';
+    html +='<input type="hidden" class="form-control" name="persona" id="persona" value="'+persona+'" placeholder="">';
+    html +='</div>';  
+    // html +='<div class="col-md-4 mt-2">';
+    //   html +='<label for="inputPassword4" class="form-label text-black">Empresa</label>';
+    //   html +='<input type="text" class="form-control" name="empresa" id="empresa" value="'+empresa+'" placeholder="Nombre de la empresa" disabled>';
+    //   html +='</div> ';
+
+    html +='<div class="col-md-4 mt-2">';
+      html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+      html +='<input type="text" class="form-control" name="cargo" id="cargo" value="'+cargo+'" placeholder="Cargo que Ocupa" disabled>';
+      html +='</div> ';
+
+      html +='<div class="col-md-4 mt-2 d-none">';
+        html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+        html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-9999999-9")" size=13 value=""  placeholder="000-0000000-0" disabled>';
+        html +='</div> ';
+
+        html +='<div class="col-md-4 mt-2">';
+          html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+          html +='<input type="text" class="form-control" name="celular" id="celular" onkeypress="handleMask(event, "999-999-9999")" size=13 value="'+celular+'" placeholder="000-000-0000" disabled>';
+          html +='</div> ';
+
+          html +='<div class="col-md-4 mt-2">';
+            html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+            html +='<input type="email" class="form-control" name="correo" id="correo" value="'+correo+'" placeholder="ingrese correo" disabled>';
+            html +='</div> </div>';
+            // console.log(html)
+            
+        document.getElementById('responsableCita').insertAdjacentHTML("beforeend",html);
+          }
+      });
+}
+  
+function usarInvitado(id_invitado_externo){
+      $.get("/form_data/invitado/" + id_invitado_externo, function (data) {
+        let persona = data[0].id_persona;
+        let nombre_persona = data[0].nombre_persona_suc;
+        // let empresa = data[0].empresa;
+        let cargo = data[0].cargo_pers_suc;
+        let celular = data[0].telefono_pers_suc;
+        let correo = data[0].correo;
+
+  let idcita = $('#id_cita').val();
+    if(idcita==""){
+      $('#ModalEdit').modal('show');
+    }else{
+      $('#ModalEditCita').modal('show');
+    }
+        $('#ModalAdd').modal('hide');
+    
+    // evento.preventDefault();
+    // alert('funciona')   
+    let html ="";
+    html ='<div class="row"><div class="card-header mt-5">';
+    html +='<h5>Invitado</h5> ';
+    html +='</div><a  id="cerrar" class="text-end" onclick="eliminar_elemento(this);">X</a>';
+    html +='<div class="col-md-12 col-md-4 mt-2">';
+    html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" value="'+nombre_persona+'" placeholder="Nombre y apellido" disabled>';
+    html +='<input type="hidden" class="form-control" name="persona" id="persona" value="'+persona+'" placeholder="">';
+    html +='</div>';  
+    // html +='<div class="col-md-4 mt-2">';
+    //   html +='<label for="inputPassword4" class="form-label text-black">Empresa</label>';
+    //   html +='<input type="text" class="form-control" name="empresa" id="empresa" value="'+empresa+'" placeholder="Nombre de la empresa" disabled>';
+    //   html +='</div> ';
+
+    html +='<div class="col-md-4 mt-2">';
+      html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+      html +='<input type="text" class="form-control" name="cargo" id="cargo" value="'+cargo+'" placeholder="Cargo que Ocupa" disabled>';
+      html +='</div> ';
+
+      html +='<div class="col-md-4 mt-2 d-none">';
+        html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+        html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-9999999-9")" size=13 value=""  placeholder="000-0000000-0" disabled>';
+        html +='</div> ';
+
+        html +='<div class="col-md-4 mt-2">';
+          html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+          html +='<input type="text" class="form-control" name="celular" id="celular" onkeypress="handleMask(event, "999-999-9999")" size=13 value="'+celular+'" placeholder="000-000-0000" disabled>';
+          html +='</div> ';
+
+          html +='<div class="col-md-4 mt-2">';
+            html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+            html +='<input type="email" class="form-control" name="correo" id="correo" value="'+correo+'" placeholder="ingrese correo" disabled>';
+            html +='</div> </div>';
+
+    if(idcita==""){
+      document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+        document.getElementById('guardarCitaBtn').classList.remove('d-none');
+        document.getElementById('modalId').classList.remove('d-none');
+    }else{
+      usarInvitadoCita(id_invitado_externo)
+    }
+
+      });
+}
+//////////////////////////////////////////////////////////////////////
+document.getElementById("empresa_registrada").onclick = function(e) {
+      let emps = document.getElementById("emps").value;
+      // $('#ModalEditCita #empresa').addClass('d-none');
+      // alert('quita')
+      if (document.getElementById('empresa_registrada').checked)
+      {
+        document.getElementById('empresa').classList.add('d-none');
+        document.getElementById('emps').classList.remove('d-none');
+        document.getElementById('empresa').required = 'false';
+
+      }else{
+        document.getElementById('empresa').value = "";
+        document.getElementById('empresa').required = 'true';
+        document.getElementById('emps').classList.add('d-none');
+        document.getElementById('empresa').classList.remove('d-none');
+      }
+      
+    }
+
+    document.getElementById("empresa_registrada1").onclick = function(e) {
+      let emps = document.getElementById("emps1").value;
+      
+      // alert('quita')
+      if (document.getElementById('empresa_registrada1').checked)
+      {
+        $('#ModalEditCita #empresa').addClass('d-none');
+        $('#ModalEditCita #emps1').removeClass('d-none');
+        // $('#ModalEditCita #empresa').set('d-none');
+        $('#ModalEditCita #empresa').prop('required', false);
+
+        // document.getElementById('empresa').classList.add('d-none');
+        // document.getElementById('emps').classList.remove('d-none');
+        // document.getElementById('empresa').required = 'false';
+
+      }else{
+        // $('#ModalEditCita #empresa').val('');
+        $('#ModalEditCita #empresa').prop('required', true);
+        $('#ModalEditCita #emps1').addClass('d-none');
+        $('#ModalEditCita #empresa').removeClass('d-none');
+        // document.getElementById('empresa').value = "";
+        // document.getElementById('empresa').required = 'true';
+        // document.getElementById('emps').classList.add('d-none');
+        // document.getElementById('empresa').classList.remove('d-none');
+      }
+      
+      
+    }
+//////////////////////////////////////////////////////////////////////
+  const funcionInit = (e) => {
+  console.log('entrando...')
+	if (!"geolocation" in navigator) {
+		return alert("Tu navegador no soporta el acceso a la ubicación. Intenta con otro");
+	}
+
+	onUbicacionConcedida = ubicacion => {
+		// console.log("Tengo la ubicación: ", ubicacion);
+		const coordenadas = ubicacion.coords;
+    
+    var date = new Date(ubicacion.timestamp).toLocaleString(); // create Date object console">console.log(date.toString());
+    // console.log(date) let valor = e.target.value;
+    let newubi = confirm("¿Deseas cambiar la ubicación?");
+    if(newubi){
+      // let valor = e.target.value;
+      e.value= coordenadas.latitude+","+coordenadas.longitude;
+      e.readOnly = true;
+      // document.querySelector("#geo").value = coordenadas.latitude+","+coordenadas.longitude;
+    document.querySelector("#geo").setAttribute("readonly", "true");
+    }
+		
+		// $longitud.innerText = coordenadas.longitude;
+		// $enlace.href = `https://www.google.com/maps/@${coordenadas.latitude},${coordenadas.longitude},20z`;
+	}
+	const onErrorDeUbicacion = err => {
+    alert("Error obteniendo ubicación: " + err.message)
+	}
+
+	const opcionesDeSolicitud = {
+		enableHighAccuracy: true, // Alta precisión
+		maximumAge: 0, // No queremos caché
+		timeout: 5000 // Esperar solo 5 segundos
+	};
+
+	// document.querySelector("#geo").value = "Cargando...";
+	navigator.geolocation.getCurrentPosition(onUbicacionConcedida, onErrorDeUbicacion, opcionesDeSolicitud);
+
+};
+
+  let pr = document.getElementById("responsableBtn"); // Encuentra el elemento "p" en el sitio
+  pr.onclick = agregaResponsable; // Agrega función onclick al elemento
+  let ar = document.getElementById("responsableBtnCita"); // Encuentra el elemento "p" en el sitio
+  ar.onclick = agregaResponsable; 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+function citaHistorial(inicio) { // el id que llega es el id del departamento
+  $('#ModalEditCita').modal('hide');
+  $('#ModalHistorialCita').modal('show');
+ const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+ var accesos = JSON.parse(jsonAccesos);
+ //////
+ let fecha_desde = document.getElementById('fecha_desde').value;
+ let fecha_hasta = document.getElementById('fecha_hasta').value;
+
+
+ if(fecha_desde == ''){
+   fecha_desde = moment().add(-1, 'd').format('YYYY-MM-DD HH:mm');
+   document.getElementById('fecha_desde').value = fecha_desde;
+ } 
+ 
+ if(fecha_hasta ==''){
+   fecha_hasta = moment().format('YYYY-MM-DD HH:mm');
+   document.getElementById('fecha_hasta').value = fecha_hasta;
+ }
+ if(1==1){
+ let id_cita = document.getElementById('id_cita').value;
+ $.get("/form_data/historialfiltrocita/" + id_cita+'/'+inicio+'/'+fecha_desde+'/'+fecha_hasta, function (data) {
+    //  console.log(data)
+     var html = "";
+     for(var i =0;i < data.length-1;i++){ 
+                        
+           html +="<tr>";
+           html +="<td>"+ data[i].fecha_edicion +"</td>";
+           html +="<td>"+ data[i].titulo +"</td>";
+           html +="<td>"+ data[i].empresa +"</td>";
+           html +="<td>"+ data[i].fecha +"</td>";
+           html +="<td>"+ data[i].hora_inicio +"</td>";
+           html +="<td>"+ data[i].hora_fin +"</td>";
+           html +="<td>"+ data[i].geo +"</td>";
+           html +="<td>"+ data[i].lugar +"</td>";
+           html +="<td>"+ data[i].nombre_ejecutivo_interno +"</td>";
+           html +="<td>"+ data[i].nombre_ejecutivo_banco +"</td>";
+           html +="<td>"+ data[i].nombre_ejecutivo_pago +"</td>";
+           html +=`<td>
+             <table class="" style="white-space: nowrap"> 
+               <thead class="bg-dark text-white">
+                 <tr>
+                   <th>Nombre</th>
+                   <th>Celular</th>
+                   <th>Cargo</th>
+                   <th>Correo</th>
+                 </tr>
+               </thead>
+               <tbody>
+               `;
+               
+               if(data[i].invitados_externo) {
+                 for(var k =0;k < data[i].invitados_externo.length;k++){ 
+                     html +="<tr>";
+                     html +="<td>" +data[i].invitados_externo[k][0].nombre_persona_suc +"</td>";
+                     html +="<td>" +data[i].invitados_externo[k][0].cargo_pers_suc +"</td>";
+                     html +="<td>" +data[i].invitados_externo[k][0].telefono_pers_suc +"</td>";
+                     html +="<td>" +data[i].invitados_externo[k][0].correo +"</td>";
+                     html +="</tr>";
+                 } 
+               } 
+           html +=`</td></tbody></table>`;
+           html +="<td>"+ data[i].motivo +"</td>";
+           html +="<td>"+ data[i].minuta +"</td>";
+           html +="<td>"+ data[i].recordatorio +"</td>";
+           html +="<td>"+ data[i].estado +"</td>";
+           html +="<td>"+ data[i].creadopor +"</td>";
+           html +="<td>"+ data[i].edita +"</td>";
+           html +='<td class="text-center">';
+           html +=`<a href="/negocio/sucursal/${data[i].id_negocio}"><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>` ;                             
+           html +='</td>';
+           html +="</tr>";  
+            
+       }
+     var elementTabla_empleado = document.getElementById("tabla_cita");
+     elementTabla_empleado.innerHTML = html;
+
+cargaPaginacion(data[data.length-1].registros[0][0].total,inicio)
+
+ });
+}
+}
+
+function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='citaHistorial(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='citaHistorial(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='citaHistorial(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='citaHistorial(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == 0){
+        ht+=`No hay registro`;
+      }else{
+        ht+=`<button type="button" onclick='citaHistorial(${inicio+1});' class="btn btn-secondary">></button>`
+        ht+=`<button type="button" onclick='citaHistorial(${nrolink});' class="btn btn-secondary">>></button>`
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+  function agregaResponsable(evento) {
+    let idcita = $('#id_cita').val();
+    if(idcita==""){
+      $('#ModalEdit').modal('hide');
+    }else{
+      $('#ModalEditCita').modal('hide');
+    }
+    $('#ModalAdd').modal('show');
+    
+    document.getElementById('modalId').classList.add('d-none');
+    evento.preventDefault();
+    // alert('funciona')   
+    // html ='<div class="row"><div class="card-header mt-5">';
+    // html +='<h5>Invitado</h5> ';
+    // html +='</div><a  id="cerrar" class="text-end" onclick="eliminar_elemento(this);">X</a>';
+    // html +='<div class="col-md-8 col-md-4 ">';
+    // html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    // html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" placeholder="Nombre y apellido" required>';
+    // html +='<input type="hidden" class="form-control" name="persona" id="persona" value="" placeholder="">';
+    // html +='</div>';  
+    // html +='<div class="col-md-4 mt-2">';
+    //   html +='<label for="inputPassword4" class="form-label text-black">Empresa</label>';
+    //   html +='<input type="text" class="form-control" name="empresa" id="empresa" placeholder="Nombre de la empresa" required>';
+    //   html +='</div> ';
+
+    // html +='<div class="col-md-4 mt-2">';
+    //   html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+    //   html +='<input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo que Ocupa">';
+    //   html +='</div> ';
+
+    //   html +='<div class="col-md-4 mt-2 d-none">';
+    //     html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+    //     html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-9999999-9")" size=13  placeholder="000-0000000-0">';
+    //     html +='</div> ';
+
+    //     html +='<div class="col-md-4 mt-2">';
+    //       html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+    //       html +='<input type="text" class="form-control" name="celular" id="celular" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-000-0000" required>';
+    //       html +='</div> ';
+
+    //       html +='<div class="col-md-4 mt-2">';
+    //         html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+    //         html +='<input type="email" class="form-control" name="correo" id="correo" placeholder="ingrese correo">';
+    //         html +='</div> </div>';
+
+    // document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+  
+  function invitadoList(valor) { // el id que llega es el id del departamento
+
+
+//////
+if(valor ==""){
+    valor ="aaaaaaaaaaaa";
+  }
+
+$.get("/form_data/responsables/" + valor, function (data) {
+    // console.log(data)
+    // alert('entro a mi ruta'+data[0].nombre_persona_suc)
+    var html = "";
+    let k = 1;
+    for(var i =0;i < data.length;i++){ 
+          // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+          html +="<tr>";
+          
+          html +="<td>"+ data[i].nombre_persona_suc +"</td>";
+          html +="<td>"+ data[i].telefono_pers_suc +"</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html +="<td>"+ data[i].cargo_pers_suc +"</td>";
+          html +="<td>"+ data[i].correo +"</td>";
+        
+          html +="<td>";
+            
+              if('<%- accesos.detalle_empleado %>') {
+                html +=`<a onclick='editarInvitado(${data[i].id_persona})'><i class='fas fa-pencil-alt' style='font-size:20px;color:orange;margin-right:10px'></i></a>`;
+                html +=`<a onclick='usarInvitado(${data[i].id_persona})'><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>`;
+              }
+
+          html +="</td></tr>";  
+              
+          k++;  
+          }
+        
+    var elementTabla_empleado = document.getElementById("tabla_invitado");
+    elementTabla_empleado.innerHTML = html;
+    
+});
+
+}
+
+  // function invitadoList(valor) { // el id que llega es el id del departamento
+    
+  //   const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+  //   var accesos = JSON.parse(jsonAccesos);
+  //   //////
+  //   if(valor ==""){
+  //       valor ="aaaaaaaaaaaa";
+  //     }
+   
+  //   $.get("/form_data/invitados/" + valor, function (data) {
+  //       // console.log(data)
+  //       var html = "";
+  //       let k = 1;
+  //       for(var i =0;i < data.length;i++){ 
+  //             // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+  //             html +="<tr>";
+              
+  //             html +="<td>"+ data[i].nombre +"</td>";
+  //             html +="<td>"+ data[i].celular +"</td>";
+  //             html +="<td>"+ data[i].empresa +"</td>";
+  //             html +="<td>"+ data[i].cargo +"</td>";
+  //             html +="<td>"+ data[i].correo +"</td>";
+            
+  //             html +="<td>";
+                
+  //                 if('<%- accesos.detalle_empleado %>') {
+                    
+  //                   html +=`<a onclick='editarInvitado(${data[i].id_invitado_externo})'><i class='fas fa-pencil-alt' style='font-size:20px;color:orange;margin-right:10px'></i></a>`;
+  //                   html +=`<a onclick='usarInvitado(${data[i].id_invitado_externo})'><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>`;
+  //                 }
+
+  //             html +="</td></tr>";  
+                  
+  //             k++;  
+  //             }
+            
+  //       var elementTabla_empleado = document.getElementById("tabla_invitado");
+  //       elementTabla_empleado.innerHTML = html;
+        
+  //   });
+ 
+  // }
+  
+  function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+
+</script>
+<style>
+body {
+    font-size: 14px;
+  }
+.fc-event-end{
+  color: #2d455c; 
+}
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+.ancho{
+  max-width: 80%;
+
+}
+</style>
+
+
+
+<%- include('partials/_footer') %>

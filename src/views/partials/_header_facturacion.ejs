@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JHOBROSOFT</title>
+  <link rel="stylesheet" href="https://bootswatch.com/5/spacelab/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.1/css/all.min.css" integrity="sha512-9my9Mb2+0YO+I4PUCSwUYO7sEK21Y0STBAiFEYoWtd2VzLEZZ4QARDrZ30hdM1GlioHJ8o8cWQiy8IAb1hy/Hg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js" integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- <script src="/../socket/dist/socket.io.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <script src="/../js/qz-tray.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="/">JHOBROSOFT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/facturacion">INICIO
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+          <% if(accesos.modulo_facturacion){ %>
+            <li class="nav-item" id="tapFacturacion">
+              <a class="nav-link" href="/facturacion">FACTURACIÓN</a>
+            </li>
+            <% } %>
+            <% if(accesos.modulo_reporte){ %>
+              <li class="nav-item" id="tapFacturacion">
+                <a class="nav-link" href="/facturacion/reporte">REPORTE</a>
+              </li>
+              <% } %>
+            <% if(accesos.modulo_configuracion){ %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                  aria-haspopup="true" aria-expanded="false">MANTENIMIENTO</a>
+                <div class="dropdown-menu">
+                  <% if(accesos.modulo_empresa){ %>
+                    <a class="dropdown-item" href="/marca">MARCA</a>
+                    <div class="dropdown-divider"></div>
+                    <% } %>
+                      <% if(accesos.modulo_departamento){ %>
+                        <a class="dropdown-item" href="/categoria">CATEGORIA</a>
+                        <div class="dropdown-divider"></div>
+                        <% } %>
+                          <% if(accesos.modulo_puesto){ %>
+                            <a class="dropdown-item" href="/clase">CLASE</a>
+                            <div class="dropdown-divider"></div>
+                            <% } %>
+                            <% if(accesos.grupo_acceso){ %>
+                              <a class="dropdown-item" href="/ncf">NCF</a>
+                              <div class="dropdown-divider"></div>
+                              <% } %>
+                              <% if(accesos.grupo_acceso){ %>
+                                <a class="dropdown-item" href="/caja">CAJA</a>
+                                <div class="dropdown-divider"></div>
+                                <% } %>
+
+
+                           
+                </div>
+              </li>
+              <% } %>
+          <% if(accesos.modulo_cliente){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/cliente">CLIENTES</a>
+            </li>
+            <% } %>
+            <% if(accesos.modulo_cliente){ %>
+              <li class="nav-item">
+                <a class="nav-link" href="facturacion/chat">CHAT</a>
+              </li>
+              <% } %>
+           
+              
+                
+                <% if(accesos.modulo_producto){ %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="producto">PRODUCTO</a>
+                  </li>
+                  <% } %>
+
+                  <% if(accesos.modulo_suplidor){ %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/suplidor">SUPLIDOR</a>
+                    </li>
+                    <% } %>
+
+                    <% if(accesos.modulo_compra){ %>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/orden">COMPRA</a>
+                      </li>
+                      <% } %>
+          
+                      <% if(accesos.modulo_cotizacion){ %>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/cotizacion">COTIZACIÓN</a>
+                        </li>
+                        <% } %>
+
+                  
+                    <% if(accesos.modulo_agenda){ %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/agenda">AGENDA</a>
+                    </li>
+                    <% } %>
+
+                    <% if(accesos.modulo_agenda){ %>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/ayuda">AYUDA</a>
+                      </li>
+                      <% } %>
+                    
+        </ul>
+        <form class="d-flex ">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                aria-expanded="false">
+                <%= accesos.nom %>
+              </a>
+              <div class="dropdown-menu">
+                  <div class="dropdown-divider"></div>
+            
+                    <a class="dropdown-item" href="/login/logout">CERRAR SESIÓN</a>
+
+              </div>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+  </nav>
+

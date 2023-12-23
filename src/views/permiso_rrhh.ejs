@@ -1,0 +1,94 @@
+<%- include('partials/_header') %> 
+
+
+                            <div  id="permiso_enc">
+                            <div class="card">
+                                <div class="card-body col-md-12">
+                                    <div class="col-md-10" style="margin:0 auto">
+                                        <form class="row g-3" action="/permiso/updaterrhh/<%= rrhh.id_permiso %>" method="post">
+                                            <div class="card-header bg-dark text-white d-flex">
+                                              <div class="col-9"><h5>Solicitud de permiso - RRHH</h5></div>
+                                              
+                                              <label for="inputAddress2" class="form-label">Fecha:</label>
+                                                  <input type="text" class="form-control bg-dark text-white" name="fecha_sol" id="fecha_sol" value="<%= rrhh.fecha_solicitud %>" required readonly>
+                                                
+                                          </div>
+                                          <div class="col-2">
+                                            <label for="inputAddress2" class="form-label">Solicitud No.</label>
+                                            <input type="text" class="form-control" name="solicitud_no" id="solicitud_no" value="<%=  %>" required readonly>
+                                          </div>
+                                          <div class="col-10">
+                                            <label for="inputAddress2" class="form-label">Solicitante.</label>
+                                            <input type="text" class="form-control" name="solicitud_no" id="solicitud_no" value="<%= rrhh.solicitante  %>" required readonly>
+                                          </div>
+
+                                          <div class="col-md-4">
+                                              <label for="inputEmail4" class="form-label">Tipo de permiso</label>
+                                              <select class="form-control" name="tipo_permiso_enc" id="tipo_permiso_enc" value="<%= rrhh.tipo_permiso %>" disabled>
+                                                 <option value="0">Seleccione</option>
+                                                 <option selected value="0"><%= rrhh.tipo_permiso %></option>
+                                                 
+                                                 
+                                               </select>
+                                            </div>
+                                              <div class="col-4">
+                                                  <label for="inputAddress2" class="form-label">Fecha de Salida</label>
+                                                  <input type="text" class="form-control" name="fecha_inicial" id="fecha_inicial" value="<%= salida %>" required readonly>
+                                                </div>
+
+                                                <div class="col-4">
+                                                  <label for="inputAddress2" class="form-label">Fecha de Entrada</label>
+                                                  <input type="text" class="form-control" name="fecha_inicial" id="fecha_inicial" value="<%= entrada %>" required readonly>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                  <label for="inputPassword4" class="form-label">Motivo</label>
+                                                  <textarea class="col-md-12" name="motivo_sup" id="motivo_sup" cols="auto" rows="3" readonly><%= rrhh.motivo %></textarea >                                
+                                                </div>
+                                                
+                                                  <div class="col-md-12">
+                                                    <label for="inputPassword4" class="form-label">Comentario - Encargado</label>
+                                                    <textarea class="col-md-12" name="comentario_encargado" id="comentario_encargado" cols="auto" rows="3" readonly><%= rrhh.comentario_encargado %></textarea>                                
+                                                  </div>
+    
+                                                  <div class="col-md-12">
+                                                    <label for="inputPassword4" class="form-label">Comentario - RRHH</label>
+                                                    <textarea class="col-md-12" name="comentario_rrhh" id="comentario_rrhh" cols="auto" rows="3"><%= rrhh.comentario_rrhh ? rrhh.comentario_rrhh :''  %></textarea>                                
+                                                  </div>
+
+                                                  <div class="col-md-4">
+                                                    <label for="inputEmail4" class="form-label">Estado</label>
+                                                    <select class="form-control" name="estado_sup" id="estado_sup" required>
+                                                       
+                                                       <% if(est) {%>
+                                                        <% for(var i =0;i < est.length;i++){ 
+                                                          if(est[i].id_estado == est_perm){%>
+                                                          <option selected value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                                          <% }else { %>
+                                                            <% if(est[i].descripcion=="Pre-Aprovado") {}else{%>
+                                                            <option value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                                         <% }
+                                                        }
+                                                        } %>
+                                                        <% } %>
+                                                     </select>
+                                                  </div>
+
+                                            
+                                         <div class="col-12">
+                                           <button type="submit" class="btn btn-primary">ENVIAR</button>
+                                         </div>
+                                       </form>
+                                       </div>
+                                </div>
+                            </div>
+                          </div>
+                            
+
+<script>
+  
+
+</script>
+
+
+<%- include('partials/_footer') %>

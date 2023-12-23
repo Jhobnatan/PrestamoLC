@@ -1,0 +1,55 @@
+<%- include('partials/_header') %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body col-md-12">
+                    <div class="col-md-10" style="margin:0 auto">
+                      
+                        <form class="row g-3" action="/empresa/update/<%= data.id_empresa %>" method="post">
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label text-black">Nombre de la Empresa</label>
+                                <input type="text" class="form-control" name="nombre_empresa" id="nombre_empresa" placeholder="Nombre de la empresa" value="<%= data.nombre_empresa %>">
+                              </div>
+                              <div class="col-12">
+                                <label for="inputAddress2" class="form-label text-black">Razón Social</label>
+                                <input type="text" class="form-control" name="razon_social" id="razon social" placeholder="Razón Social" value="<%= data.razon_social %>">
+                              </div>
+                           <div class="col-md-4">
+                             <label for="inputEmail4" class="form-label text-black">RNC</label>
+                             <input type="number" class="form-control" name="rnc" id="rnc"  placeholder="RNC" value="<%= data.rnc %>">
+                           </div>
+                           <div class="col-md-4">
+                             <label for="inputPassword4" class="form-label text-black">Teléfono</label>
+                             <input type="text" class="form-control" name="telefono" id="telefono" placeholder="telefono" value="<%= data.telefono %>">
+                           </div>         
+
+                           <div class="col-md-4">
+                            <label for="inputEmail4" class="form-label text-black">Categoria</label>
+                            <select class="form-control" name="categoria" id="categoria" required>
+                               <option value="0">Seleccione</option>
+                                  <% if(cat) {%>
+                                  <% for(var i =0;i < cat.length;i++){ 
+                                    if(cat[i].id_categoria == data.id_categoria){%>
+                                    <option selected value="<%= cat[i].id_categoria %>"><%= cat[i].categoria %></option>
+                                    <% }else { %>
+                                      <option value="<%= cat[i].id_categoria %>"><%= cat[i].categoria %></option>
+                                     
+                                   <% }
+                                  } %>
+                                  <% } %>
+                             </select>
+                          </div>                 
+                     
+                           <div class="col-12">
+                             <button type="submit" class="btn btn-primary">GUARDAR</button>
+                           </div>
+                         </form>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/_footer') %>

@@ -1,0 +1,290 @@
+<%- include('partials/_header_facturacion') %>
+
+            <div class="container pt-5">
+                <div class="row">
+                    <div class="col-md-12">
+                      
+                    <div class="card">
+                      <div class="card-header text-black">
+                          <h5>LISTA DE MARCAS</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="col-12 mt-3 d-flex text-right">
+                          <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                          <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar" placeholder="Ingrese Nombre o descripción" >
+                          <% if(accesos.crear_empleado) {%>
+                            <button class="btn btn-primary col-md-2 py-3" id="btnCrearMarca" type="button">Crear marca</button>
+                          <% } %>
+                        </div>
+                        <div class="col-12 mt-2 text-right">
+                          <label for="inputEmail4" class="form-label text-black" style="color: black; font-size: 20px;">Total de registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+                        </div>
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_marca">
+                    
+                </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            
+            </div>
+                      </div>
+                  </div>
+                        
+            
+<!-- Modal para cambiar la imagen del cliente-->
+  <div class="modal fade" id="modalMarca" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <!-- Modal body -->
+     
+        <div class="card">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Marca</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="card-body col-md-12">
+              <div class="col-md-10" style="margin:0 auto">
+                  <form class="row g-3" action="marca/add" method="post">
+                    <div class="col-12">
+                      <input type="text" class="form-control d-none" name="no_marca" id="no_marca" value="0" placeholder="">
+                      <label for="inputAddress2" class="form-label text-black">Nombre</label>
+                      <input type="text" class="form-control" name="nombre" id="nombre" maxlength="45" placeholder="">
+                    </div>
+
+                    <div class="col-12">
+                      <label for="inputAddress2" class="form-label text-black">Descripción</label>
+                      <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="45" placeholder="">
+                    </div>
+                        
+                     <div class="col-12 text-center">
+                       <button type="button" id="btnGuardarMarca" class="btn btn-primary col-8 my-3">GUARDAR</button>
+                     </div>
+                   </form>
+                 </div>
+          </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+        </div>
+        
+    </div>
+</div>
+<script >
+
+var modal = document.getElementById('modalMarca');
+  var crearMarca = document.getElementById('btnCrearMarca');
+  // Agregar evento 'click' al elemento previewImg
+  crearMarca.addEventListener('click', function() {
+    $('#modalMarca').modal('show');;
+  });
+
+  // document.getElementById('').addEventListener('click', function() {
+  //   modal.style.display = "none";
+  // });
+
+  // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  });
+
+   
+function marcaListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+        if(valor ==""){
+          valor ="aaaaaaaaaaaa";
+        }        
+        
+        marcaList(valor,inicio)
+    }
+
+function cargaPaginacion(cantidad_registros,inicio){
+    nrolink = Math.ceil(cantidad_registros/paginacion);
+    ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if(inicio == 1){
+        
+      }else{
+        ht+=`<button type="button" onclick='marcaListPage(1);' class="btn btn-secondary"><<</button>`
+        ht+=`<button type="button" onclick='marcaListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+      }
+    for(i=1;i<=nrolink;i++){
+      if(inicio == i){
+        ht+=`<button type="button" onclick='marcaListPage(${i});' class="btn btn-primary">${i}</button>`
+      }
+      else{
+        ht+=`<button type="button" onclick='marcaListPage(${i});' class="btn btn-secondary">${i}</button>`
+      }
+      
+    }
+    if(inicio == nrolink){
+
+    }else{
+      if(inicio == ''){
+        ht+=`No hay registro`;
+      }else{
+        if(nrolink !=0){
+          ht+=`<button type="button" onclick='marcaListPage(${inicio+1});' class="btn btn-secondary">></button>`
+          ht+=`<button type="button" onclick='marcaListPage(${nrolink});' class="btn btn-secondary">>></button>`
+        }
+        else{
+          ht+=`No hay registro`;
+        }
+      }
+    }
+    ht +=`</div>`;
+    $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+   }
+
+  function editarmarca(id_marca) {
+    // alert(id_marca)
+    $.get(`/marca/buscar_marca/${id_marca}`, function (data) {
+           document.getElementById("no_marca").value = id_marca;
+          document.getElementById("nombre").value = data.nombre;
+          document.getElementById("descripcion").value = data.descripcion;
+          $('#modalMarca').modal('show');
+        });
+  }
+
+  function limpiarCamposmarca() {
+           
+    document.getElementById("no_marca").value = '0';
+          document.getElementById("nombre").value = '';
+          document.getElementById("descripcion").value = '';
+  }
+
+    
+  function marcaList(valor, inicio) { // el id que llega es el id del departamento
+
+$.get(`/marca/filtro/${valor}/${inicio}`, function (data) {
+    // console.log(data[data.length-1].registros)
+    document.getElementById('registrostotales').innerText = data[data.length-1].registros[0].total;
+    // alert('entro a mi ruta'+data[0].nombre_persona_suc)
+    var html = "";
+    let k = 1;
+    for(var i =0;i < data.length-1;i++){ 
+          // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+          html +="<tr>";
+            //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_marca`, `id_estado`
+            html +="<td>"+ k +"</td>";
+          html +=`<td onclick='editarmarca(${data[i].id_marca})' style='color:blue;'>`+ data[i].nombre +"</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html +="<td>"+ data[i].descripcion +"</td>";
+               
+          
+          html +="</tr>";  
+              
+          k++;  
+          }
+        
+    var elementTabla_empleado = document.getElementById("tabla_marca");
+    elementTabla_empleado.innerHTML = html;
+    cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+});
+
+}
+
+  let paginacion =0;
+window.addEventListener('load', function() {
+  paginacion ='<%- paginacion %>';
+    marcaList("aaaaaaaaaaaa",'1')
+
+    //   document.getElementById("content").onchange = function(e) {
+    //   let valor = e.target.value;
+    //   var cursorPos = $('#contenido').prop('selectionStart');
+    // var v = $('#contenido').val();
+    // var textBefore = v.substring(0, cursorPos);
+    // var textAfter = v.substring(cursorPos, v.length);
+    // $('#contenido').val(textBefore + valor + textAfter);
+    //   document.getElementById("content").value = 0;
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor == ""){
+        valor = "aaaaaaaaaaaa"
+      }
+      marcaList(valor,'1')
+         // document.getElementById("empresa").value = this.value;
+    };
+
+    // document.getElementById("contenido").onkeyup = function(e) {
+    //   let valor = e.target.value;
+      
+    // if(valor.length == 0){
+    //   document.getElementById("caracteres").innerText = "0/2000";
+    // }else{
+    //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+    // }
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+
+    // document.getElementById("btnGuardarMarca").onclick = function(e) {
+    //   // limpiarCamposmarca();
+    //   $('#modalMarca').modal('show');
+    //   // $('#ModalHistorialCita').modal('hide');
+    //   // document.getElementById("empresa").value = this.value;
+    // };
+
+    document.getElementById("btnGuardarMarca").onclick = function(e) {
+
+      let no_marca = document.getElementById("no_marca").value;
+      
+      let nombre = document.getElementById("nombre").value;
+      // alert(tipo_marca)
+      let descripcion = document.getElementById("descripcion").value;
+      $('#modalMarca').modal('hide');
+      
+      $.post(`/marca/save_or_update/${no_marca}/${nombre}/${descripcion}`, function (data) {
+        marcaList("aaaaaaaaaaaa",'1')
+        // alert(data);
+        if(data =="Marca actualizada correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+
+          if(data =="Marca guardada correctamente"){
+              Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+    
+        limpiarCamposmarca();
+        });
+      };
+    
+    
+    });
+</script>
+
+<style>
+  .ancho{
+    max-width: 80%;
+  
+  }
+  </style>
+<%- include('partials/_footer') %>

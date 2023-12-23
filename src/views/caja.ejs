@@ -1,0 +1,708 @@
+<%- include('partials/_header_facturacion') %>
+
+  <div class="container pt-5">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card">
+          <div class="card-header text-black">
+            <h5>LISTA DE CAJAS</h5>
+          </div>
+          <div class="card-body">
+            <div class="col-md-10 mt-3 d-flex text-right">
+              <label for="buscar" class="form-label text-black">Buscar:</label>
+              <input type="text" class="form-control ml-5 mx-2 py-3" name="buscar" id="buscar"
+                placeholder="Ingrese Nombre o descripción">
+              <% if(accesos.crear_empleado) {%>
+                <button class="btn btn-primary col-md-2 py-3" id="btnCrearCaja" type="button">Crear caja</button>
+                <% } %>
+            </div>
+            <div class="col-12 mt-2 text-right">
+              <label for="buscar" class="form-label text-black" style="color: black; font-size: 20px;">Total de
+                registros: <strong id="registrostotales" style="color: black; font-size: 20px;"></strong></label>
+            </div>
+            <table class="table table-bordered table-hover">
+              <thead class="bg-dark text-white">
+                <tr>
+                  <th>No.</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Estado</th>
+                  <th>Cajero</th>
+                  <th>Supervisor</th>
+                  <th>Ver Historial</th>
+                  <th>Ver Detalle</th>
+                </tr>
+              </thead>
+              <tbody id="tabla_caja">
+
+              </tbody>
+            </table>
+            <div id="paginacion" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Modal para cambiar la imagen del cliente-->
+        <div class="modal fade" id="modalCaja" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+              <!-- Modal body -->
+
+              <div class="card">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Caja</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="card-body col-md-12">
+                  <div class="col-md-10" style="margin:0 auto">
+                    <form class="row g-3" action="caja/add" method="post">
+                      <div class="col-12">
+                        <input type="text" class="form-control d-none" name="no_caja" id="no_caja" value="0"
+                          placeholder="">
+                        <label for="buscar" class="form-label text-black">Numero de Caja</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" maxlength="45" placeholder="">
+                      </div>
+
+                      <div class="col-12">
+                        <label for="buscar" class="form-label text-black">Descripción</label>
+                        <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="45"
+                          placeholder="">
+                      </div>
+
+                      <div class="col-12 text-center">
+                        <button type="button" id="btnGuardarCaja" class="btn btn-primary col-8 my-3">GUARDAR</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para cambiar la imagen del cliente-->
+        <div class="modal fade" id="modalAsignarCaja" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered ancho" role="document">
+            <div class="modal-content">
+
+              <!-- Modal body -->
+
+              <div class="card">
+                <div class="modal-header text-white bg-primary">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Asignar Caja</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="card-body col-md-12">
+                  <div class="col-md-12" style="margin:0 auto">
+                    <form id="formularioAsignaCaja" class="row g-3" action="caja/asignar" method="post">
+                      <div class="form-group col-md-3">
+                        <label for="empresa" class="form-label text-black">Empresa:</label>
+                        <input type="text" name="empresa" id="empresa" class="form-control"
+                          value="<%= nombre_empresa %>" disabled>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="nombre_sucursal" class="form-label text-black">Sucursal:</label>
+                        <input type="text" name="nombre_sucursal" id="nombre_sucursal" class="form-control"
+                          value="<%= nombre_sucursal %>" disabled>
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="nombre_sucursal" class="form-label text-black">Almacen:</label>
+                        <select class="form-control" name="almacen" id="almacen" required>
+                          <option value="">Seleccione almacen</option>
+                          <option value="4">Almacen de Servicio</option>
+                          <option value="1">Almacen de Venta</option>
+                          <option value="2">Almacen Principal</option>
+                          <option value="3">Almacen Secundario</option>                       
+                         </select>
+                      </div>
+
+                      <div class="col-3">
+                        <input type="number" class="form-control d-none" name="id_caja" id="id_caja" value="0"
+                          placeholder="">
+                        <label for="buscar" class="form-label text-black">Numero de Caja</label>
+                        <input type="text" class="form-control" name="nombre_caja" id="nombre_caja" maxlength="45"
+                          placeholder="" disabled>
+                      </div>
+
+                      <div class="col-md-3">
+                        <label for="buscar" class="form-label text-black">Descripción</label>
+                        <input type="text" class="form-control" name="descripcion_caja" id="descripcion_caja"
+                          maxlength="45" placeholder="" disabled>
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="cajero" class="form-label text-black">Cajero:</label>
+                        <input type="text" name="cajero" id="cajero" class="form-control" value="<%= cajero %>"
+                          disabled>
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="turno" class="form-label text-black">Turno:</label>
+                        <select name="turno" id="turno" class="form-control">
+                          <option value="1">Turno 1</option>
+                          <option value="2">Turno 2</option>
+                          <option value="3">Turno 3</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="monto_inicial" class="form-label text-black">Monto inicial:</label>
+                        <input type="text" name="monto_inicial" id="monto_inicial" class="form-control" value=""
+                          placeholder="Monto inicial" readonly>
+                      </div>
+
+                      <!-- Sección de Desglose de Dinero -->
+
+                      <h5 class="py-2"> <label for="desglose_dinero" class="form-label text-black">Desglose de Dinero
+                        </label> <input type="checkbox" name="desglose_dinero" id="desglose_dinero"></h5>
+                      <div id="desgloseContainer">
+                        <div class="row g-3">
+                          <div class="form-group col-md-3">
+                            <label for="2000" class="form-label text-black">Dos mil (DOP $ 2,000.00):</label>
+                            <input type="number" name="2000" id="2000" class="form-control" data-amount="2000" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="1000" class="form-label text-black">Mil (DOP $ 1,000.00):</label>
+                            <input type="number" name="1000" id="1000" class="form-control" data-amount="1000" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="500" class="form-label text-black">Quinientos (DOP $ 500.00):</label>
+                            <input type="number" name="500" id="500" class="form-control" data-amount="500" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="200" class="form-label text-black">Doscientos (DOP $ 200.00):</label>
+                            <input type="number" name="200" id="200" class="form-control" data-amount="200" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="100" class="form-label text-black">Cien (DOP $ 100.00):</label>
+                            <input type="number" name="100" id="100" class="form-control" data-amount="100" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="50" class="form-label text-black">Cincuenta (DOP $ 50.00):</label>
+                            <input type="number" name="50" id="50" class="form-control" data-amount="50" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="25" class="form-label text-black">Veinticinco (DOP $ 25.00):</label>
+                            <input type="number" name="25" id="25" class="form-control" data-amount="25" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="10" class="form-label text-black">Diez (DOP $ 10.00):</label>
+                            <input type="number" name="10" id="10" class="form-control" data-amount="10" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="5" class="form-label text-black">Cinco (DOP $ 5.00):</label>
+                            <input type="number" name="5" id="5" class="form-control" data-amount="5" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="1" class="form-label text-black">Uno (DOP $ 1.00):</label>
+                            <input type="number" name="1" id="1" class="form-control" data-amount="1" min="0">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="decimales" class="form-label text-black">Decimales:</label>
+                            <input type="number" name="decimales" id="decimales" class="form-control" data-amount="0.01"
+                              min="0">
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                      <div class="col-12 text-center">
+                        <button type="button" id="btnGuardarCajaAsignada"
+                          class="btn btn-primary col-md-4 my-3">GUARDAR</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <%- include('partials/_autoriza') %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <script>
+    // Obtener el botón de guardar
+    var btnGuardarCajaAsignada = document.getElementById('btnGuardarCajaAsignada');
+
+    // Agregar el listener de eventos click al botón de guardar
+    btnGuardarCajaAsignada.addEventListener('click', function (event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      // Invocar la función para mostrar el modal de autorización
+      mostrarModalAutorizacion();
+    });
+
+    function validarAcceso(data) {
+      if (data.supervisa_caja) {
+        // alert('supervisa ' + data.id_supervisor)
+
+        // Obtener el formulario por su ID
+        let formulario = document.getElementById('formularioAsignaCaja');
+        const almacen = document.getElementById('almacen').value;
+// alert('el almacen ' + almacen)
+        // Crear un elemento input
+        
+        if(almacen != ""){
+          const inputIdSupervisor = document.createElement('input');
+
+        // Asignar los atributos name y value al elemento input
+        inputIdSupervisor.setAttribute('type', 'hidden');
+        inputIdSupervisor.setAttribute('name', 'id_supervisor');
+        inputIdSupervisor.setAttribute('value', data.id_supervisor);
+
+        // Agregar el elemento input al formulario
+        formulario.appendChild(inputIdSupervisor);
+        console.log("entra a enviar el formulario")
+          formulario.submit();          
+        }else{
+          alert('Debe seleccionar el almacen para continuar')
+        }
+        
+      }
+    }
+    //////////////////////////////////////////
+    var modal = document.getElementById('modalCaja');
+    var crearCaja = document.getElementById('btnCrearCaja');
+    // Agregar evento 'click' al elemento previewImg
+    if (crearCaja) {
+      crearCaja.addEventListener('click', function () {
+        $('#modalCaja').modal('show');;
+      });
+    }
+
+    // document.getElementById('').addEventListener('click', function() {
+    //   modal.style.display = "none";
+    // });
+
+    // Agregar evento 'click' a cualquier parte fuera del modal para cerrarlo
+    window.addEventListener('click', function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+
+
+    function cajaListPage(inicio) {
+      let valor = document.getElementById('buscar').value;
+      if (valor == "") {
+        valor = "aaaaaaaaaaaa";
+      }
+
+      cajaList(valor, inicio)
+    }
+
+    function cargaPaginacion(cantidad_registros, inicio) {
+      nrolink = Math.ceil(cantidad_registros / paginacion);
+      ht = `<div class="btn-group me-2" role="group" aria-label="First group">`;
+      if (inicio == 1) {
+
+      } else {
+        ht += `<button type="button" onclick='cajaListPage(1);' class="btn btn-secondary"><<</button>`
+        ht += `<button type="button" onclick='cajaListPage(${inicio - 1});' class="btn btn-secondary"><</button>`
+      }
+      for (i = 1; i <= nrolink; i++) {
+        if (inicio == i) {
+          ht += `<button type="button" onclick='cajaListPage(${i});' class="btn btn-primary">${i}</button>`
+        }
+        else {
+          ht += `<button type="button" onclick='cajaListPage(${i});' class="btn btn-secondary">${i}</button>`
+        }
+
+      }
+      if (inicio == nrolink) {
+
+      } else {
+        if (inicio == '') {
+          ht += `No hay registro`;
+        } else {
+          if (nrolink != 0) {
+            ht += `<button type="button" onclick='cajaListPage(${inicio + 1});' class="btn btn-secondary">></button>`
+            ht += `<button type="button" onclick='cajaListPage(${nrolink});' class="btn btn-secondary">>></button>`
+          }
+          else {
+            ht += `No hay registro`;
+          }
+        }
+      }
+      ht += `</div>`;
+      $('#paginacion').html(ht);
+      // alert(cantidad_registros)
+    }
+
+    function editarCaja(id_caja) {
+      $.get(`/caja/editar_caja/${id_caja}`, function (data) {
+        document.getElementById("no_caja").value = id_caja;
+        document.getElementById("nombre").value = data.nombre;
+        document.getElementById("descripcion").value = data.descripcion;
+        $('#modalCaja').modal('show');
+      });
+    }
+
+    function formatNumber(number) {
+      const parts = number.toFixed(2).toString().split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join('.');
+    }
+
+    function asignarCaja(id_caja) {
+      // alert(id_caja)
+      document.getElementById("id_caja").value = id_caja;
+      $.get(`/caja/buscar_caja/${id_caja}`, function (data) {
+        
+        let btnGuardarCajaAsignada = document.getElementById("btnGuardarCajaAsignada");
+
+        const montoInicialInput = document.getElementById('monto_inicial');
+   
+          let nombre_caja = document.getElementById("nombre_caja");
+          let descripcion_caja = document.getElementById("descripcion_caja");
+
+          let cajero = document.getElementById("cajero");
+          let turno = document.getElementById("turno");
+          let almacen = document.getElementById("almacen");
+          let monto_inicial= document.getElementById("monto_inicial");
+
+          let dosmil = document.getElementById("2000");
+            let mil = document.getElementById("1000");
+            let quinientos = document.getElementById("500");
+            let doscientos = document.getElementById("200");
+            let cien = document.getElementById("100");
+            let cincuenta = document.getElementById("50");
+            let veinticinco = document.getElementById("25");
+            let diez= document.getElementById("10");
+            let cinco = document.getElementById("5");
+            let uno = document.getElementById("1");
+            let decimal= document.getElementById("decimales");
+        try {
+          
+            montoInicialInput.setAttribute('readonly', 'readonly');
+          if(data){
+            
+            // id_caja.value = id_caja;
+          nombre_caja.value = data[0].nombre;
+          descripcion_caja.value = data[0].descripcion;
+
+          turno.value = data[0].id_turno;
+          almacen.value = data[0].id_almacen;
+          cajero.value = data[0].cajero;
+          monto_inicial.value = formatNumber(data[0].monto_inicial);
+
+          dosmil.value = data[1][0]['2000'];
+            mil.value = data[1][0]['1000'];
+            quinientos.value = data[1][0]['500'];
+            doscientos.value = data[1][0]['200'];
+            cien.value = data[1][0]['100'];
+            cincuenta.value = data[1][0]['50'];
+            veinticinco.value = data[1][0]['25'];
+            diez.value = data[1][0]['10'];
+            cinco.value = data[1][0]['5'];
+            uno.value = data[1][0]['1'];
+            decimal.value = data[1][0]['decimales'];
+
+            montoInicialInput.setAttribute('readonly', 'readonly');
+
+            dosmil.setAttribute('readonly', 'readonly');
+            mil.setAttribute('readonly', 'readonly');
+            quinientos.setAttribute('readonly', 'readonly');
+            doscientos.setAttribute('readonly', 'readonly');
+            cien.setAttribute('readonly', 'readonly');
+            cincuenta.setAttribute('readonly', 'readonly');
+            veinticinco.setAttribute('readonly', 'readonly');
+            diez.setAttribute('readonly', 'readonly');
+            cinco.setAttribute('readonly', 'readonly');
+            uno.setAttribute('readonly', 'readonly');
+            decimal.setAttribute('readonly', 'readonly');
+            
+            almacen.setAttribute('disabled', 'disabled');
+            turno.setAttribute('disabled', 'disabled');
+            btnGuardarCajaAsignada.setAttribute('disabled', 'disabled');
+          }
+          // if (data[0].desglose == 1) {
+          //   document.getElementById("desglose_dinero").checked = true;
+          //   // desgloseContainer.style.display = 'block';
+          //   // console.log("desglose ===>", data[1][0])
+            
+          // }else{
+          //   document.getElementById("2000").value = '';
+          //   document.getElementById("1000").value = '';
+          //   document.getElementById("500").value = '';
+          //   document.getElementById("200").value = '';
+          //   document.getElementById("100").value = '';
+          //   document.getElementById("50").value = '';
+          //   document.getElementById("25").value = '';
+          //   document.getElementById("10").value = '';
+          //   document.getElementById("5").value = '';
+          //   document.getElementById("1").value = '';
+          //   document.getElementById("decimales").value = '';
+
+          // document.getElementById("desglose_dinero").checked = false;
+          // // desgloseContainer.style.display = 'none';
+          // montoInicialInput.removeAttribute('readonly');
+          // }
+
+        } catch (error) {
+          console.log(error)
+          // id_caja.value = id_caja;
+          document.getElementById("2000").value = '';
+            document.getElementById("1000").value = '';
+            document.getElementById("500").value = '';
+            document.getElementById("200").value = '';
+            document.getElementById("100").value = '';
+            document.getElementById("50").value = '';
+            document.getElementById("25").value = '';
+            document.getElementById("10").value = '';
+            document.getElementById("5").value = '';
+            document.getElementById("1").value = '';
+            document.getElementById("decimales").value = '';
+            dosmil.removeAttribute('readonly');
+            mil.removeAttribute('readonly');
+            quinientos.removeAttribute('readonly');
+            doscientos.removeAttribute('readonly');
+            cien.removeAttribute('readonly');
+            cincuenta.removeAttribute('readonly');
+            veinticinco.removeAttribute('readonly');
+            diez.removeAttribute('readonly');
+            cinco.removeAttribute('readonly');
+            uno.removeAttribute('readonly');
+            decimal.removeAttribute('readonly');
+
+          document.getElementById("desglose_dinero").checked = false;
+          document.getElementById("id_caja").value = id_caja;
+          document.getElementById("nombre_caja").value = data.nombre;
+          document.getElementById("descripcion_caja").value = data.descripcion;
+          document.getElementById("monto_inicial").value = "";
+          // desgloseContainer.style.display = 'none';
+          // montoInicialInput.removeAttribute('readonly');
+          almacen.removeAttribute('disabled');
+            turno.removeAttribute('disabled');
+            btnGuardarCajaAsignada.removeAttribute('disabled');
+        }
+
+
+        $('#modalAsignarCaja').modal('show');
+      });
+    }
+
+    function limpiarCamposcaja() {
+
+      document.getElementById("no_caja").value = '0';
+      document.getElementById("nombre").value = '';
+      document.getElementById("descripcion").value = '';
+    }
+
+
+    function cajaList(valor, inicio) { // el id que llega es el id del departamento
+
+      $.get(`/caja/filtro/${valor}/${inicio}`, function (data) {
+        // console.log(data[data.length-1].registros)
+        document.getElementById('registrostotales').innerText = data[data.length - 1].registros[0].total;
+        // alert('entro a mi ruta'+data[0].nombre_persona_suc)
+        var html = "";
+        let k = 1;
+        for (var i = 0; i < data.length - 1; i++) {
+          // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+          html += "<tr>";
+          //`id_script`, `titulo`, `contenido`, `fecha_creacion`, `id_tipo_caja`, `id_estado`
+          html += "<td>" + k + "</td>";
+          html += `<td onclick='editarCaja(${data[i].id_caja})' style='color:blue;'>` + data[i].nombre + "</td>";
+          // html +="<td>"+ data[i].empresa +"</td>";
+          html += "<td>" + data[i].descripcion + "</td>";
+          html += "<td>" + data[i].estado + "</td>";
+          html += "<td>" + (data[i].cajero || "") + "</td>";
+          html += "<td>" + (data[i].supervisor || "") + "</td>";
+          html += `<td onclick='editarCaja(${data[i].id_caja})' style='color:blue;'>` + "<i class='fas fa-history' style='font-size:20px;color:blue'></i></td>";
+          html += `<td onclick='asignarCaja(${data[i].id_caja})' style='color:blue;'>` + "<i class='fas fa-eye' style='font-size:20px;color:green'></i></td>";
+          html += "</tr>";
+
+          k++;
+        }
+
+        var elementTabla_empleado = document.getElementById("tabla_caja");
+        elementTabla_empleado.innerHTML = html;
+        cargaPaginacion(data[data.length - 1].registros[0].total, inicio)
+      });
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    let paginacion = 0;
+    window.addEventListener('load', function () {
+      paginacion = '<%- paginacion %>';
+      cajaList("aaaaaaaaaaaa", '1')
+
+      //   document.getElementById("content").onchange = function(e) {
+      //   let valor = e.target.value;
+      //   var cursorPos = $('#contenido').prop('selectionStart');
+      // var v = $('#contenido').val();
+      // var textBefore = v.substring(0, cursorPos);
+      // var textAfter = v.substring(cursorPos, v.length);
+      // $('#contenido').val(textBefore + valor + textAfter);
+      //   document.getElementById("content").value = 0;
+      //   // document.getElementById("empresa").value = this.value;
+      // };
+
+      document.getElementById("buscar").onkeyup = function (e) {
+        let valor = e.target.value;
+        if (valor == "") {
+          valor = "aaaaaaaaaaaa"
+        }
+        cajaList(valor, '1')
+        // document.getElementById("empresa").value = this.value;
+      };
+
+      // document.getElementById("contenido").onkeyup = function(e) {
+      //   let valor = e.target.value;
+
+      // if(valor.length == 0){
+      //   document.getElementById("caracteres").innerText = "0/2000";
+      // }else{
+      //   document.getElementById("caracteres").innerText = (valor.length)+"/2000";
+      // }
+      //   // document.getElementById("empresa").value = this.value;
+      // };
+
+
+      // document.getElementById("btnGuardarCaja").onclick = function(e) {
+      //   // limpiarCamposcaja();
+      //   $('#modalCaja').modal('show');
+      //   // $('#ModalHistorialCita').modal('hide');
+      //   // document.getElementById("empresa").value = this.value;
+      // };
+
+      document.getElementById("btnGuardarCaja").onclick = function (e) {
+
+        let no_caja = document.getElementById("no_caja").value;
+
+        let nombre = document.getElementById("nombre").value;
+        // alert(tipo_caja)
+        let descripcion = document.getElementById("descripcion").value;
+        $('#modalCaja').modal('hide');
+
+        $.post(`/caja/save_or_update/${no_caja}/${nombre}/${descripcion}`, function (data) {
+          cajaList("aaaaaaaaaaaa", '1')
+          // alert(data);
+          if (data == "Caja actualizada correctamente") {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+
+          if (data == "Caja guardada correctamente") {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: data,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          }
+
+          limpiarCamposcaja();
+        });
+      };
+
+      ////
+      /////////////////////////
+      const desgloseCheckbox = document.getElementById('desglose_dinero');
+      const desgloseContainer = document.getElementById('desgloseContainer');
+      const camposDesglose = Array.from(document.querySelectorAll('#desgloseContainer input[type="number"]'));
+      const montoInicialInput = document.getElementById('monto_inicial');
+      montoInicialInput.style.backgroundColor = 'green';
+      montoInicialInput.style.color = 'white';
+
+      montoInicialInput.addEventListener('input', function (event) {
+        var inputValue = montoInicialInput.value;
+        var formatInput = inputValue.replace(/,/g, '');
+        formatInput = formatInput.replace(/[^0-9.]/g, '');
+
+        var parts = formatInput.split('.');
+        var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        var decimalPart = parts[1] !== undefined ? '.' + parts[1].slice(0, 2) : '';
+
+        var formattedValue = integerPart + decimalPart;
+        montoInicialInput.value = formattedValue;
+      });
+
+
+      // desgloseCheckbox.addEventListener('change', function () {
+      //   if (desgloseCheckbox.checked) {
+      //     desgloseContainer.style.display = 'block';
+      //     montoInicialInput.setAttribute('readonly', 'readonly');
+
+      //   } else {
+      //     montoInicialInput.removeAttribute('readonly');
+      //     desgloseContainer.style.display = 'none';
+      //     camposDesglose.forEach(function (input) {
+      //       input.value = '';
+      //     });
+      //     montoInicialInput.value = '';
+      //   }
+      //   calcularSumaDesglose();
+      // });
+
+      camposDesglose.forEach(function (input) {
+        input.addEventListener('input', function () {
+          calcularSumaDesglose();
+        });
+      });
+
+      function calcularSumaDesglose() {
+        // if (!desgloseCheckbox.checked) {
+        //   montoInicialInput.value = '';
+        //   return;
+        // }
+
+        let suma = 0;
+        camposDesglose.forEach(function (input) {
+          if (input.value !== '') {
+            const cantidad = parseFloat(input.value.replace(/,/g, '')) || 0;
+            const valor = parseFloat(input.getAttribute('data-amount')) || 0;
+            const subtotal = cantidad * valor;
+            suma += subtotal;
+          }
+        });
+        const formattedSum = formatNumber(suma);
+        montoInicialInput.value = formattedSum;
+
+        function formatNumber(number) {
+          const parts = number.toFixed(2).toString().split('.');
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          return parts.join('.');
+        }
+      }
+
+    });
+
+
+  </script>
+
+  <style>
+    .ancho {
+      max-width: 80%;
+
+    }
+  </style>
+  <%- include('partials/_footer') %>

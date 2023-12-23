@@ -1,0 +1,132 @@
+<%- include('partials/_header') %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body col-md-12">
+                    <div class="col-md-10" style="margin:0 auto">
+                      <div class="card-header text-black">
+                        <h5>DATOS DEL USUARIO</h5>
+                    </div>
+                        <form class="row g-3 pt-3" action="/empleado/usuario/<%= emp %>" method="post">
+                            <div class="col-12">
+                                <label for="inputAddress2" class="form-label text-black">Usuario</label>
+                                <input type="hidden" class="form-control" name="id_usuario" id="id_usuario" placeholder="id del usuario" value="<%= us?us.id_usuario:'' %>">
+                                <input type="text" class="form-control" name="usuario" id="usuario" placeholder="Nombre de la empresa" value="<%= us?us.usuario:'' %>">
+                              </div>
+                              <div class="col-12">
+                                <label for="inputAddress2" class="form-label text-black">Contraseña</label>
+                                <input type="password" class="form-control" name="clave" id="clave" placeholder="Contraseña" value="<%= us?us.clave:'' %>">
+                              </div>   
+                              <% if(rc) {%>
+                                <div class="card-header text-black mt-5">
+                                  <h5>RECIBIR CORREO </h5>
+                              </div>
+                              <% for(var i =0,a=1,b=0;i < rc.length;i++){ %>
+                                <div class="col-md-4">                                 
+                                  <% if(rcck.findIndex(object => { return object.id_recibir === rc[i].id_recibir; }) > -1 ) {%>
+                                  <input class="form-check-input col-md-4" type="checkbox" value="<%= rc[i].id_recibir %>"  id ="<%= rc[i].descripcion %>" name="recibir_correo" checked>
+                                  <label class="form-check-label" for="<%= rc[i].descripcion %>"><%= rc[i].descripcion %></label>
+                                  <% } else {%>
+                                    <input class="form-check-input col-md-4" type="checkbox" value="<%= rc[i].id_recibir %>" id ="<%= rc[i].descripcion %>" name="recibir_correo">
+                                    <label class="form-check-label" for="<%= rc[i].descripcion %>"><%= rc[i].descripcion %></label>
+                                  <% }%>                                  
+                                </div>                                
+                               <% } %>                             
+                              <% } %>
+
+                              <% if(gru) {%>
+                                <div class="card-header text-black mt-5">
+                                  <h5>LISTA DE GRUPOS DE ACCESOS</h5>
+                              </div>
+                              <% for(var i =0,a=1,b=0;i < gru.length;i++){ %>
+                                <div class="col-md-4">                                 
+                                  <% if(ug.findIndex(object => { return object.id_grupo === gru[i].id_grupo; }) > -1) {%>
+                                  <input class="form-check-input col-md-4" type="checkbox" value="<%= gru[i].id_grupo %>"  id ="<%= gru[i].descripcion %>" name="grupo" checked>
+                                  <label class="form-check-label" for="<%= gru[i].descripcion %>"><%= gru[i].descripcion %></label><a id="<%= gru[i].id_grupo %>" class="text-blue mx-2" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">ver</a>
+                                  <% } else {%>
+                                    <input class="form-check-input col-md-4" type="checkbox" value="<%= gru[i].id_grupo %>" id ="<%= gru[i].descripcion %>" name="grupo">
+                                    <label class="form-check-label" for="<%= gru[i].descripcion %>"><%= gru[i].descripcion %></label><a id="<%= gru[i].id_grupo %>" class="text-blue mx-2" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">ver</a>
+                                  <% }%>                                  
+                                </div>                                
+                               <% } %>                             
+                              <% } %>             
+                     
+                           <div class="col-12 mt-5">
+                             <button type="submit" class="btn btn-primary">GUARDAR</button>
+                           </div>
+                         </form>
+
+
+                         
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Permisos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div id="modalacceso" class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+//   document.querySelectorAll("buscar").onkeyup = function(e) {
+//   let valor = e.target.value;
+//   if(valor ==""){
+//     valor ="aaaaaaaaaaaa";
+//   }
+  
+//   empleadoList(valor); 
+//   // alert(valor);
+// };
+  function permisoList(valor) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+    // let valor = e.target.value;
+    
+    if(valor ==""){
+      valor ="aaaaaaaaaaaa";
+    }
+    $.get("/form_data/permiso_grupo/" + valor, function (data) {
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){                
+                html +="<div class='col-md-8'>";
+                html +=(i+1)+" - <label class='form-check-label' for="+data[i].id_acceso+">"+data[i].descripcion+"</label>";
+                html +="</div>";                           
+          }
+  
+        var elementModalacceso = document.getElementById("modalacceso");
+        elementModalacceso.innerHTML = html;
+        
+    });
+  }
+
+  window.addEventListener('load', function() {
+    $("a").click(function() {
+                var id_grupo = $(this).attr('id');
+                permisoList(id_grupo)
+                // alert("ID = " + t);
+            }); 
+    });
+</script>
+<%- include('partials/_footer') %>

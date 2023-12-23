@@ -1,0 +1,1465 @@
+<%- include('partials/_header') %>
+
+<div class="containero">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card ">
+                    
+                    <div class="card-body col-md-12">
+                      
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form id="negocio_edit" class="row g-3" action="/negocio/sucursal/update/<%= ng.id_negocio %>/<%= suc.id_sucursal %>" method="post">
+                              <div class="card-header bg-dark text-white d-flex pt-3">
+                                <div class="col-9"><h5>Información - General</h5></div>
+                                
+                                <label for="inputAddress2" name="fech" id="fech" class="form-label text-white">Fecha:</label>
+                                    <input type="hidden" class="form-control bg-dark text-white" name="fecha" id="fecha" disabled readonly>
+                                  
+                            </div>
+                            
+                                <div class="col-8">
+                                    <label for="inputAddress2" class="form-label text-black">Razón social</label>
+                                    <input type="hidden" class="form-control" name="razon_social" id="razon_social" value="<%= ng.razon_social %>" placeholder="Ingrese la razón social">
+                                    <input type="text" class="form-control" name="razon_social" id="razon_social" value="<%= ng.razon_social %>" maxlength="150" placeholder="Ingrese la razón social" disabled>
+                                    <input type="hidden" class="form-control" id="neg" value="<%= ng.id_negocio %>" placeholder="Ingrese la razón social">
+                                  </div>
+                                  
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">RNC</label>
+                                    <input type="text" class="form-control" name="rnc" id="rnc" value="<%= ng.rnc %>" maxlength="50" placeholder="Ingrese RNC"  disabled>
+                                  </div>
+
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Cantidad de sucursales</label>
+                                    <input type="text" class="form-control" name="cant_sucursales" id="cant_sucursales" maxlength="11" value="<%= ng.cant_sucursales %>"  disabled>
+                                  </div>
+
+                                  
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Sap acreedor</label>
+                                <input type="text" class="form-control" name="sap_acreedor" id="sap_acreedor" maxlength="50" value="<%= ng.sap_acreedor %>" placeholder="ingrese cuenta acreedor" disabled>
+                              </div>
+
+                              <div class="col-4">
+                                <label for="inputAddress2" class="form-label text-black">Sap deudor</label>
+                                <input type="text" class="form-control" name="sap_deudor" id="sap_deudor" value="<%= ng.sap_deudor %>" placeholder="ingrese cuenta deudor" disabled>
+                              </div>
+
+                                  <div class="col-md-4">
+                                    <label for="inputEmail4" class="form-label text-black">Tipo de afiliación</label>
+                                    <select class="form-control" name="tipo_afiliacion" id="tipo_afiliacion" disabled>
+                                      <option value="0">Seleccione</option>
+                                        <% if(ta) {%>
+                                          <% for(var i =0;i < ta.length;i++){ 
+                                            if(ta[i].id_tipo_afiliacion == ng.id_tipo_afiliacion){%>
+                                            <option selected value="<%= ta[i].id_tipo_afiliacion %>"><%= ta[i].tipo_afiliacion %></option>
+                                            <% }else { %>
+                                              <option value="<%= ta[i].id_tipo_afiliacion %>"><%= ta[i].tipo_afiliacion %></option>
+                                             
+                                           <% }
+                                          } %>
+                                          <% } %>
+                                     </select>
+                                  </div>
+
+                                  
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Pagos electrónicos</label>
+                                <select class="form-control" name="pago_electronico" id="pago_electronico" disabled>
+                                  <option value="0">Seleccione</option>
+                                    <% if(pe) {%>
+                                      <% for(var i =0;i < pe.length;i++){ 
+                                        if(pe[i].id_pago_electronico == ng.id_pago_electronico){%>
+                                        <option selected value="<%= pe[i].id_pago_electronico %>"><%= pe[i].tipo_pago_electronico %></option>
+                                        <% }else { %>
+                                          <option value="<%= pe[i].id_pago_electronico %>"><%= pe[i].tipo_pago_electronico %></option>
+                                         
+                                       <% }
+                                      } %>
+                                      <% } %>
+                                 </select>
+                              </div>
+
+                                  <div class="col-4">
+                                    <label for="inputAddress2" class="form-label text-black">Red social</label>
+                                    <input type="text" class="form-control" name="red_social" id="red_social" value="<%= ng.red_social %>"  placeholder="ingrese red social" disabled>
+                                  </div>
+
+                                  <div class="card-header mt-5 pt-3">
+                                    <h5>Productos</h5>
+                                </div>
+                                      <div class="d-table">
+                                      <div class="row" id="productoid">
+                                        <% if(prod) {%>
+                                          <% for(var k =0;k < prod.length;k++){ %>
+                                            <% if(prod_ng.find( producto => producto.id_producto === prod[k].id_producto )){ %>
+                                              <div class="col-4">
+                                                
+                                                
+                                                <label class="form-check-label" for="<%= prod[k].producto %>">
+                                                  <%= prod[k].producto %>
+                                                </label>
+                                              </div>
+
+                                            <% } %>
+                                              
+                                          <% 
+                                        } %>
+                                    <% } %>                                                
+          
+                                    </div>
+                             
+                                  </div>
+
+                                  
+                              <div class="card-header mt-5 bg-dark text-white">
+                                <h5>Sucursal - <%= suc.nombre_sucursal %></h5>
+                            </div>
+                            
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Nombre sucursal<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="nombre_sucursal" id="nombre_sucursal" value="<%= suc.nombre_sucursal %>" maxlength="150" placeholder="Ingrese el nombre de la sucursal" required>
+                            </div>
+
+                            
+                            <div class="col-2">
+                              <label for="inputAddress2" class="form-label text-black">Apertura<strong style="color: red;">*</strong></label>
+                              <input type="time" class="form-control" name="apertura" id="apertura" value="<%= suc.apertura %>" placeholder="ingrese la hora que abre" required>
+                            </div>
+
+                            <div class="col-2">
+                              <label for="inputAddress2" class="form-label text-black">Cierre<strong style="color: red;">*</strong></label>
+                              <input type="time" class="form-control" name="cierre" id="cierre" value="<%= suc.cierre %>" placeholder="ingrese la hora que cierra" required>
+                            </div>
+
+                            
+                              <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Categoria<strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="categoria" id="categoria" required>
+                                   <option value="">Seleccione</option>
+
+                                    <% if(cat) {%>
+                                      <% for(var i =0;i < cat.length;i++){ 
+                                        if(cat[i].id_categoria == suc.id_categoria){%>
+                                        <option selected value="<%= cat[i].id_categoria %>"><%= cat[i].categoria %></option>
+                                        <% }else{ %>
+                                          <option value="<%= cat[i].id_categoria %>"><%= cat[i].categoria %></option>
+                                          <% } %>
+                                       <% } %>
+                                      <% } %>
+                                 </select>
+                              </div>
+
+
+                            
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Provincia<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="provincia" id="provincia" required>
+                                 <option value="">Seleccione</option>
+                              
+                                  <% if(prov) {%>
+                                    <% for(var i =0;i < prov.length;i++){
+                                      
+                                      if(prov[i].id_provincia == suc.id_provincia){%>
+                                        <option selected value="<%= prov[i].id_provincia %>"><%= prov[i].provincia %></option>
+                                        <% }else { %>
+                                          <option value="<%= prov[i].id_provincia %>"><%= prov[i].provincia %></option>
+                                         
+                                       <% }
+                                       
+                                     } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Municipio<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="municipio" id="municipio" required>
+                                <option value="">Seleccione el Municipio</option>
+                                <% if(mun) {%>
+                                  <% for(var i =0;i < mun.length;i++){
+                                    
+                                    if(mun[i].id_municipio == suc.id_municipio){%>
+                                      <option selected value="<%= mun[i].id_municipio %>"><%= mun[i].municipio %></option>
+                                      <% }else { %>
+                                        <option value="<%= mun[i].id_municipio %>"><%= mun[i].municipio %></option>
+                                       
+                                     <% }
+                                     
+                                   } %>
+                                  <% } %>   
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Sector<strong style="color: red;">*</strong></label>
+                              
+                              <select class="form-control" name="sector" id="sector" required>
+                                <option value="">Seleccione el Sector</option>
+                                <% if(sec) {%>
+                                  <% for(var i =0;i < sec.length;i++){ 
+                                    if(sec[i].id_sector == suc.id_sector){%>
+                                    <option selected value="<%= sec[i].id_sector %>"><%= sec[i].sector %></option>
+                                    <% }else{ %>
+                                      <option value="<%= sec[i].id_sector %>"><%= sec[i].sector %></option>
+                                      <% } %>
+                                   <% } %>
+                                  <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputPassword4" class="form-label text-black">Dirección<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="direccion" id="direccion" value="<%= suc.direccion %>" maxlength="256" placeholder="Ejemplo: 'C/principal #22'" required>
+                            </div>  
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Geo localización<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" onclick="funcionInit()" name="geo" id="geo" value="<%= suc.geo %>" onkeypress="handleMask(event, '|||||')" placeholder="Presione aqui para agregar la ubicación" required>
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Código postal</label>
+                              <input type="text" class="form-control" name="codigo_postal" id="codigo_postal" value="<%= suc.codigo_postal %>" placeholder="ingrese código postal" required readonly>
+                            </div>
+                            
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Referencia 1<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="referencia1" id="referencia1" value="<%= suc.referencia1 %>" maxlength="256" placeholder="ingrese referencia de la ubicación" required>
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Referencia 2</label>
+                              <input type="text" class="form-control" name="referencia2" id="referencia2" value="<%= suc.referencia2 %>" maxlength="256" placeholder="ingrese referencia de la ubicación">
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Referencia 3</label>
+                              <input type="text" class="form-control" name="referencia3" id="referencia3" value="<%= suc.referencia3 %>" maxlength="256" placeholder="ingrese referencia de la ubicación">
+                            </div>
+
+                            
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Ejecutivo interno<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="ejecutivointerno" id="ejecutivointerno" required>
+                                 <option value="">Seleccione</option>
+                                  <% if(ejec) {%>
+                                    <% for(var i =0;i < ejec.length;i++){ 
+                                      if(ejec[i].id_empleado == vssucursal[0].id_empleado){%>
+                                      <option selected value="<%= ejec[i].id_empleado %>"><%= ejec[i].ejecutivointerno %></option>
+                                      <% }else{ %>
+                                        <option value="<%= ejec[i].id_empleado %>"><%= ejec[i].ejecutivointerno %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Ejecutivo de banco</label>
+                              <select class="form-control" name="externo" id="externo">
+                                 <option value="0">Seleccione</option>
+
+                                  <% if(externo) {%>
+                                    <% for(var i =0;i < externo.length;i++){ 
+                                      if(externo[i].id_ejecutivo == vssucursal[0].id_ejecutivo){%>
+                                      <option selected value="<%= externo[i].id_ejecutivo %>"><%= externo[i].nombre+" - "+externo[i].nombre_empresa %></option>
+                                      <% }else{ %>
+                                        <option value="<%= externo[i].id_ejecutivo %>"><%= externo[i].nombre+" - "+externo[i].nombre_empresa %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Ejecutivo de pago</label>
+                              <select class="form-control" name="ejecutivo_pago" id="ejecutivo_pago">
+                                 <option value="0">Seleccione</option>
+ 
+                                  <% if(pago) {%>
+                                    <% for(var i =0;i < pago.length;i++){ 
+                                      if(pago[i].id_ejecutivo == vssucursal[0].id_ejecutivo_pago){%>
+                                      <option selected value="<%= pago[i].id_ejecutivo %>"><%= pago[i].nombre+" - "+pago[i].nombre_empresa %></option>
+                                      <% }else{ %>
+                                        <option value="<%= pago[i].id_ejecutivo %>"><%= pago[i].nombre+" - "+pago[i].nombre_empresa %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <% if(ng.id_tipo_afiliacion == 2 || ng.id_tipo_afiliacion == 3) {%>
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Zona<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="zona" id="zona" required>
+                                 <option value="">Seleccione</option>
+                                  <% if(zon) {%>
+                                    <% for(var i =0;i < zon.length;i++){ 
+                                      if(zon[i].id_zona == suc.id_zona){%>
+                                      <option selected value="<%= zon[i].id_zona %>"><%= zon[i].zona %></option>
+                                      <% }else{ %>
+                                        <option value="<%= zon[i].id_zona %>"><%= zon[i].zona %></option>
+                                        <% } %>
+                                     <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Sub-zona<strong style="color: red;">*</strong></label>
+                              <select class="form-control" name="subzona" id="subzona">
+                                 <option value="">Seleccione</option>
+                                 
+                               </select>
+                            </div>
+                            <% } else{ %>
+                              <div class="col-md-4 d-none">
+                                <label for="inputEmail4" class="form-label text-black">Zona<strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="zona" id="zona" required>
+                                   <option value="0">Seleccione</option>
+                                    
+                                 </select>
+                              </div>
+  
+                              <div class="col-md-4 d-none">
+                                <label for="inputEmail4" class="form-label text-black">Sub-zona<strong style="color: red;">*</strong></label>
+                                <select class="form-control" name="subzona" id="subzona">
+                                   <option value="0">Seleccione</option>
+                                   
+                                 </select>
+                              </div>
+                              <% } %>
+
+                            
+                            <div class="card-header mt-5">
+                              <h5>Sucursal - Contacto</h5>
+                          </div>
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Teléfono<strong style="color: red;">*</strong></label>
+                              <input type="text" class="form-control" name="tel_sucursal" id="tel_sucursal"value="<%= suc.telefono %>"  onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="ingrese código postal" required>
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Fax</label>
+                              <input type="text" class="form-control" name="fax_sucursal" id="fax_sucursal" value="<%= suc.fax %>" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="ingrese código postal">
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Email</label>
+                              <input type="email" class="form-control" name="email_sucursal" id="email_sucursal" value="<%= suc.email %>" maxlength="150" placeholder="ingrese correo electrónico">
+                            </div>
+                            <div class="card-header mt-5">
+                              <h5>Sucursal - Configuración</h5>
+                          </div>
+                          <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Código fidelium</label>
+                              <input type="text" class="form-control" name="codigo_fidelium" id="codigo_fidelium" value="<%= suc.codigo_fidelium %>" maxlength="10" readonly placeholder="ingrese código fidelium">
+                            </div>
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Cantidad de lectores</label>
+                              <input type="number" class="form-control" name="cantidad_lectores" id="cantidad_lectores" value="<%= suc.cantidad_lectores %>" maxlength="11" placeholder="0" >
+                            </div>
+
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Descuento otorgado</label>
+                              <input type="number" class="form-control" name="descuento_otorgado" id="descuento_otorgado" value="<%= suc.descuento_otorgado %>" maxlength="11" placeholder="%" >
+                            </div>
+                            
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Descuento redención</label>
+                              <input type="number" class="form-control" name="descuento_reduccion" id="descuento_reduccion" value="<%= suc.descuento_redencion %>" maxlength="11" placeholder="%" >
+                            </div>
+
+                            
+                            <div class="col-4">
+                              <label for="inputAddress2" class="form-label text-black">Límite de piso</label>
+                              <input type="number" class="form-control" name="limite_piso" id="limite_piso" value="<%= suc.limite_piso %>" maxlength="11" placeholder="0" >
+                            </div>
+
+                            <div class="card-header mt-5 pt-3">
+                              <h5>Información Bancaria</h5>
+                          </div>
+                          
+                          <div class="btn-toolbar" id="info_bank" role="toolbar" aria-label="Basic radio toggle button group">
+                            <% if(ib) {%>
+                              <% for(var i =0;i <= ib.length-1;i++){ %>    
+                                  <% if(ib[i].id_informacion_bancaria == suc.id_informacion_bancaria){ %>
+                                <input type="radio" class="btn-check" name="radio_info_bank" id="<%= ib[i].id_informacion_bancaria %>" onclick="handleInfoBancaria(this)" value="<%= ib[i].id_informacion_bancaria %>" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" id="0<%= ib[i].id_informacion_bancaria %>" for="<%= ib[i].id_informacion_bancaria %>">Info <%- i<9?'0'+(i+1):i+1%></label>  
+                                <% }else{ %>
+                                <input type="radio" class="btn-check" name="radio_info_bank" id="<%= ib[i].id_informacion_bancaria %>" onclick="handleInfoBancaria(this)" value="<%= ib[i].id_informacion_bancaria %>" autocomplete="off" >
+                                <label class="btn btn-outline-primary" id="0<%= ib[i].id_informacion_bancaria %>" for="<%= ib[i].id_informacion_bancaria %>">Info <%- i<9?'0'+(i+1):i+1%></label>                                                   
+                              <% } %>
+                               <% } %>
+                              <% } %>
+                            </div>
+                                
+                            <div class="btn-group  mt-4 fs-5" role="group" aria-label="bs-component">
+                            <div class="form-check mx-4 ">
+                              <input class="form-check-input" type="checkbox" value="" name="info_banco" id="agregar_info">
+                              <label class="form-check-label" for="agregar_info">
+                                Agregar Info
+                              </label>
+                            </div>
+                            <div class="form-check mx-4 ">
+                              <input class="form-check-input" type="checkbox" value="" name="editar_info" id="editar_info">
+                              <label class="form-check-label" for="editar_info">
+                                Editar Info
+                              </label>
+                            </div>
+                          </div>
+                          
+                            <div class="col-md-4">
+                              <label for="inputEmail4" class="form-label text-black">Banco</label>
+                              <select class="form-control" name="banco" id="banco" disabled>
+                                <option value="0">Seleccione</option>
+                                  <% if(ib !='') {%>
+                                    <% for(var i =0;i < ban.length;i++){ 
+                                      if(ban[i].id_banco == ib[0].id_banco){%>
+                                      <option selected value="<%= ban[i].id_banco %>"><%= ban[i].nombre %></option>
+                                      <% }else { %>
+                                        <option value="<%= ban[i].id_banco %>"><%= ban[i].nombre %></option>
+                                       
+                                     <% }
+                                    } %>
+                                    <%}else{%>
+                                      <% for(var i =0;i < ban.length;i++){ %>
+                                        <option value="<%= ban[i].id_banco %>"><%= ban[i].nombre %></option>
+                                         
+                                       <% } %>
+                                    <% } %>
+                               </select>
+                            </div>
+                         
+                         <div class="col-md-4">
+                          <label for="inputEmail4" class="form-label text-black">Tipo de cuenta</label>
+                          <select class="form-control" name="tipo_cuenta" id="tipo_cuenta" disabled>
+                             <option value="0">Seleccione</option>
+                             <% if(ib !='') {%>
+                             <% if (ib[0].banco_tipo_cuenta == "Ahorro"){%>
+                              <option value="Ahorro" selected>Ahorro</option>
+                              <option value="Corriente">Corriente</option>
+                             
+                                <% }else if (ib[0].banco_tipo_cuenta == "Corriente"){%>
+                                  <option value="Ahorro">Ahorro</option>
+                                  <option value="Corriente" selected>Corriente</option>
+                               <%}%>
+                               <%}else{%>
+                                <option value="Ahorro">Ahorro</option>
+                                <option value="Corriente">Corriente</option>
+                               <% } %>
+                           </select>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for="inputEmail4" class="form-label text-black">Frecuencia de pago via cheques</label>
+                          <select class="form-control" name="frecuencia" id="frecuencia" disabled>
+                             <option value="0">Seleccione</option>
+                             <% if(ib !='') {%>
+                             <% if (ib[0].frecuencia_pago_cheque == "Semanal"){%>
+                              <option value="Semanal" selected>Semanal</option>
+                             <option value="Quincenal">Quincenal</option>
+                             <option value="Mensual">Mensual</option>
+                             <option value="Trimestral">Trimestral</option>
+                             <% }else if (ib[0].frecuencia_pago_cheque == "Quincenal"){%>
+                              <option value="Semanal">Semanal</option>
+                             <option value="Quincenal" selected>Quincenal</option>
+                             <option value="Mensual">Mensual</option>
+                             <option value="Trimestral">Trimestral</option>
+                             <% }else if (ib[0].frecuencia_pago_cheque == "Mensual"){%>
+                                <option value="Semanal">Semanal</option>
+                             <option value="Quincenal">Quincenal</option>
+                             <option value="Mensual" selected>Mensual</option>
+                             <option value="Trimestral">Trimestral</option>
+                                <% }else if (ib[0].frecuencia_pago_cheque == "Trimestral"){%>
+                                  <option value="Semanal">Semanal</option>
+                                  <option value="Quincenal">Quincenal</option>
+                                  <option value="Mensual">Mensual</option>
+                                  <option value="Trimestral" selected>Trimestral</option>
+                               <%}%>
+                               <%}else{%>
+                                <option value="Semanal">Semanal</option>
+                                    <option value="Quincenal">Quincenal</option>
+                                    <option value="Mensual">Mensual</option>
+                                    <option value="Trimestral">Trimestral</option>
+                                    <%}%>
+                           </select>
+                        </div>
+
+                        <div class="col-4">
+                          <label for="inputAddress2" class="form-label text-black">Cuenta débito</label>
+                          <input type="text" class="form-control" name="cuenta_debito" id="cuenta_debito" value="<%= ib !=''?ib[0].cuenta_debito:'' %>"maxlength="25"  placeholder="ingrese cuenta de débito" disabled>
+                        </div>
+
+                        <div class="col-4">
+                          <label for="inputAddress2" class="form-label text-black">Cuenta crédito</label>
+                          <input type="text" class="form-control" name="cuenta_credito" id="cuenta_credito" value="<%= ib !=''?ib[0].cuenta_credito:'' %>" maxlength="25" placeholder="ingrese cuenta de crédito" disabled>
+                        </div>
+                        <div class="col-4 ">
+                          
+                        </div>
+
+                        <div class="col-2 ">
+                          <button type="button" id="guardar_info" class="btn btn-primary" disabled>Agregar info</button>
+                          <button type="button" id="btnEditar_info" class="btn btn-primary d-none">Guardar info</button>
+                        </div>
+                        <div class="col-2 pl-5">
+                          <button type="button" id="eliminar_info_banco" value="" class="btn btn-outline-danger">Eliminar Info</button>
+                        </div>
+
+
+                        <div class="card-header mt-5 pt-3">
+                          <h5>Número de afiliado CARNET</h5>
+                      </div>
+                            <div class="d-table">
+                            <div class="row" id="afiliadoid">
+                              <% if(vscarnet) {%>
+                                <% for(var i =0;i < vscarnet.length;i++){ %>
+                                  <div class="col-2 pt-2 delete">
+                                    <label for="inputAddress2" class="form-label text-black">Afiliado<a style="color: red;padding-left: 1em;" onclick="eliminar_elemento(this);">&times;</a></label>
+                                    <input type="number" class="form-control" name="afiliado" id="afiliado" value="<%= vscarnet[i].merchand_id %>" placeholder="0" required>
+                                  </div>  
+                                 <% } %>
+                                <% } %>                          
+
+                          </div>
+                          <div class="col-4 pt-4">
+                            <button type="button" id="addid" class="btn btn-primary">Agregar Afiliado</button>
+                              
+                            </div>
+                        </div>
+
+                              
+                            <div class=" mt-2" id="responsable">
+                            <% if(resp) {%>
+                              <% for(var i =0;i < resp.length;i++){ %>
+                                <div class="row"><div class="card-header mt-5 pt-3">
+                                <h5>Sucursal - Personal Responsable</h5>
+                                </div><a class="text-end" onclick="eliminar_elemento(this);">X</a>
+                                <div class="col-md-12 col-md-4 ">
+                                <label for="inputPassword4" class="form-label text-black">Nombre<strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="nombre_persona" id="nombre_persona" value="<%= resp[i].nombre_persona_suc %>" maxlength="100" placeholder="Nombre y apellido" required>
+                                <input type="hidden" class="form-control" name="persona" id="persona" value="<%= resp[i].id_persona %>" placeholder="Ingrese el nombre de la sucursal" required>
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="inputPassword4" class="form-label text-black">Cargo<strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="cargo" id="cargo" value="<%= resp[i].cargo_pers_suc %>" maxlength="50" placeholder="Cargo que Ocupa" required>
+                                </div> 
+                              
+                                <div class="col-md-4 mt-2 d-none">
+                                <label for="inputPassword4" class="form-label text-black">Cédula</label>
+                                <input type="text" class="form-control" name="cedula" id="cedula" value="<%= resp[i].cedula %>" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-0000000-0">
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="inputPassword4" class="form-label text-black">Celular<strong style="color: red;">*</strong></label>
+                                <input type="text" class="form-control" name="tel_persona" id="tel_persona" value="<%= resp[i].telefono_pers_suc %>" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000" required>
+                                </div>
+                              
+                                <div class="col-md-4 mt-2">
+                                <label for="inputPassword4" class="form-label text-black">Correo</label>
+                                <input type="email" class="form-control" name="email_persona" id="email_persona" value="<%= resp[i].correo %>" maxlength="150" placeholder="ingrese correo">
+                                </div> </div>
+
+                                 
+                               <% } %>
+                              <% } %>   
+
+                            </div>
+
+                            <div class="col-4 pt-4">
+                              <button type="button" id="responsableBtn" class="btn btn-primary">Agregar responsable</button>
+                              
+                            </div>
+
+
+                         
+                               <div class="col-12 pt-5">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="ModalResponsableList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog ancho" role="document">
+  <div class="modal-content">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header text-black">
+                            <h5>LISTA DE RESPONSABLE</h5>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 mt-5 d-flex text-right">
+                  <label for="inputAddress2" class="form-label text-black">Buscar:</label>
+                  <input type="text" class="form-control ml-5 mx-2" name="buscar" id="buscar" placeholder="Nombre o empresa del invitado a buscar" >
+                  <% if(accesos) {%>
+                  <a id="crearResponsableBtn"><i class='fas fa-plus mx-3' style='font-size:18px;color:black'> Crear Responsable</i></a>
+                  <% } %>
+                </div>
+    
+                
+    
+    
+                <div class="col-12 mt-3 d-flex text-right">
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>NOMBRE</th>
+                            <th>CELULAR</th>
+                            <!-- <th>EMPRESA</th> -->
+                            <th>CARGO</th>
+                            <th>CORREO</th>
+                            <th class="text-center">ACCION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_responsable">
+                       
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<script >
+
+const funcionInit = () => {
+  // alert('entrando...')
+	if (!"geolocation" in navigator) {
+		return alert("Tu navegador no soporta el acceso a la ubicación. Intenta con otro");
+	}
+
+	onUbicacionConcedida = ubicacion => {
+		console.log("Tengo la ubicación: ", ubicacion);
+		const coordenadas = ubicacion.coords;
+    
+    var date = new Date(ubicacion.timestamp).toLocaleString(); // create Date object console">console.log(date.toString());
+    console.log(date) 
+    let newubi = confirm("¿Deseas cambiar la ubicación?");
+    if(newubi){
+      document.querySelector("#geo").value = coordenadas.latitude+","+coordenadas.longitude;
+    document.querySelector("#geo").setAttribute("readonly", "true");
+    }
+		
+		// $longitud.innerText = coordenadas.longitude;
+		// $enlace.href = `https://www.google.com/maps/@${coordenadas.latitude},${coordenadas.longitude},20z`;
+	}
+	const onErrorDeUbicacion = err => {
+    alert("Error obteniendo ubicación: " + err.message)
+	}
+
+	const opcionesDeSolicitud = {
+		enableHighAccuracy: true, // Alta precisión
+		maximumAge: 0, // No queremos caché
+		timeout: 5000 // Esperar solo 5 segundos
+	};
+
+	// document.querySelector("#geo").value = "Cargando...";
+	navigator.geolocation.getCurrentPosition(onUbicacionConcedida, onErrorDeUbicacion, opcionesDeSolicitud);
+
+};
+
+function handleNacionalidad() {
+  console.log("ID: ");
+  
+  $.get("/empleado", function (data) {
+      var municipios = data.municipios;
+
+  });
+
+}
+
+function handleSubZonas(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/subzonas/" + e.target.value, function (data) {
+      console.log(data)
+      var subzona = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_subzona+">"+data[i].subzona+"</option>";
+              // console.log(data[i]);                    
+        }
+
+      var elementSubZona = document.getElementById("subzona");
+      elementSubZona.innerHTML = html;
+      
+  });
+}
+
+function handleSubZonasLoad() {
+  const jsonSuc = '<%- JSON.stringify(suc) %>';
+  let subz = JSON.parse(jsonSuc);
+
+  let id_zona = document.getElementById('zona').value;
+
+  $.get("/form_data/subzonas/" + id_zona, function (data) {
+      // console.log(data)
+      var subzona = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione</option>";
+      for(var i =0;i < data.length;i++){ 
+              if(data[i].id_subzona ==subz.id_subzona){
+                html +="<option selected value="+data[i].id_subzona+">"+data[i].subzona+"</option>";
+              }else{
+                html +="<option value="+data[i].id_subzona+">"+data[i].subzona+"</option>";
+              }
+              // console.log(data[i]);                    
+        }
+
+      var elementSubZona = document.getElementById("subzona");
+      elementSubZona.innerHTML = html;
+      
+  });
+}
+
+function handleProvincia(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form-data/municipios?provincia=" + e.target.value, function (data) {
+      var municipios = data.municipios;
+
+     console.log(municipios)
+  });
+}
+
+function handleCodigoPostal(e) {
+
+  $.get("/form_data/codigo_postal/" + e.target.value, function (data) {
+      // console.log(data[0])
+     
+      var elementCodigoPostal = document.getElementById("codigo_postal");
+      elementCodigoPostal.value = data[0].codigo_postal;
+  });
+}
+
+function handleMunicipio(e) {
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/municipio/" + e.target.value, function (data) {
+      console.log(data)
+      var municipio = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el municipio</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_municipio+">"+data[i].municipio+"</option>";
+              console.log(data[i]);                    
+        }
+
+      var elementMunicipio = document.getElementById("municipio");
+      elementMunicipio.innerHTML = html;
+
+
+      
+  });
+}
+
+
+function handleSector(e) {
+  //console.log("ID: ", e.target.value);
+
+  $.get("/form_data/sector/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el sector</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_sector+">"+data[i].sector+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementSector = document.getElementById("sector");
+      elementSector.innerHTML = html;
+
+
+      
+  });
+}
+
+function handleEncargado(e) { // el id que llega es el id del departamento
+  console.log("ID: ", e.target.value);
+
+  $.get("/form_data/encargado/" + e.target.value, function (data) {
+      //console.log(data)
+      var sector = data;  // FALTA RENDERIZAR LOS DATOS EN EL SELECT
+      var html = "";
+      html +="<option value=0>Seleccione el encargado</option>";
+      for(var i =0;i < data.length;i++){ 
+              html +="<option value="+data[i].id_empleado+">"+data[i].nombres+" "+data[i].apellidos+"</option>";
+              //console.log(data[i]);                    
+        }
+
+      var elementEncargado = document.getElementById("encargado");
+      elementEncargado.innerHTML = html;
+      
+  });
+}
+
+function fechaActual(){
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  return  day + "/" + month + "/" + year;
+  
+}
+
+function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+
+document.getElementById("addid").click = function(e) {
+    console.log("pongo id");
+  };
+
+  function eliminar_elemento(e){
+    let del = confirm("¿Deseas eliminar éste registro?");
+    if(del){
+      e.parentNode.parentNode.removeChild(e.parentNode);
+      // e.remove();
+    }
+}
+let info_numero = '<%= ib.length %>';
+function saveInfoBancaria() {
+        let banco = $('#banco').val();
+        let tipo_cuenta = $('#tipo_cuenta').val();
+        let frecuencia = $('#frecuencia').val();
+        let cuenta_debito = $('#cuenta_debito').val();
+        let cuenta_credito = $('#cuenta_credito').val();
+        let negocio = $('#neg').val();
+        // info_numero =
+        $.get("/form_data/informacion_bancaria/" + banco +"/" + tipo_cuenta+"/" + frecuencia+"/" + cuenta_debito+"/" + cuenta_credito+"/" + negocio, function (data) {
+            
+              let boton = `<input type="radio" class="btn-check" name="radio_info_bank" id="${data.insertId}" onclick="handleInfoBancaria(this)" value="${data.insertId}" autocomplete="off" >
+              <label class="btn btn-outline-primary" id="0${data.insertId}" for="${data.insertId}">Info <%= ib.length<9?"0"+(ib.length+1):(ib.length+1) %></label>`;
+              document.getElementById('info_bank').insertAdjacentHTML("beforeend",boton); 
+              document.getElementById(`${data.insertId}`).checked =true;
+              // document.getElementById('agregar_info').checked =false;
+              document.getElementById("agregar_info").checked = false;
+              document.getElementById("editar_info").checked = false;
+              $('#agregar_info').prop('checked', false);
+              $('#banco').val(banco);
+              $('#tipo_cuenta').val(tipo_cuenta);
+              $('#frecuencia').val(frecuencia);
+              $('#cuenta_debito').val(cuenta_debito);
+              $('#cuenta_credito').val(cuenta_credito);
+
+              $('#banco').prop('disabled', true);
+              $('#tipo_cuenta').prop('disabled', true);
+              $('#frecuencia').prop('disabled', true);
+              $('#cuenta_debito').prop('disabled', true);
+              $('#cuenta_credito').prop('disabled', true);
+              $('#guardar_info').prop('disabled', true);
+              document.getElementById('guardar_info').classList.remove('d-none');
+              document.getElementById('btnEditar_info').classList.add('d-none');
+            });
+        }
+
+  function updateInfoBancaria() {
+        let banco = $('#banco').val();
+        let tipo_cuenta = $('#tipo_cuenta').val();
+        let frecuencia = $('#frecuencia').val();
+        let cuenta_debito = $('#cuenta_debito').val();
+        let cuenta_credito = $('#cuenta_credito').val();
+        let negocio = $('#neg').val();
+        // info_numero =
+        let newubi = confirm("¿Deseas Actualizar la información bancaria seleccionada?");
+  let id_informacion_bancaria = 0
+    if(newubi){
+      var radios = document.getElementsByName('radio_info_bank');
+  
+    for (var radio of radios)
+    {
+    if (radio.checked) {
+      id_informacion_bancaria = radio.value;
+        // document.getElementById(id_informacion_bancaria).remove(); 
+        // document.getElementById(`0${id_informacion_bancaria}`).remove();
+    }
+    }
+
+        $.get("/form_data/update_informacion_bancaria/" + banco +"/" + tipo_cuenta+"/" + frecuencia+"/" + cuenta_debito+"/" + cuenta_credito+"/" + negocio+"/" + id_informacion_bancaria, function (data) {
+            
+              document.getElementById("agregar_info").checked = false;
+              document.getElementById("editar_info").checked = false;
+              $('#agregar_info').prop('checked', false);
+              $('#banco').val(banco);
+              $('#tipo_cuenta').val(tipo_cuenta);
+              $('#frecuencia').val(frecuencia);
+              $('#cuenta_debito').val(cuenta_debito);
+              $('#cuenta_credito').val(cuenta_credito);
+
+              $('#banco').prop('disabled', true);
+              $('#tipo_cuenta').prop('disabled', true);
+              $('#frecuencia').prop('disabled', true);
+              $('#cuenta_debito').prop('disabled', true);
+              $('#cuenta_credito').prop('disabled', true);
+              $('#guardar_info').prop('disabled', true);
+              document.getElementById('guardar_info').classList.remove('d-none');
+              document.getElementById('btnEditar_info').classList.add('d-none');
+            });
+        }
+      }
+        
+function eliminarInfoBancaria() {
+  let newubi = confirm("¿Deseas eliminar la información bancaria seleccionada?");
+  let id_informacion_bancaria = 0
+    if(newubi){
+      var radios = document.getElementsByName('radio_info_bank');
+  
+    for (var radio of radios)
+    {
+    if (radio.checked) {
+      id_informacion_bancaria = radio.value;
+        // document.getElementById(id_informacion_bancaria).remove(); 
+        document.getElementById(`0${id_informacion_bancaria}`).remove();
+    }
+    }
+
+        let negocio = $('#neg').val();
+
+        $.get(`/form_data/eliminar_informacion_bancaria/${id_informacion_bancaria}/${negocio}`, function (data) {
+            //  console.log(data)
+            //  window.location.reload()
+            //  $('#agregar_info').prop('checked', false);
+              $('#banco').val('');
+              $('#tipo_cuenta').val('');
+              $('#frecuencia').val('');
+              $('#cuenta_debito').val('');
+              $('#cuenta_credito').val('');
+
+              $('#banco').prop('disabled', true);
+              $('#tipo_cuenta').prop('disabled', true);
+              $('#frecuencia').prop('disabled', true);
+              $('#cuenta_debito').prop('disabled', true);
+              $('#cuenta_credito').prop('disabled', true);
+              $('#guardar_info').prop('disabled', true);
+
+              // let boton = `<input type="radio" class="btn-check" name="radio_info_bank" id="${data.insertId}" onclick="handleInfoBancaria(this)" value="${data.insertId}" autocomplete="off" >
+              // <label class="btn btn-outline-primary" for="${data.insertId}">Info <%= ib.length<9?"0"+(ib.length+1):(ib.length+1) %></label>`;
+              // document.getElementById('info_bank').insertAdjacentHTML("beforeend",boton); 
+              // document.getElementById(`${data.insertId}`).checked =true;
+              // // document.getElementById('agregar_info').checked =false;
+              // document.getElementById("agregar_info").checked = false;
+              // $('#agregar_info').prop('checked', false);
+              // $('#banco').val(banco);
+              // $('#tipo_cuenta').val(tipo_cuenta);
+              // $('#frecuencia').val(frecuencia);
+              // $('#cuenta_debito').val(cuenta_debito);
+              // $('#cuenta_credito').val(cuenta_credito);
+
+              // $('#banco').prop('disabled', true);
+              // $('#tipo_cuenta').prop('disabled', true);
+              // $('#frecuencia').prop('disabled', true);
+              // $('#cuenta_debito').prop('disabled', true);
+              // $('#cuenta_credito').prop('disabled', true);
+              // $('#guardar_info').prop('disabled', true);
+            });
+          }
+          document.getElementById('eliminar_info_banco').checked = false;
+        }
+
+function handleInfoBancaria(e) {
+  $.get("/form_data/info_bank/" + e.value, function (data) {
+      var info = data[0];  //
+      console.log(info.banco_tipo_cuenta)
+      $('#banco').val(info.id_banco);
+      $('#tipo_cuenta').val(info.banco_tipo_cuenta);
+      $('#frecuencia').val(info.frecuencia_pago_cheque);
+      $('#cuenta_debito').val(info.cuenta_debito);
+      $('#cuenta_credito').val(info.cuenta_credito);
+      document.getElementById('eliminar_info_banco').value = info.id_informacion_bancaria;
+      document.getElementById('agregar_info').checked = false;
+      document.getElementById('editar_info').checked = false;
+
+      $('#guardar_info').prop('disabled', true);
+      $('#banco').prop('disabled', true);
+      $('#tipo_cuenta').prop('disabled', true);
+      $('#frecuencia').prop('disabled', true);
+      $('#cuenta_debito').prop('disabled', true);
+      $('#cuenta_credito').prop('disabled', true);
+      $('#guardar_info').prop('disabled', true);
+  });
+}
+
+
+function usarResponsable(id_invitado_externo){
+  $.get(`/form_data/responsable/${id_invitado_externo}`, function (dat) {
+     
+    let html =`<div class="row"><div class="card-header mt-5 pt-3">
+      <h5>Sucursal - Personal Responsable</h5>
+      </div><a class="text-end" onclick="eliminar_elemento(this);">X</a>
+      <div class="col-md-12 col-md-4 ">
+      <label for="inputPassword4" class="form-label text-black">Nombre</label>
+      <input type="text" class="form-control" name="nombre_persona" id="nombre_persona" value="${dat[0].nombre_persona_suc}" maxlength="100" placeholder="Nombre y apellido">
+      <input type="hidden" class="form-control" name="persona" id="persona" value="${dat[0].id_persona}" placeholder="Ingrese el nombre de la sucursal" required>
+      </div>
+    
+      <div class="col-md-4 mt-2">
+      <label for="inputPassword4" class="form-label text-black">Cargo</label>
+      <input type="text" class="form-control" name="cargo" id="cargo" value="${dat[0].cargo_pers_suc}" maxlength="50" placeholder="Cargo que Ocupa">
+      </div> 
+    
+      <div class="col-md-4 mt-2 d-none">
+      <label for="inputPassword4" class="form-label text-black">Cédula</label>
+      <input type="text" class="form-control" name="cedula" id="cedula" value="${dat[0].cedula}" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-0000000-0">
+      </div>
+    
+      <div class="col-md-4 mt-2">
+      <label for="inputPassword4" class="form-label text-black">Celular</label>
+      <input type="text" class="form-control" name="tel_persona" id="tel_persona" value="${dat[0].telefono_pers_suc}" onkeypress="handleMask(event, '999-999-9999')" size=13  placeholder="000-000-0000">
+      </div>
+    
+      <div class="col-md-4 mt-2">
+      <label for="inputPassword4" class="form-label text-black">Correo</label>
+      <input type="email" class="form-control" name="email_persona" id="email_persona" value="${dat[0].correo}" maxlength="150" placeholder="ingrese correo">
+      </div> </div>`;
+
+            document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+
+            $('#ModalResponsableList').modal('hide');;
+
+      });
+}
+function handleInfoBancariaLoad(elradio) {
+
+    $.get("/form_data/info_bank/" + elradio, function (data) {
+      var info = data[0];  //
+      // console.log(info.banco_tipo_cuenta)
+      $('#banco').val(info.id_banco);
+      $('#tipo_cuenta').val(info.banco_tipo_cuenta);
+      $('#frecuencia').val(info.frecuencia_pago_cheque);
+      $('#cuenta_debito').val(info.cuenta_debito);
+      $('#cuenta_credito').val(info.cuenta_credito);
+      // document.getElementById('eliminar_info_banco').value = info.id_informacion_bancaria;
+  });
+}
+window.addEventListener('load', function() {
+
+  const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+
+    const jsonNegocio = '<%- JSON.stringify(ng) %>';
+    var negocio = JSON.parse(jsonNegocio);
+    // alert(negocio.sap_deudor)
+
+  if(negocio.sap_deudor !='' && negocio.sap_acreedor !='' && accesos.operaciones){
+    // alert('Negocio afiliado')
+    $('#negocio_edit #codigo_fidelium').prop('readonly', false);
+  }
+  $('#codigo_fidelium').click(function(){
+    if((negocio.sap_deudor =='' || negocio.sap_acreedor =='') && accesos.operaciones){
+    alert('Para completar esta acción, los campos de las cuentas Sap deudor y Sap acreedor deben estar llenos.')
+    // $('#negocio_edit #codigo_fidelium').prop('readonly', false);
+    // $('#ModalEditCita #externo').prop('disabled', false);
+    }
+		
+	});
+  
+  ///////cargo las subzonas
+  handleSubZonasLoad();
+
+  var radios = document.getElementsByName('radio_info_bank');
+    //  alert(e.checked)
+    for (var radio of radios)
+    {
+    if (radio.checked) {
+      handleInfoBancariaLoad(radio.value)
+    }
+    }
+//   document.getElementsByName('radio_info_bank').onclick = function(e) {
+//     var radios = document.getElementsByName('radio_info_bank');
+//      alert(e.checked)
+//     for (var radio of radios)
+//     {
+//     if (radio.checked) {
+//         alert('Email is selected'+radio.value);
+//     }
+//     }
+// }
+  // funcionInit()
+  // $(":input").inputmask();
+  //const nacionalidad = document.getElementById("nacionalidad");
+  //$("#fecha").val(fechaActual());name="fecha" id="fecha"
+  document.getElementById("fecha").value = new Date().toLocaleDateString();
+  document.getElementById("fech").innerHTML = "Fecha: " + new Date().toLocaleDateString();
+  
+  if(document.getElementById("zona")){
+      document.getElementById("zona").onchange = function(e) {
+        handleSubZonas(e);
+      };
+    }
+
+  if(document.getElementById("provincia")){
+      document.getElementById("provincia").onchange = function(e) {
+        handleMunicipio(e);
+        handleCodigoPostal(e);
+      };
+    }
+  if(document.getElementById("municipio")){
+      document.getElementById("municipio").onchange = function(e) {
+        handleSector(e);
+      }; 
+    }
+var radiochekedId = 0;
+if(document.getElementById("agregar_info")){
+    const checkbox = document.getElementById('agregar_info')
+    let banco =0, tipo_cuenta = 0, frecuencia = 0, cuenta_debito = 0, cuenta_credito = 0;
+    
+checkbox.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    document.getElementById("editar_info").checked = false;
+    $('#banco').prop('disabled', false);
+    $('#tipo_cuenta').prop('disabled', false);
+    $('#frecuencia').prop('disabled', false);
+    $('#cuenta_debito').prop('disabled', false);
+    $('#cuenta_credito').prop('disabled', false);
+    $('#guardar_info').prop('disabled', false);
+    
+    banco = $('#banco').val();
+    tipo_cuenta = $('#tipo_cuenta').val();
+    frecuencia = $('#frecuencia').val();
+    cuenta_debito = $('#cuenta_debito').val();
+    cuenta_credito = $('#cuenta_credito').val();
+
+    $('#banco').val(0);
+    $('#tipo_cuenta').val(0);
+    $('#frecuencia').val(0);
+    $('#cuenta_debito').val('');
+    $('#cuenta_credito').val('');
+    document.getElementById('guardar_info').classList.remove('d-none');
+    document.getElementById('btnEditar_info').classList.add('d-none');
+
+  /// busco el id
+  var radios = document.getElementsByName('radio_info_bank');
+  
+    for (var radio of radios)
+    {
+    if (radio.checked) {
+      id_informacion_bancaria = radio.value;
+      document.getElementById(id_informacion_bancaria).checked = false; 
+      radiochekedId = id_informacion_bancaria;
+        // document.getElementById(`0${id_informacion_bancaria}`).remove();
+    }
+    }
+  } else {
+    $('#banco').val(banco);
+    $('#tipo_cuenta').val(tipo_cuenta);
+    $('#frecuencia').val(frecuencia);
+    $('#cuenta_debito').val(cuenta_debito);
+    $('#cuenta_credito').val(cuenta_credito);
+
+    $('#banco').prop('disabled', true);
+    $('#tipo_cuenta').prop('disabled', true);
+    $('#frecuencia').prop('disabled', true);
+    $('#cuenta_debito').prop('disabled', true);
+    $('#cuenta_credito').prop('disabled', true);
+    $('#guardar_info').prop('disabled', true);
+    // alert('not checked');
+    document.getElementById(radiochekedId).checked = true; 
+  }
+})
+}
+
+if(document.getElementById("editar_info")){
+    const checkbox = document.getElementById('editar_info')
+    let banco =0, tipo_cuenta = 0, frecuencia = 0, cuenta_debito = 0, cuenta_credito = 0;
+    
+checkbox.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    if($('#banco').val()!=0){
+      
+    document.getElementById("agregar_info").checked = false;
+    $('#banco').prop('disabled', false);
+    $('#tipo_cuenta').prop('disabled', false);
+    $('#frecuencia').prop('disabled', false);
+    $('#cuenta_debito').prop('disabled', false);
+    $('#cuenta_credito').prop('disabled', false);
+    $('#guardar_info').prop('disabled', false);
+
+    banco = $('#banco').val();
+    tipo_cuenta = $('#tipo_cuenta').val();
+    frecuencia = $('#frecuencia').val();
+    cuenta_debito = $('#cuenta_debito').val();
+    cuenta_credito = $('#cuenta_credito').val();
+    $('#guardar_info').prop('disabled', false);
+    document.getElementById('guardar_info').classList.add('d-none');
+    document.getElementById('btnEditar_info').classList.remove('d-none');
+    }
+    else{
+      alert('Selecione primero la cuenta a editar')
+      document.getElementById('btnEditar_info').classList.add('d-none');
+    document.getElementById('guardar_info').classList.remove('d-none');
+    $('#guardar_info').prop('disabled', false);
+    document.getElementById("editar_info").checked = false;
+
+    }
+  } else {
+    $('#banco').val(banco);
+    $('#tipo_cuenta').val(tipo_cuenta);
+    $('#frecuencia').val(frecuencia);
+    $('#cuenta_debito').val(cuenta_debito);
+    $('#cuenta_credito').val(cuenta_credito);
+
+    $('#banco').prop('disabled', true);
+    $('#tipo_cuenta').prop('disabled', true);
+    $('#frecuencia').prop('disabled', true);
+    $('#cuenta_debito').prop('disabled', true);
+    $('#cuenta_credito').prop('disabled', true);
+    document.getElementById('guardar_info').classList.remove('d-none');
+    document.getElementById('btnEditar_info').classList.add('d-none');
+    $('#guardar_info').prop('disabled', true);
+    // alert('not checked');
+  }
+})
+}
+
+if(document.getElementById("guardar_info")){
+    const guardar_info = document.getElementById('guardar_info')
+   
+    guardar_info.addEventListener('click', (event) => {
+        saveInfoBancaria();
+      })
+    }
+    if(document.getElementById("btnEditar_info")){
+    const editar_info = document.getElementById('btnEditar_info')
+   
+    btnEditar_info.addEventListener('click', (event) => {
+        updateInfoBancaria();
+      })
+    }
+
+
+  if(document.getElementById("eliminar_info_banco")){
+      const eliminar_info = document.getElementById('eliminar_info_banco')
+      eliminar_info.addEventListener('click', (event) => {
+        eliminarInfoBancaria();
+      })
+  }
+
+  
+  
+  let p = document.getElementById("addid"); // Encuentra el elemento "p" en el sitio
+  p.onclick = afiliadoAdd; // Agrega función onclick al elemento
+    
+  function afiliadoAdd(evento) {
+    evento.preventDefault();
+    
+    let boton = '<div class="col-2 pt-2 delete"><label for="inputAddress2" class="form-label text-black">Afiliado<a style="color: red;padding-left: 1em;" onclick="eliminar_elemento(this);">&times;</a></label><input type="number" class="form-control" name="afiliado" id="afiliado" placeholder="0" required></li></div>';
+    document.getElementById('afiliadoid').insertAdjacentHTML("beforeend",boton); 
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+
+  let crb = document.getElementById("crearResponsableBtn"); // Encuentra el elemento "p" en el sitio
+  crb.onclick = crearResponsable; // Agrega función onclick al elemento
+    
+  function crearResponsable(evento) {
+    // evento.preventDefault();
+    $('#ModalResponsableList').modal('hide'); //tabla_responsable
+
+    html ='<div class="row"><div class="card-header mt-5">';
+    html +='<h5>Sucursal - Personal Responsable</h5> ';
+    html +='</div><a class="text-end" onclick="eliminar_elemento(this);">X</a>';
+    html +='<div class="col-md-12 col-md-4 ">';
+    html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" placeholder="Nombre y apellido">';
+    html +='<input type="hidden" class="form-control" name="persona" id="persona" value="" placeholder="">';
+    html +='</div>';  
+
+    html +='<div class="col-md-4 mt-2">';
+      html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+      html +='<input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo que Ocupa">';
+      html +='</div> ';
+
+      html +='<div class="col-md-4 mt-2 d-none">';
+        html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+        html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-0000000-0">';
+        html +='</div> ';
+
+        html +='<div class="col-md-4 mt-2">';
+          html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+          html +='<input type="text" class="form-control" name="tel_persona" id="tel_persona" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-000-0000">';
+          html +='</div> ';
+
+          html +='<div class="col-md-4 mt-2">';
+            html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+            html +='<input type="email" class="form-control" name="email_persona" id="email_persona" placeholder="ingrese correo">';
+            html +='</div> </div>';
+
+    document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+  
+  let pr = document.getElementById("responsableBtn"); // Encuentra el elemento "p" en el sitio
+  pr.onclick = agregaResponsable; // Agrega función onclick al elemento
+    
+  function agregaResponsable(evento) {
+    // evento.preventDefault();
+    $('#ModalResponsableList').modal('show'); //tabla_responsable
+
+    responsableList(document.getElementById('buscar').value)
+    // html ='<div class="row"><div class="card-header mt-5">';
+    // html +='<h5>Sucursal - Personal Responsable</h5> ';
+    // html +='</div><a class="text-end" onclick="eliminar_elemento(this);">X</a>';
+    // html +='<div class="col-md-12 col-md-4 ">';
+    // html +='<label for="inputPassword4" class="form-label text-black">Nombre</label>';
+    // html +='<input type="text" class="form-control" name="nombre_persona" id="nombre_persona" placeholder="Nombre y apellido">';
+    // html +='<input type="hidden" class="form-control" name="persona" id="persona" value="" placeholder="">';
+    // html +='</div>';  
+
+    // html +='<div class="col-md-4 mt-2">';
+    //   html +='<label for="inputPassword4" class="form-label text-black">Cargo</label>';
+    //   html +='<input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo que Ocupa">';
+    //   html +='</div> ';
+
+    //   html +='<div class="col-md-4 mt-2 d-none">';
+    //     html +='<label for="inputPassword4" class="form-label text-black">Cédula</label>';
+    //     html +='<input type="text" class="form-control" name="cedula" id="cedula" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-0000000-0">';
+    //     html +='</div> ';
+
+    //     html +='<div class="col-md-4 mt-2">';
+    //       html +='<label for="inputPassword4" class="form-label text-black">Celular</label>';
+    //       html +='<input type="text" class="form-control" name="tel_persona" id="tel_persona" onkeypress="handleMask(event, "999-999-9999")" size=13  placeholder="000-000-0000">';
+    //       html +='</div> ';
+
+    //       html +='<div class="col-md-4 mt-2">';
+    //         html +='<label for="inputPassword4" class="form-label text-black">Correo</label>';
+    //         html +='<input type="email" class="form-control" name="email_persona" id="email_persona" placeholder="ingrese correo">';
+    //         html +='</div> </div>';
+
+    // document.getElementById('responsable').insertAdjacentHTML("beforeend",html);
+    //alert("Evento onclick ejecutado!"+evento);
+  }
+
+  function responsableList(valor) { // el id que llega es el id del departamento
+    
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+    //////
+    if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+   
+    $.get("/form_data/responsables/" + valor, function (data) {
+        console.log(data)
+        // alert('entro a mi ruta'+data[0].nombre_persona_suc)
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data.length;i++){ 
+              // let invitado = [data[i].id_invitado_externo,data[i].nombre,data[i].celular,data[i].empresa,data[i].cargo,data[i].correo];
+              html +="<tr>";
+              
+              html +="<td>"+ data[i].nombre_persona_suc +"</td>";
+              html +="<td>"+ data[i].telefono_pers_suc +"</td>";
+              // html +="<td>"+ data[i].empresa +"</td>";
+              html +="<td>"+ data[i].cargo_pers_suc +"</td>";
+              html +="<td>"+ data[i].correo +"</td>";
+            
+              html +="<td>";
+                
+                  if('<%- accesos.detalle_empleado %>') {
+                    html +=`<a onclick="usarResponsable(${data[i].id_persona})"><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>`;
+                  }
+
+              html +="</td></tr>";  
+                  
+              k++;  
+              }
+            
+        var elementTabla_empleado = document.getElementById("tabla_responsable");
+        elementTabla_empleado.innerHTML = html;
+        
+    });
+ 
+  }
+
+  document.getElementById("buscar").onkeyup = function(e) {
+      let valor = e.target.value;
+      if(valor ==""){
+        valor ="aaaaaaaaaaaa";
+      }
+      
+      responsableList(valor); 
+      // alert(valor);
+    };
+
+});
+
+</script>
+<style>
+  body {
+      font-size: 14px;
+    }
+  
+    #calendar {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+  .ancho{
+    max-width: 80%;
+  
+  }
+  </style>
+
+
+<%- include('partials/_footer') %>

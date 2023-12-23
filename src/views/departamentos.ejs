@@ -1,0 +1,208 @@
+<%- include('partials/_header') %>
+
+            <div class="container">
+                <div class="row mt-5">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Departamento</h5>
+                                </div>
+                                <div class="card-body col-md-12">
+                                    <div class="col-md-10" style="margin:0 auto">
+                                        <form class="row g-3" action="departamento/add" method="post">
+                                            <div class="col-md-4">
+                                                <label for="inputEmail4" class="form-label text-black">Empresa</label>
+                                                <select class="form-control" name="empresa" id="empresa" required>
+                                                   <option value="0">Seleccione</option>
+                                                   <% if(empresa) {%>
+                                                    <% for(var i =0;i < empresa.length;i++){ %>
+                                                      <option value="<%= empresa[i].id_negocio %>"><%= empresa[i].razon_social%></option>
+                                                       
+                                                     <% } %>
+                                                    <% } %>
+                                                 </select>
+                                              </div>
+                                            <div class="col-4">
+                                                <label for="inputAddress2" class="form-label text-black">Nombre del Departamento</label>
+                                                <input type="text" class="form-control" name="descripcion" id="descripcion" maxlength="45" placeholder="Recursos Humanos">
+                                              </div>
+                                              <div class="col-4">
+                                                <label for="inputAddress2" class="form-label text-black">Centro</label>
+                                                <input type="text" class="form-control" name="centro" id="centro" maxlength="11" placeholder="0000">
+                                              </div>
+                                           <div class="col-12">
+                                             <button type="submit" class="btn btn-primary">GUARDAR</button>
+                                           </div>
+                                         </form>
+                                       </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-hover mt-5">
+                            <thead class="bg-dark text-white">
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Center</th>
+                        <th>Empresa</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_departamento">
+                    
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+<script >
+
+
+    function negocioList(estado,valor,inicio) { // el id que llega es el id del departamento
+   
+      const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+      var accesos = JSON.parse(jsonAccesos);
+      //////
+     
+      $.get("/form_data/negocio/" + valor+'/'+estado+'/'+inicio, function (data) {
+          // console.log(data[data.length-1].registros[0].total)
+          
+          var html = "";
+          for(var i =0;i < data.length-1;i++){ 
+  
+              //console.log(data.length);                              
+                html +="<tr>";
+                html +=`<td><a href="/negocio/update/${data[i].id_negocio}" style="text-decoration:none;color: blue;font-size: large;">${data[i].razon_social}</a></td>`;
+                html +="<td>"+ data[i].tipo_pago_electronico +"</td>";
+                html +="<td>"+ data[i].tipo_afiliacion +"</td>";
+                html +="<td>"+ data[i].registradopor +"</td>";
+                
+                html +="<td>"+ data[i].editadopor +"</td>";
+                  html +='<td class="text-center">';
+                  html +=`<a href="/negocio/sucursal/${data[i].id_negocio}"><i class='fas fa-eye' style='font-size:20px;color:green'></i></a>` ;                             
+                  html +='</td>';
+                  html +='<td class="text-center">';
+                  html +=`<a href="/negocio/historial/${data[i].id_negocio}/${1}"><i class='fas fa-history' style='font-size:20px;color:blue'></i></a>` ;                             
+                  html +='</td>';
+                html +="</tr>";  
+                                  
+            }
+          var elementTabla_empleado = document.getElementById("tabla_negocio");
+          elementTabla_empleado.innerHTML = html;
+          // console.log('No se cuantos son: ',data[data.length-1].registros[0].total)
+  // console.log('No se cuantos son: ',)
+  cargaPaginacion(data[data.length-1].registros[0].total,inicio)
+      });
+   
+    }
+    function negocioListPage(inicio) {
+        let valor = document.getElementById('buscar').value;
+  
+          if(valor ==""){
+            valor ="aaaaaaaaaaaa";
+          }
+          let estado = 'Prospecto'
+          const radioButtons = document.querySelectorAll('input[name="optionsRadios"]');
+          for (const radioButton of radioButtons) {
+            if(radioButton.checked){
+  
+              estado = radioButton.id;
+            }
+          }
+          // console.log('veo ',estado,valor,inicio)
+          negocioList(estado,valor,inicio)
+        
+      }
+    function cargaPaginacion(cantidad_registros,inicio){
+      nrolink = Math.ceil(cantidad_registros/paginacion);
+      ht =`<div class="btn-group me-2" role="group" aria-label="First group">`;
+        if(inicio == 1){
+          
+        }else{
+          ht+=`<button type="button" onclick='negocioListPage(1);' class="btn btn-secondary"><<</button>`
+          ht+=`<button type="button" onclick='negocioListPage(${inicio-1});' class="btn btn-secondary"><</button>`
+        }
+      for(i=1;i<=nrolink;i++){
+        if(inicio == i){
+          ht+=`<button type="button" onclick='negocioListPage(${i});' class="btn btn-primary">${i}</button>`
+        }
+        else{
+          ht+=`<button type="button" onclick='negocioListPage(${i});' class="btn btn-secondary">${i}</button>`
+        }
+        
+      }
+      if(inicio == nrolink){
+  
+      }else{
+        if(inicio == ''){
+          ht+=`No hay registro`;
+        }else{
+          if(nrolink !=0){
+            ht+=`<button type="button" onclick='negocioListPage(${inicio+1});' class="btn btn-secondary">></button>`
+            ht+=`<button type="button" onclick='negocioListPage(${nrolink});' class="btn btn-secondary">>></button>`
+          }
+          else{
+            ht+=`No hay registro`;
+          }
+        }
+      }
+      ht +=`</div>`;
+      $('#paginacion').html(ht);
+        // alert(cantidad_registros)
+     }
+    
+    function fechaActual(){
+      date = new Date();
+      year = date.getFullYear();
+      month = date.getMonth() + 1;
+      day = date.getDate();
+      return  day + "/" + month + "/" + year;
+      
+    }
+    
+  function departamentoList(empresa) { // el id que llega es el id del departamento
+    //console.log("ID: ", e.target.value);
+
+    const jsonAccesos = '<%- JSON.stringify(accesos) %>';
+    var accesos = JSON.parse(jsonAccesos);
+
+   
+    $.get("/form_data/departamento/" + empresa, function (data) {
+        console.log(data)
+        var html = "";
+        let k = 1;
+        for(var i =0;i < data[0].length;i++){ 
+              html +="<tr>";
+              html +="<td>"+k+"</td>";
+              html +="<td>"+ data[0][i].descripcion +"</td>";
+              html +="<td>"+ data[0][i].centro +"</td>";
+              html +="<td>"+ data[0][i].empresa +"</td>";
+            
+              html +="<td>";
+                  html +="<a href='departamento/update/"+ data[0][i].id_departamento +"'  class='btn btn-info'>UPDATE</a>";
+              html +="</td></tr>";  
+                  
+              k++; 
+          }
+  
+        var elementTabla_departamento = document.getElementById("tabla_departamento");
+        elementTabla_departamento.innerHTML = html;
+
+        
+    });
+ 
+  }
+    window.addEventListener('load', function() {
+      document.getElementById("empresa").onchange = function(e) {
+      let valor = e.target.value;
+      departamentoList(valor);
+      // document.getElementById("empresa").value = this.value;
+    };
+     
+    
+    });
+    </script>
+
+<%- include('partials/_footer') %>

@@ -1,0 +1,129 @@
+<%- include('partials/_header') %>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ejecutivos Externos</h5>
+                    </div>
+                    <div class="card-body col-md-12">
+                        <div class="col-md-10" style="margin:0 auto">
+                            <form class="row g-3" action="ejecutivo/add" method="post">
+                                <div class="col-8">
+                                    <label for="inputAddress2" class="form-label text-black">Nombre</label>
+                                    <input type="text" class="form-control" name="nombre" id="nombre" maxlength="100" placeholder="Ingrese nombre">
+                                  </div>
+                                  <div class="col-md-4">
+                                    <label for="inputPassword4" class="form-label text-black">Teléfono</label>
+                                    <input type="text" class="form-control" name="telefono" id="telefono" maxlength="15" onkeypress="handleMask(event, '999-999-9999')" size=13 placeholder="Ingrese número de Teléfono">
+                                  </div> 
+                                  <div class="col-md-4">
+                                    <label for="inputPassword4" class="form-label text-black">Flota</label>
+                                    <input type="text" class="form-control" name="flota" id="flota" maxlength="15" onkeypress="handleMask(event, '999-999-9999')" size=13 placeholder="Ingrese número de flota">
+                                  </div> 
+   
+                               <div class="col-md-4">
+                                 <label for="inputEmail4" class="form-label text-black">Correo</label>
+                                 <input type="email" class="form-control" name="correo" id="correo" maxlength="100" placeholder="Ingrese correo electrónico">
+                               </div>
+
+                               <div class="col-md-4">
+                                <label for="inputEmail4" class="form-label text-black">Empresa</label>
+                                <select class="form-control" name="empresa" id="empresa" required>
+                                   <option value="0">Seleccione la empresa</option>
+                                   <% if(emp) {%>
+                                    <% for(var i =0;i < emp.length;i++){ %>
+                                      <option value="<%= emp[i].id_empresa %>"><%= emp[i].nombre_empresa %></option>
+                                       
+                                     <% } %>
+                                    <% } %>
+                                 </select>
+                              </div>
+
+                               
+                                                        
+                         
+                               <div class="col-12">
+                                 <button type="submit" class="btn btn-primary">GUARDAR</button>
+                               </div>
+                             </form>
+                           </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover mt-5">
+                <thead class="bg-dark text-white">
+                    <tr >
+                        <th>No.</th>
+                        
+                        <th>NOMBRE</th>
+                        <th>FLOTA</th>
+                        <th>CORREO</th>
+                        <th>EMPRESA</th>
+                        <th>ESTADO</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(data) {%>
+                    <% for(var i =0;i < data.length;i++){ %>
+                        <tr>
+                            <td><%= i+1 %></td>
+                            <td><%= data[i].nombre %></td>
+                            <td><%= data[i].flota %></td>
+                            <td><%= data[i].correo %></td>
+                            <td><%= data[i].empresa %></td>
+                            <td><%= data[i].estado %></td>
+                            <td><a href="/ejecutivo/update/<%= data[i].id_ejecutivo %>" class="btn btn-info">UPDATE</a></td>
+                        </tr>
+
+
+                     <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function handleMask(event, mask) {
+    with (event) {
+        stopPropagation()
+        preventDefault()
+        if (!charCode) return
+        var c = String.fromCharCode(charCode)
+        if (c.match(/\D/)) return
+        with (target) {
+            var val = value.substring(0, selectionStart) + c + value.substr(selectionEnd)
+            var pos = selectionStart + 1
+        }
+    }
+    var nan = count(val, /\D/, pos) // nan va calcolato prima di eliminare i separatori
+    val = val.replace(/\D/g,'')
+
+    var mask = mask.match(/^(\D*)(.+9)(\D*)$/)
+    if (!mask) return // meglio exception?
+    if (val.length > count(mask[2], /9/)) return
+
+    for (var txt='', im=0, iv=0; im<mask[2].length && iv<val.length; im+=1) {
+        var c = mask[2].charAt(im)
+        txt += c.match(/\D/) ? c : val.charAt(iv++)
+    }
+
+    with (event.target) {
+        value = mask[1] + txt + mask[3]
+        selectionStart = selectionEnd = pos + (pos==1 ? mask[1].length : count(value, /\D/, pos) - nan)
+    }
+
+    function count(str, c, e) {
+        e = e || str.length
+        for (var n=0, i=0; i<e; i+=1) if (str.charAt(i).match(c)) n+=1
+        return n
+    }
+}
+</script>
+<%- include('partials/_footer') %>

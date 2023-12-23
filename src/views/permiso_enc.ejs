@@ -1,0 +1,116 @@
+<%- include('partials/_header') %>
+ 
+
+                            <div  id="permiso_enc">
+                            <div class="card">
+                                <div class="card-body col-md-12">
+                                    <div class="col-md-10" style="margin:0 auto">
+                                        <form class="row g-3" action="/permiso/updateenc/<%= permisos.id_permiso %>" method="post">
+                                            <div class="card-header bg-dark text-white d-flex">
+                                              <div class="col-9"><h5>Solicitud de permiso - Supervisor</h5></div>
+                                              
+                                              <label for="inputAddress2" class="form-label text-white">Fecha:</label>
+                                                  <input type="text" class="form-control bg-dark text-white" name="fecha_sol" id="fecha_sol" value="<%= (new Date( permisos.fecha_solicitud)).toLocaleDateString() %>" required readonly>
+                                                
+                                          </div>
+                                          <div class="col-2">
+                                            <label for="inputAddress2" class="form-label text-black">Solicitud No.</label>
+                                            <input type="text" class="form-control" name="solicitud_no" id="solicitud_no" value="<%= permisos.id_permiso  %>" required readonly>
+                                          </div>
+                                          <div class="col-10">
+                                            <label for="inputAddress2" class="form-label text-black">Solicitante.</label>
+                                            <input type="text" class="form-control" name="solicitud_no" id="solicitud_no" value="<%= permisos.solicitante  %>" required readonly>
+                                          </div>
+
+                                          <div class="col-md-4">
+                                              <label for="inputEmail4" class="form-label text-black">Tipo de permiso</label>
+                                              <select class="form-control" name="tipo_permiso_enc" id="tipo_permiso_enc" value="<%= permisos.tipo_permiso %>" disabled>
+                                                 <option value="0">Seleccione</option>
+                                                 <option selected value="0"><%= permisos.tipo_permiso %></option>
+                                                 
+                                                 
+                                               </select>
+                                            </div>
+                                              <div class="col-4">
+                                                  <label for="inputAddress2" class="form-label text-black">Fecha de Salida</label>
+                                                  <input type="text" class="form-control" name="fecha_inicial" id="fecha_inicial" value="<%= salida %>" required readonly>
+                                                </div>
+
+                                                <div class="col-4">
+                                                  <label for="inputAddress2" class="form-label text-black">Fecha de Entrada</label>
+                                                  <input type="text" class="form-control" name="fecha_inicial" id="fecha_inicial" value="<%= entrada %>" required readonly>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                  <label for="inputPassword4" class="form-label text-black">Motivo</label>
+                                                  <textarea class="col-md-12" name="motivo_sup" id="motivo_sup" cols="auto" rows="3" readonly><%= permisos.motivo %></textarea >                                
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="inputPassword4" class="form-label text-black">Comentario</label>
+                                                    <textarea class="col-md-12" name="comentario_supervisor" id="comentario_supervisor" cols="auto" rows="3"><%= permisos.comentario_encargado ? permisos.comentario_encargado :''  %></textarea>                                
+                                                  </div>
+
+                                                  <div class="col-md-4">
+                                                    <label for="inputEmail4" class="form-label text-black">Estado <%=  %></label>
+                                                    <select class="form-control" name="estado_sup" id="estado_sup" required>
+                                                       
+                                                       <% if(est) {%>
+                                                        <% for(var i =0;i < est.length;i++){ 
+                                                          if(est[i].id_estado == est_perm ){%>
+                                                          <option selected value="<%= est[i].id_estado %>"><%= est[i].descripcion %></option>
+                                                          <% }else { %>
+                                                            <% if(est[i].descripcion=="Aprovado") {}else{%>
+                                                            <option value="<%= est[i].id_estado %>"><%= est[i].descripcion%></option>
+                                                         <% }
+                                                        }
+                                                        } %>
+                                                        <% } %>
+                                                     </select>
+                                                  </div>
+
+                                            
+                                         <div class="col-12">
+                                           <button type="submit" class="btn btn-primary">ENVIAR</button>
+                                         </div>
+                                       </form>
+                                       </div>
+                                </div>
+                            </div>
+                          </div>
+                            
+
+
+
+<script>
+  
+  window.addEventListener('load', function() {
+    document.addEventListener("click", (event) => {
+  const clickedElement = event.target;
+  
+  if (!clickedElement.matches('.ver')) {
+    return;
+  }
+  handlePermiso(clickedElement.value);
+  confirm("Are you sure to EDIT this user?");
+});
+    console.log('no se desplieaga')
+  //document.getElementById('formSolicitud_permiso').style.display = 'none';
+  //document.getElementById("fecha").value = new Date().toISOString();//.toDateString();//.toLocaleDateString();
+  //document.getElementById('permiso_enc').style.display = "none";
+  //alert("cargo")
+
+  document.getElementById('ver').addEventListener('click', function(e) {
+    console.log(e)
+  });
+
+  const editButtons = document.querySelectorAll(".ver");
+editButtons.forEach(editBtn => editBtn.addEventListener("click", () => {
+  alert('click')
+}));
+  
+
+});
+</script>
+
+
+<%- include('partials/_footer') %>
