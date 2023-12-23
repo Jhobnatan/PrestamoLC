@@ -637,19 +637,19 @@ controller.imprimeCobra = async (req, res) => {
     comprobante = comprobante.toUpperCase();
     // console.log('Datos de la tabla =====> ' + JSON.stringify(tabla))
     try {
-        subTotal = subTotal.replace(/,/g, '') || 0;
-        masItbis = masItbis.replace(/,/g, '') || 0;
-        descuento = descuento.replace(/,/g, '') || 0;
-        maselservicio = maselservicio.replace(/,/g, '') || 0;
-        totalCobrar = totalCobrar.replace(/,/g, '') || 0;
-        montoNotaCredito = montoNotaCredito.replace(/,/g, '') || 0;
-        tarjetaDebito = tarjetaDebito.replace(/,/g, '') || 0;
-        pagoConBono = pagoConBono.replace(/,/g, '') || 0;
-        cheque = cheque.replace(/,/g, '') || 0;
-        tarjetaCredito = tarjetaCredito.replace(/,/g, '') || 0;
-        cuentaPorCobrar = cuentaPorCobrar.replace(/,/g, '') || 0;
-        efectivo = efectivo.replace(/,/g, '') || 0;
-        devolver = devolver.replace(/,/g, '') || 0;
+        subTotal = subTotal.replace(/,/g, '');
+        masItbis = masItbis.replace(/,/g, '');
+        descuento = descuento.replace(/,/g, '');
+        maselservicio = maselservicio.replace(/,/g, '');
+        totalCobrar = totalCobrar.replace(/,/g, '');
+        montoNotaCredito = montoNotaCredito.replace(/,/g, '');
+        tarjetaDebito = tarjetaDebito.replace(/,/g, '');
+        pagoConBono = pagoConBono.replace(/,/g, '');
+        cheque = cheque.replace(/,/g, '');
+        tarjetaCredito = tarjetaCredito.replace(/,/g, '');
+        cuentaPorCobrar = cuentaPorCobrar.replace(/,/g, '');
+        efectivo = efectivo.replace(/,/g, '');
+        devolver = devolver.replace(/,/g, '');
         let secuencia = await consultaSecuenciaComprobante(codncf);
         // console.log("NCF =====> ", secuencia) //si el codigo esta presente
         if (secuencia) {

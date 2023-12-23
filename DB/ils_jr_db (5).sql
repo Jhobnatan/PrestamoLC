@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-02-2023 a las 20:23:17
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.29
+-- Tiempo de generación: 23-12-2023 a las 21:11:45
+-- Versión del servidor: 10.4.14-MariaDB
+-- Versión de PHP: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,23 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `rrhh`
+-- Base de datos: `jrs_prestamo_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `archivo`
+--
+
+CREATE TABLE `archivo` (
+  `idarchivo` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `path` varchar(150) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `id_persona` int(11) NOT NULL COMMENT 'quien subio el documento',
+  `id_prestamo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -84,7 +99,18 @@ INSERT INTO `jr_acceso` (`id_acceso`, `descripcion`, `id_area`) VALUES
 (44, 'negocio_inactivos', 4),
 (45, 'negocio_historial', 4),
 (46, 'comercial', 4),
-(47, 'finanzas', 4);
+(47, 'finanzas', 4),
+(48, 'master', 1),
+(49, 'modulo_cliente', 5),
+(50, 'supervisa_caja', 1),
+(51, 'cuadre_caja', 6),
+(52, 'asignar_caja', 6),
+(53, 'modulo_facturacion', 6),
+(54, 'modulo_reporte', 6),
+(55, 'modulo_producto', 6),
+(56, 'modulo_suplidor', 6),
+(57, 'modulo_compra', 6),
+(58, 'modulo_cotizacion', 6);
 
 -- --------------------------------------------------------
 
@@ -123,6 +149,20 @@ INSERT INTO `jr_acceso_vs_grupo` (`id_acceso`, `id_grupo`) VALUES
 (28, 3),
 (30, 3),
 (32, 3),
+(1, 5),
+(2, 5),
+(3, 5),
+(4, 5),
+(5, 5),
+(6, 5),
+(7, 5),
+(8, 5),
+(9, 5),
+(29, 5),
+(30, 5),
+(31, 5),
+(41, 5),
+(42, 5),
 (1, 1),
 (2, 1),
 (3, 1),
@@ -149,7 +189,6 @@ INSERT INTO `jr_acceso_vs_grupo` (`id_acceso`, `id_grupo`) VALUES
 (24, 1),
 (25, 1),
 (26, 1),
-(27, 1),
 (28, 1),
 (29, 1),
 (30, 1),
@@ -164,23 +203,179 @@ INSERT INTO `jr_acceso_vs_grupo` (`id_acceso`, `id_grupo`) VALUES
 (39, 1),
 (40, 1),
 (41, 1),
-(42, 1),
 (43, 1),
 (44, 1),
 (45, 1),
 (46, 1),
 (47, 1),
+(49, 1),
+(1, 9),
+(2, 9),
+(3, 9),
+(4, 9),
+(5, 9),
+(6, 9),
+(7, 9),
+(8, 9),
+(9, 9),
+(10, 9),
+(11, 9),
+(12, 9),
+(13, 9),
+(14, 9),
+(15, 9),
+(16, 9),
+(17, 9),
+(18, 9),
+(19, 9),
+(20, 9),
+(21, 9),
+(22, 9),
+(23, 9),
+(24, 9),
+(25, 9),
+(26, 9),
+(27, 9),
+(28, 9),
+(29, 9),
+(30, 9),
+(31, 9),
+(32, 9),
+(33, 9),
+(34, 9),
+(35, 9),
+(36, 9),
+(37, 9),
+(38, 9),
+(39, 9),
+(40, 9),
+(41, 9),
+(42, 9),
+(43, 9),
+(44, 9),
+(45, 9),
+(46, 9),
+(47, 9),
+(49, 9),
+(50, 9),
+(51, 9),
+(52, 9),
+(33, 7),
+(34, 7),
+(35, 7),
+(36, 7),
+(38, 7),
+(40, 7),
+(43, 7),
+(44, 7),
+(45, 7),
+(46, 7),
+(47, 7),
+(51, 7),
+(52, 7),
+(53, 7),
+(54, 7),
+(55, 7),
+(56, 7),
+(57, 7),
+(1, 2),
+(2, 2),
+(3, 2),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 2),
+(8, 2),
+(9, 2),
 (10, 2),
+(11, 2),
+(12, 2),
+(13, 2),
+(14, 2),
+(15, 2),
+(16, 2),
+(17, 2),
+(18, 2),
 (19, 2),
-(21, 2),
-(27, 2),
+(20, 2),
+(25, 2),
+(28, 2),
+(29, 2),
+(30, 2),
+(31, 2),
+(32, 2),
+(33, 2),
 (34, 2),
-(37, 2),
+(35, 2),
 (38, 2),
-(39, 2),
 (40, 2),
+(41, 2),
+(43, 2),
+(44, 2),
 (45, 2),
-(47, 2);
+(46, 2),
+(47, 2),
+(49, 2),
+(50, 2),
+(51, 2),
+(52, 2),
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 4),
+(5, 4),
+(6, 4),
+(7, 4),
+(8, 4),
+(9, 4),
+(10, 4),
+(11, 4),
+(12, 4),
+(13, 4),
+(14, 4),
+(15, 4),
+(16, 4),
+(17, 4),
+(18, 4),
+(19, 4),
+(20, 4),
+(21, 4),
+(22, 4),
+(23, 4),
+(24, 4),
+(25, 4),
+(26, 4),
+(27, 4),
+(28, 4),
+(29, 4),
+(30, 4),
+(31, 4),
+(32, 4),
+(33, 4),
+(34, 4),
+(35, 4),
+(36, 4),
+(37, 4),
+(38, 4),
+(39, 4),
+(40, 4),
+(41, 4),
+(42, 4),
+(43, 4),
+(44, 4),
+(45, 4),
+(46, 4),
+(47, 4),
+(49, 4),
+(50, 4),
+(51, 4),
+(52, 4),
+(53, 4),
+(54, 4),
+(55, 4),
+(56, 4),
+(57, 4),
+(58, 4);
 
 -- --------------------------------------------------------
 
@@ -222,6 +417,30 @@ CREATE TABLE `jr_ajuste_empleado` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_almacen`
+--
+
+CREATE TABLE `jr_almacen` (
+  `id_almacen` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `direccion` varchar(250) NOT NULL,
+  `id_encargado` int(11) NOT NULL,
+  `id_empresa` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_almacen`
+--
+
+INSERT INTO `jr_almacen` (`id_almacen`, `nombre`, `direccion`, `id_encargado`, `id_empresa`) VALUES
+(1, 'Venta', 'local', 1, 1),
+(2, 'Principal', 'la charca', 1, 1),
+(3, 'Secundario', 'La ciudad', 1, 1),
+(4, 'Servicio', 'Local', 1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_amonestacion`
 --
 
@@ -255,7 +474,9 @@ INSERT INTO `jr_area` (`id_area`, `descripcion`) VALUES
 (1, 'configuracion'),
 (2, 'rrhh'),
 (3, 'encargado'),
-(4, 'negocio');
+(4, 'negocio'),
+(5, 'cliente'),
+(6, 'facturacion');
 
 -- --------------------------------------------------------
 
@@ -300,6 +521,110 @@ INSERT INTO `jr_banco` (`id_banco`, `nombre`, `code`, `digit`) VALUES
 (23, 'Banco Atlántico ', 11101012, 5),
 (24, 'Banco Unión ', 30232423, 5),
 (25, 'Banco de Ahorro y Credito Federal', 10171214, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_caja`
+--
+
+CREATE TABLE `jr_caja` (
+  `id_caja` int(11) NOT NULL,
+  `nombre` varchar(25) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `nombre_impresora` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_caja`
+--
+
+INSERT INTO `jr_caja` (`id_caja`, `nombre`, `descripcion`, `nombre_impresora`) VALUES
+(1, '01', 'Caja Rapida', NULL),
+(2, '02', 'Normal', NULL),
+(3, '03', 'Normal', NULL),
+(4, '04', 'Normal', NULL),
+(5, '05', 'Normal', NULL),
+(6, '00', 'Servicio al cliente', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_caja_detalle`
+--
+
+CREATE TABLE `jr_caja_detalle` (
+  `id_caja_detalle` int(11) NOT NULL,
+  `id_caja` int(11) DEFAULT NULL,
+  `id_turno` int(11) DEFAULT NULL,
+  `id_cajero` int(11) DEFAULT NULL,
+  `id_supervisor` int(11) DEFAULT NULL,
+  `id_empresa` int(11) DEFAULT NULL,
+  `id_sucursal` int(11) DEFAULT NULL,
+  `id_almacen` int(11) DEFAULT NULL,
+  `estado` varchar(10) DEFAULT NULL,
+  `fecha_apertura` timestamp NOT NULL DEFAULT current_timestamp(),
+  `fecha_cierre` datetime DEFAULT NULL,
+  `monto_inicial` decimal(18,2) NOT NULL,
+  `monto_final` decimal(18,2) DEFAULT NULL,
+  `diferencia` decimal(18,2) DEFAULT NULL,
+  `observaciones` text DEFAULT NULL,
+  `id_supervisor_cierre` int(11) DEFAULT NULL,
+  `desglose` int(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_caja_detalle`
+--
+
+INSERT INTO `jr_caja_detalle` (`id_caja_detalle`, `id_caja`, `id_turno`, `id_cajero`, `id_supervisor`, `id_empresa`, `id_sucursal`, `id_almacen`, `estado`, `fecha_apertura`, `fecha_cierre`, `monto_inicial`, `monto_final`, `diferencia`, `observaciones`, `id_supervisor_cierre`, `desglose`) VALUES
+(1, 1, 1, 5, 19, 1, 1, 1, 'cerrada', '2023-11-15 16:54:04', '2023-11-17 19:01:10', '4000.00', '4419.00', '0.24', '', 19, 0),
+(2, 2, 1, 10, 19, 1, 1, 1, 'cerrada', '2023-11-17 21:08:43', '2023-11-17 17:09:16', '0.00', '0.00', '0.00', 'no vendio nada', 19, 0),
+(3, 2, 1, 10, 19, 1, 1, 1, 'abierta', '2023-11-17 21:48:34', NULL, '0.00', NULL, NULL, NULL, NULL, 0),
+(4, 1, 1, 5, 19, 1, 1, 1, 'abierta', '2023-11-17 23:12:35', NULL, '2600.00', NULL, NULL, NULL, NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_cartera`
+--
+
+CREATE TABLE `jr_cartera` (
+  `id_cartera` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_cartera`
+--
+
+INSERT INTO `jr_cartera` (`id_cartera`, `nombre`, `id_empleado`, `fecha_creacion`) VALUES
+(1, '7616', NULL, '2023-05-01 15:44:22');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_categoria_articulo`
+--
+
+CREATE TABLE `jr_categoria_articulo` (
+  `id_categoria` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_categoria_articulo`
+--
+
+INSERT INTO `jr_categoria_articulo` (`id_categoria`, `nombre`, `descripcion`) VALUES
+(1, 'Tecnología', 'Registro de todo lo relacionado con tecnología'),
+(2, 'Vehiculo', 'Americanos'),
+(3, 'Alimentos', 'aqui van todos los alimentos'),
+(4, 'Bebida alimenticia', 'aqui van las bebidas como jugos, cocacolas y malta'),
+(5, 'Bebidas Alcoholicas', 'Todo lo que tiene que ver con alcohol');
 
 -- --------------------------------------------------------
 
@@ -377,10 +702,125 @@ CREATE TABLE `jr_cita` (
 --
 
 INSERT INTO `jr_cita` (`id_cita`, `titulo`, `fecha`, `hora_inicio`, `hora_fin`, `color`, `motivo`, `estado`, `recordatorio`, `minuta`, `fecha_registro`, `registrada_por`, `lugar`, `geo`, `empresa`) VALUES
-(1, 'Seguimiento', '2023-01-24', '10:00:00', '11:00:00', '#ffdd00', 'Seguimiento de afiliación', 'Agendada', '09:00:00', '', '2023-01-23 09:26:24', 19, 'McDonal de la 27', '19.4664837,-70.6780132', 'McDonald SRL'),
-(2, 'Seguimiento', '2023-01-27', '10:00:00', '11:00:00', '#ffdd00', 'Seguimiento de afiliación', 'Agendada', '09:00:00', '', '2023-01-26 09:41:00', 19, 'McDonal de la 27', '19.4664837,-70.6780132', 'McDonald SRL'),
-(3, 'Seguimiento', '2023-01-31', '17:00:00', '18:00:00', '#ffdd00', 'Seguimiento de afiliación', 'Agendada', '16:13:00', '', '2023-01-31 12:37:53', 1, 'McDonal de la 27', '19.4664837,-70.6780132', 'McDonald SRL'),
-(4, 'Seguimiento', '2023-02-02', '10:00:00', '11:00:00', '#ffdd00', 'Seguimiento de afiliación', 'Agendada', '09:13:00', '', '2023-02-01 09:55:18', 19, 'McDonal de la 27', '19.4664837,-70.6780132', 'McDonald SRL');
+(1, 'Seguimiento', '2023-10-31', '18:00:00', '19:00:00', '#ffdd00', 'l', 'Agendada', '16:50:00', '', '2023-10-30 14:45:26', 5, 'La empresa', '19.47205,-70.697588', 'JHOBROSOFT'),
+(2, 'Seguimiento', '2023-11-18', '10:00:00', '11:00:00', '#ffdd00', 'negocio', 'Agendada', '08:00:00', '', '2023-11-17 20:16:42', 19, 'McDonal de la 27', '19.4691141,-70.7049404', 'McDonald SRL');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_clase`
+--
+
+CREATE TABLE `jr_clase` (
+  `id_clase` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_clase`
+--
+
+INSERT INTO `jr_clase` (`id_clase`, `nombre`, `descripcion`) VALUES
+(1, 'Walker', 'Johny Walker'),
+(2, 'Sedan', 'djf'),
+(3, 'Comida', 'aqui van las comidas');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_cliente`
+--
+
+CREATE TABLE `jr_cliente` (
+  `id_cliente` int(11) NOT NULL,
+  `nombres` varchar(100) NOT NULL,
+  `apellidos` varchar(50) NOT NULL,
+  `apodo` varchar(100) DEFAULT NULL,
+  `rnc` varchar(13) DEFAULT NULL,
+  `cedula` varchar(25) DEFAULT NULL,
+  `pasaporte` varchar(25) DEFAULT NULL,
+  `sexo` varchar(15) DEFAULT NULL,
+  `estado_civil` varchar(50) DEFAULT NULL,
+  `id_grado_ac` int(11) DEFAULT NULL,
+  `id_nivel` int(11) DEFAULT NULL,
+  `id_ocupacion` int(11) DEFAULT NULL,
+  `comentario` varchar(255) DEFAULT NULL,
+  `fechadenacimiento` date DEFAULT NULL,
+  `ndependientes` int(11) DEFAULT NULL,
+  `fechaderegistro` datetime NOT NULL DEFAULT current_timestamp(),
+  `path_foto` varchar(150) DEFAULT 'cliente_foto/fotodefault.png',
+  `id_registradopor` int(11) NOT NULL,
+  `id_provincia` int(11) DEFAULT NULL,
+  `id_municipio` int(11) DEFAULT NULL,
+  `id_sector` varchar(13) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `georeferencia` varchar(255) DEFAULT NULL,
+  `celular` varchar(15) DEFAULT NULL,
+  `correo` varchar(50) DEFAULT NULL,
+  `id_nacionalidad` int(11) DEFAULT NULL,
+  `id_empresa` int(11) NOT NULL,
+  `id_sucursal` int(11) NOT NULL,
+  `id_cartera` int(11) DEFAULT NULL,
+  `id_estado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_cliente`
+--
+
+INSERT INTO `jr_cliente` (`id_cliente`, `nombres`, `apellidos`, `apodo`, `rnc`, `cedula`, `pasaporte`, `sexo`, `estado_civil`, `id_grado_ac`, `id_nivel`, `id_ocupacion`, `comentario`, `fechadenacimiento`, `ndependientes`, `fechaderegistro`, `path_foto`, `id_registradopor`, `id_provincia`, `id_municipio`, `id_sector`, `direccion`, `georeferencia`, `celular`, `correo`, `id_nacionalidad`, `id_empresa`, `id_sucursal`, `id_cartera`, `id_estado`) VALUES
+(1, 'Contado', 'No registrado', '', '0000000000000', '000-0000000-0', '0000000', 'M', 'casado', 3, 2, 1, '', '1981-01-26', 3, '2023-05-02 11:47:53', 'cliente_foto\\1-1683228310317.png', 19, 18, 1802, '1802010300100', '', '', NULL, NULL, 155, 1, 1, 1, 2),
+(2, 'Hindred', 'Peña', 'pat', '123456789', '832-4923483-2', '', 'M', 'casado', 4, 2, 1, 'Director de CTBS', '1975-03-24', 4, '2023-05-04 15:42:00', 'cliente_foto\\2-1683229528046.jpg', 19, 25, 2501, '2501010103903', 'Detras del Super', '', '8293843235', 'hpena@gmail.com', 155, 1, 1, 1, 2),
+(3, 'Juan Stanley', 'Medina Peña', 'Tolete', NULL, '001-9203010-3', '', 'M', 'casado', 4, 2, 1, 'Posible Prospecto', '1980-03-13', 5, '2023-05-04 16:06:15', 'cliente_foto/fotodefault.png', 19, 25, 2501, '2501010100601', 'C/3 Apto. 2B', '', NULL, NULL, 155, 1, 1, 1, 2),
+(4, 'Dagoberto', 'Paredes', 'Dago', NULL, '031-9203010-0', '', 'M', 'casado', 3, 1, 1, 'Posible Prospecto', '1980-03-13', 5, '2023-05-04 16:07:00', 'cliente_foto\\4-1683234807474.png', 19, 25, 2501, '2501010100601', 'C/3 Apto. 2B', '', NULL, NULL, 155, 1, 1, 1, 3),
+(5, 'Johan Felix', 'Bautista Sanchez', 'Tolete', '123938322', '031-9203010-0', '', 'M', 'casado', 4, 2, 1, 'Posible Prospecto', '1980-03-13', 5, '2023-05-04 16:08:45', 'cliente_foto/fotodefault.png', 19, 25, 2501, '2501010100601', 'C/3 Apto. 2B', '', '8099245678', 'jfbautista@gmail.com', 155, 1, 1, 1, 2),
+(6, 'Ruth Maria', 'Minaya Santos', 'Ru', NULL, '039-0324802-3', '', 'F', 'casado', 4, 2, 2, 'Hermana del Natanael', '1979-09-15', 4, '2023-05-04 16:27:21', 'cliente_foto\\6-1683234679359.jpg', 19, 25, 2501, '2501010100202', 'C/c #5', '', NULL, NULL, 155, 1, 1, 1, 2),
+(19, 'Miguel', 'Almonte', 'Migue', NULL, '039-2821839-1', '', 'M', 'casado', 2, 1, 1, 'no le pusieron', '1975-04-27', 1, '2023-05-05 12:15:34', 'cliente_foto/fotodefault.png', 19, 18, 1802, '1802010400100', 'Autopista Navarrete Puerto Plata', '19.471824028969955,-70.69732810708153', NULL, NULL, 155, 1, 1, 1, 2),
+(20, 'Rafael', 'Polanco', NULL, '123414', '031-0564546-9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-31 08:10:22', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '829-456-943', 'rpolanco@gmail.com', NULL, 1, 1, 1, 2),
+(21, 'Nino', 'Bravo', NULL, '', '031-0433242-1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-31 09:36:14', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '', '', NULL, 1, 1, 1, 2),
+(22, 'Candido', 'Alegria', NULL, '8782354', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-31 09:52:13', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '829-317-7329', '', NULL, 1, 1, 1, 2),
+(23, 'Raul', 'Castro', NULL, '8458933', '001-4582345-9', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-31 09:57:44', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '809-865-4193', '', NULL, 1, 1, 1, 2),
+(24, 'Estefani', 'Severino', NULL, '23456', '225-0142349-2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-31 10:01:29', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '8098016642', '', NULL, 1, 1, 1, 2),
+(25, 'Yariel', 'Cabrera', NULL, '8239845988', '903-2949329-3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-06-13 12:30:14', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '8093432857', '', NULL, 1, 1, 1, 2),
+(26, 'Luis', 'Guerra', NULL, '98435034', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-07-23 20:34:32', 'cliente_foto/fotodefault.png', 5, NULL, NULL, NULL, NULL, NULL, '8092327432', 'lguerra@gmail.com', NULL, 1, 1, 1, 2),
+(27, 'Juan Ismael', 'Mencia', NULL, '7324328', '402-2769847-5', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-09-25 13:08:21', 'cliente_foto/fotodefault.png', 19, NULL, NULL, NULL, NULL, NULL, '8488815359', 'j97mencia@gmail.com', NULL, 1, 1, 1, 2),
+(28, 'Eliu', 'Beriguete', '', '01201119870', '012-0111987-0', '', 'F', '0', 0, 0, 1, '', '2023-10-05', 4, '2023-10-07 12:23:21', 'cliente_foto/fotodefault.png', 5, 1, 101, '0101010101610', 'C /10', '19.4707456,-70.6904064', '8295422894', 'eliu@gmail.com', 155, 1, 1, 1, 2),
+(29, 'Jesus', 'Escoboza', NULL, '03136776545', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-10-26 14:41:17', 'cliente_foto\\29-1698346040725.png', 10, NULL, NULL, NULL, NULL, NULL, '', '', NULL, 1, 1, 1, 2),
+(30, 'Juan Antonio', 'Perez Rodriguez', NULL, '5234723', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-11-09 18:40:12', 'cliente_foto/fotodefault.png', 10, NULL, NULL, NULL, NULL, NULL, '8293819182', '', NULL, 1, 1, 1, 2),
+(31, 'Wellinton ', 'Sanchez', NULL, '435848532', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-11-17 19:22:41', 'cliente_foto/fotodefault.png', 5, NULL, NULL, NULL, NULL, NULL, '809-796-7566', '', NULL, 1, 1, NULL, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_contacto`
+--
+
+CREATE TABLE `jr_contacto` (
+  `idcontacto` int(11) NOT NULL,
+  `contacto` varchar(100) NOT NULL,
+  `idtipo_contacto` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_contacto`
+--
+
+INSERT INTO `jr_contacto` (`idcontacto`, `contacto`, `idtipo_contacto`, `id_cliente`) VALUES
+(1, '8293823832', 1, 1),
+(2, 'nenoband@gmail.com', 3, 1),
+(5, '8034132434', 1, 2),
+(6, '8099606642', 1, 3),
+(28, 'ruth@gmail.com', 3, 15),
+(29, '8098092341', 1, 16),
+(30, 'ruth@gmail.com', 3, 16),
+(31, '8098092341', 1, 17),
+(32, 'ruth@gmail.com', 3, 17),
+(33, '8098092341', 1, 18),
+(34, 'ruth@gmail.com', 3, 18),
+(35, '8097801069', 1, 6),
+(36, '82948372773', 1, 19);
 
 -- --------------------------------------------------------
 
@@ -392,24 +832,270 @@ CREATE TABLE `jr_departamento` (
   `id_departamento` int(11) NOT NULL,
   `descripcion` varchar(45) NOT NULL,
   `centro` int(11) DEFAULT NULL,
-  `id_empresa` int(11) DEFAULT NULL
+  `id_negocio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `jr_departamento`
 --
 
-INSERT INTO `jr_departamento` (`id_departamento`, `descripcion`, `centro`, `id_empresa`) VALUES
-(1, 'Administración', 407, 1),
-(2, 'Tecnología', 440, 1),
-(3, 'Finanzas', 432, 1),
+INSERT INTO `jr_departamento` (`id_departamento`, `descripcion`, `centro`, `id_negocio`) VALUES
+(1, 'Administración', 408, 1),
+(2, 'Tecnología', 440, 2),
+(3, 'Tecnología', 408, 1),
 (4, 'Comercial', 5770, 1),
 (5, 'Operaciones', 202, 1),
 (6, 'Gestión Humana', 2410, 1),
 (9, 'TI', 78945, 1),
 (14, 'Seguridad', 4568, 1),
-(15, 'Administración', 408, 3),
-(16, 'Tecnología', 917, 3);
+(15, 'Administración', 408, 2),
+(16, 'Comercial', 917, 1),
+(17, 'Finanzas x', 1234, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_desglose_dinero`
+--
+
+CREATE TABLE `jr_desglose_dinero` (
+  `id_desglose` int(11) NOT NULL,
+  `id_caja` int(11) NOT NULL,
+  `id_caja_detalle` int(11) DEFAULT NULL,
+  `id_venta` int(11) DEFAULT NULL,
+  `2000` int(11) DEFAULT NULL,
+  `1000` int(11) DEFAULT NULL,
+  `500` int(11) DEFAULT NULL,
+  `200` int(11) DEFAULT NULL,
+  `100` int(11) DEFAULT NULL,
+  `50` int(11) DEFAULT NULL,
+  `25` int(11) DEFAULT NULL,
+  `10` int(11) DEFAULT NULL,
+  `5` int(11) DEFAULT NULL,
+  `1` int(11) DEFAULT NULL,
+  `decimales` int(11) DEFAULT NULL,
+  `descripcion` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_desglose_dinero`
+--
+
+INSERT INTO `jr_desglose_dinero` (`id_desglose`, `id_caja`, `id_caja_detalle`, `id_venta`, `2000`, `1000`, `500`, `200`, `100`, `50`, `25`, `10`, `5`, `1`, `decimales`, `descripcion`) VALUES
+(1, 1, 1, 0, 0, 0, 0, 0, 5, 10, 50, 100, 100, 100, 0, 'desglose_inicial'),
+(2, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'desglose_inicial'),
+(3, 3, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 0, 'desglose_final'),
+(4, 1, 1, 0, 0, 0, 3, 3, 3, 5, 6, 50, 100, 200, 0, 'desglose_inicial'),
+(5, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'desglose_inicial'),
+(6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'desglose_final'),
+(7, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'desglose_inicial'),
+(8, 1, 1, 0, 0, 2, 3, 4, 1, 0, 0, 1, 1, 4, 0, 'desglose_final'),
+(9, 1, 4, 0, 0, 0, 1, 2, 5, 10, 10, 20, 40, 50, 0, 'desglose_inicial');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_devolucion`
+--
+
+CREATE TABLE `jr_detalle_devolucion` (
+  `id_detalle_devolucion` int(11) NOT NULL,
+  `importe` decimal(18,2) NOT NULL,
+  `subtotal` decimal(18,2) NOT NULL,
+  `precio_venta` decimal(18,2) NOT NULL COMMENT 'la cantidad determina el precio, si la venta es al por mayor o al detalle y el precio especial es autorizado',
+  `descuento` decimal(18,2) NOT NULL COMMENT 'el descuento es si el cliente lo pide',
+  `itbis` decimal(18,2) NOT NULL,
+  `cantidad` decimal(18,2) NOT NULL COMMENT 'la cantidad se resta en el almacen de venta y se resta en el producto',
+  `cantidad_devuelta` decimal(18,2) NOT NULL,
+  `id_unidad` int(11) NOT NULL,
+  `precio_compra` decimal(18,2) NOT NULL,
+  `costo` decimal(18,2) NOT NULL,
+  `id_devolucion` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_ingreso`
+--
+
+CREATE TABLE `jr_detalle_ingreso` (
+  `id_detalle_ingreso` int(11) NOT NULL,
+  `id_almacen` int(11) DEFAULT NULL,
+  `cantidad` decimal(10,2) DEFAULT NULL,
+  `id_unidad` int(11) DEFAULT NULL,
+  `cantidad_recibida` decimal(10,2) DEFAULT NULL COMMENT 'la cantidad se suma en el almacen y se suma al producto',
+  `cantidad_pendiente` decimal(10,2) DEFAULT NULL,
+  `preciocompra` decimal(10,2) DEFAULT NULL,
+  `itbis` decimal(10,2) DEFAULT NULL COMMENT 'el itbis se debe actualizar a medida que se completa la cantidad',
+  `fechaproduccion` date DEFAULT NULL,
+  `fechavencimiento` date DEFAULT NULL,
+  `descuento` decimal(10,2) DEFAULT NULL,
+  `importe` decimal(10,2) DEFAULT NULL,
+  `ubicacion_fisica` varchar(255) DEFAULT NULL,
+  `id_ingreso` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_detalle_ingreso`
+--
+
+INSERT INTO `jr_detalle_ingreso` (`id_detalle_ingreso`, `id_almacen`, `cantidad`, `id_unidad`, `cantidad_recibida`, `cantidad_pendiente`, `preciocompra`, `itbis`, `fechaproduccion`, `fechavencimiento`, `descuento`, `importe`, `ubicacion_fisica`, `id_ingreso`, `id_producto`) VALUES
+(1, 0, '10.00', 9, '10.00', '0.00', '0.00', '0.00', '2023-11-15', '2023-11-15', '0.00', '0.00', 'Indefinida', 1, 8),
+(2, 1, '10.00', 1, '10.00', '0.00', '15000.00', '18.00', '2023-11-15', '2023-11-15', '2.00', '174000.00', 'Tramo 3 pasillo 2', 2, 3),
+(3, 1, '10.00', 1, '10.00', '0.00', '100.00', '18.00', '2023-11-15', '2023-11-15', '2.00', '1160.00', 'Tramo 2 pasillo 1', 2, 2),
+(4, 1, '10.00', 1, '10.00', '0.00', '150.00', '2.00', '2023-11-15', '2023-11-15', '2.00', '1500.00', 'Tramo 3 pasillo 1', 2, 1),
+(5, 1, '3.00', 3, '3.00', '0.00', '2500.00', '18.00', '2023-11-15', '2023-11-15', '2.00', '8700.00', 'Tramo 1 pasillo 1', 3, 5),
+(6, 1, '20.00', 4, '20.00', '0.00', '90.00', '18.00', '2023-11-15', '2023-11-15', '2.00', '2088.00', 'Tramo 1 pasillo 2', 3, 6),
+(7, 1, '10.00', 9, '10.00', '0.00', '60.00', '18.00', '2023-11-15', '2023-11-15', '2.00', '696.00', 'tramo 2 pasillo 4', 3, 8),
+(8, 0, '5.00', 9, '5.00', '0.00', '0.00', '0.00', NULL, NULL, '0.00', '0.00', 'Indefinida', 4, 8),
+(9, 1, '50.00', 10, '50.00', '0.00', '10.00', '18.00', '2023-11-17', '2023-11-17', '2.00', '580.00', 'Pasillo 3 tramo 2', 5, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_pedido`
+--
+
+CREATE TABLE `jr_detalle_pedido` (
+  `id_detalle_pedido` int(11) NOT NULL,
+  `cantidad` decimal(10,0) NOT NULL,
+  `id_unidad` int(11) DEFAULT NULL,
+  `id_producto` int(11) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `cantidad_procesada` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_detalle_pedido`
+--
+
+INSERT INTO `jr_detalle_pedido` (`id_detalle_pedido`, `cantidad`, `id_unidad`, `id_producto`, `id_pedido`, `cantidad_procesada`) VALUES
+(1, '0', 3, 5, 1, 3),
+(2, '0', 4, 6, 1, 20),
+(3, '0', 9, 8, 1, 10),
+(4, '0', 1, 3, 2, 10),
+(5, '0', 1, 2, 2, 10),
+(6, '0', 1, 1, 2, 10),
+(7, '10', 9, 8, 3, 0),
+(8, '5', 9, 8, 4, 0),
+(9, '0', 10, 9, 5, 50);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_pedido_temporal`
+--
+
+CREATE TABLE `jr_detalle_pedido_temporal` (
+  `cantidad` decimal(10,2) NOT NULL,
+  `id_unidad` int(11) DEFAULT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_producto` int(11) NOT NULL,
+  `id_suplidor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_venta`
+--
+
+CREATE TABLE `jr_detalle_venta` (
+  `id_detalle_venta` int(11) NOT NULL,
+  `descuento` decimal(10,2) NOT NULL COMMENT 'el descuento es si el cliente lo pide',
+  `precio_venta` decimal(10,2) NOT NULL COMMENT 'la cantidad determina el precio, si la venta es al por mayor o al detalle y el precio especial es autorizado',
+  `cantidad` decimal(10,2) NOT NULL COMMENT 'la cantidad se resta en el almacen de venta y se resta en el producto',
+  `cantidad_pendiente` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `id_unidad` int(11) NOT NULL,
+  `itbis` decimal(10,2) DEFAULT NULL,
+  `importe` decimal(18,2) DEFAULT NULL,
+  `id_producto` int(11) NOT NULL,
+  `precio_compra` decimal(18,2) DEFAULT NULL,
+  `costo` decimal(18,2) DEFAULT NULL,
+  `id_venta` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_detalle_venta`
+--
+
+INSERT INTO `jr_detalle_venta` (`id_detalle_venta`, `descuento`, `precio_venta`, `cantidad`, `cantidad_pendiente`, `id_unidad`, `itbis`, `importe`, `id_producto`, `precio_compra`, `costo`, `id_venta`) VALUES
+(1, '1.40', '70.00', '2.00', '2.00', 2, '12.60', '81.20', 5, '25.00', '50.00', 1),
+(2, '3.50', '175.00', '5.00', '5.00', 2, '31.50', '203.00', 5, '25.00', '125.00', 2),
+(3, '0.50', '25.00', '1.00', '1.00', 1, '4.50', '29.00', 6, '15.00', '15.00', 2),
+(4, '0.32', '16.00', '2.00', '2.00', 1, '2.88', '18.56', 8, '5.00', '10.00', 2),
+(5, '4.00', '200.00', '1.00', '1.00', 1, '36.00', '232.00', 2, '100.00', '100.00', 3),
+(6, '700.00', '35000.00', '1.00', '1.00', 1, '6300.00', '40600.00', 3, '15000.00', '15000.00', 3),
+(7, '6.00', '300.00', '1.00', '1.00', 1, '54.00', '348.00', 1, '150.00', '150.00', 3),
+(8, '0.80', '40.00', '5.00', '5.00', 1, '7.20', '46.40', 8, '5.00', '25.00', 4),
+(9, '0.70', '35.00', '1.00', '1.00', 2, '6.30', '40.60', 5, '25.00', '25.00', 5),
+(10, '0.16', '8.00', '1.00', '1.00', 1, '1.44', '9.28', 8, '5.00', '5.00', 6),
+(11, '0.64', '32.00', '4.00', '4.00', 1, '5.76', '37.12', 8, '5.00', '20.00', 7),
+(12, '1.40', '70.00', '2.00', '2.00', 2, '12.60', '81.20', 5, '25.00', '50.00', 8),
+(13, '0.00', '60.00', '1.00', '1.00', 10, '10.80', '70.80', 9, '9.00', '9.00', 9),
+(14, '4.00', '200.00', '1.00', '1.00', 1, '36.00', '232.00', 7, '5.40', '5.40', 10),
+(15, '1.00', '50.00', '2.00', '2.00', 1, '9.00', '58.00', 6, '15.00', '30.00', 10);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_detalle_venta_temporal`
+--
+
+CREATE TABLE `jr_detalle_venta_temporal` (
+  `id_empleado` int(11) DEFAULT NULL COMMENT 'indica quien esta facturando',
+  `id_cliente` int(11) DEFAULT NULL,
+  `caja` varchar(25) DEFAULT NULL,
+  `id_mesa` int(11) DEFAULT NULL,
+  `id_camarero` int(11) DEFAULT 0,
+  `precio_venta` decimal(18,2) DEFAULT NULL COMMENT 'la cantidad determina el precio, si la venta es al por mayor o al detalle y el precio especial es autorizado',
+  `cantidad` decimal(10,2) NOT NULL COMMENT 'la cantidad se resta en el almacen de venta y se resta en el producto',
+  `id_unidad` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `numero_pedido` int(11) DEFAULT 0,
+  `estado_producto_pedido` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_detalle_venta_temporal`
+--
+
+INSERT INTO `jr_detalle_venta_temporal` (`id_empleado`, `id_cliente`, `caja`, `id_mesa`, `id_camarero`, `precio_venta`, `cantidad`, `id_unidad`, `id_producto`, `numero_pedido`, `estado_producto_pedido`) VALUES
+(5, 2, '01', 3, 29, NULL, '1.00', 1, 8, 1, NULL),
+(5, 2, '01', 3, 29, NULL, '1.00', 1, 6, 1, NULL),
+(5, 2, '01', 3, 29, NULL, '1.00', 1, 7, 1, NULL),
+(5, 27, '01', 3, 29, NULL, '1.00', 1, 8, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_devolucion`
+--
+
+CREATE TABLE `jr_devolucion` (
+  `id_devolucion` int(11) NOT NULL,
+  `fecha` date NOT NULL DEFAULT current_timestamp(),
+  `hola` time NOT NULL DEFAULT current_timestamp(),
+  `id_empleado` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `subtotal` decimal(18,2) NOT NULL,
+  `total_itbis` decimal(18,2) NOT NULL,
+  `total_descuento` decimal(18,2) NOT NULL,
+  `monto_servicio` decimal(10,2) NOT NULL,
+  `total_importe` decimal(18,2) NOT NULL,
+  `monto_en_letra` varchar(255) NOT NULL,
+  `secncf_afectado` varchar(25) NOT NULL,
+  `secncf_nota` varchar(25) NOT NULL,
+  `fecha_vencimiento` date NOT NULL,
+  `comentario` varchar(255) NOT NULL,
+  `condicion` varchar(50) NOT NULL,
+  `estatus` varchar(25) NOT NULL,
+  `id_venta` int(11) NOT NULL,
+  `usada_en_venta` int(11) DEFAULT 0 COMMENT 'ese es el id de la venta en el que se uso la nota de credito'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -428,6 +1114,49 @@ CREATE TABLE `jr_documentos_cita` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_documentos_cliente`
+--
+
+CREATE TABLE `jr_documentos_cliente` (
+  `id_documento` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_documentos_cliente`
+--
+
+INSERT INTO `jr_documentos_cliente` (`id_documento`, `descripcion`, `path`, `fecha`, `id_cliente`) VALUES
+(1, 'Curriculo', 'cliente\\2-1683229879213.pdf', '2023-05-04 15:51:19', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_documentos_empleado`
+--
+
+CREATE TABLE `jr_documentos_empleado` (
+  `id_documento` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_empleado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_documentos_empleado`
+--
+
+INSERT INTO `jr_documentos_empleado` (`id_documento`, `descripcion`, `path`, `fecha`, `id_empleado`) VALUES
+(1, 'Curriculo', 'empleado\\2-1683229879213.pdf', '2023-05-04 15:51:19', 19),
+(2, 'Kia', 'empleado\\1-1683300801612.png', '2023-05-05 11:33:21', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_documentos_negocio`
 --
 
@@ -438,6 +1167,13 @@ CREATE TABLE `jr_documentos_negocio` (
   `fecha` datetime NOT NULL DEFAULT current_timestamp(),
   `id_negocio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_documentos_negocio`
+--
+
+INSERT INTO `jr_documentos_negocio` (`id_documento`, `descripcion`, `path`, `fecha`, `id_negocio`) VALUES
+(1, 'Logo', 'negocio\\1-1683216840871.png', '2023-05-04 12:14:00', 1);
 
 -- --------------------------------------------------------
 
@@ -490,8 +1226,8 @@ CREATE TABLE `jr_empleado` (
   `apellidos` varchar(45) NOT NULL,
   `usuario` varchar(45) DEFAULT NULL,
   `codigo` varchar(15) NOT NULL,
-  `tarjeta_punto` int(11) DEFAULT NULL,
-  `id_empresa` int(11) NOT NULL,
+  `tarjeta_punto` varchar(50) DEFAULT NULL,
+  `id_negocio` int(11) NOT NULL,
   `id_departamento` int(11) NOT NULL,
   `id_puesto` int(11) NOT NULL,
   `email_personal` varchar(45) DEFAULT NULL,
@@ -527,17 +1263,37 @@ CREATE TABLE `jr_empleado` (
   `tipo_medicamento` varchar(200) DEFAULT NULL,
   `tarjeta_combustible` varchar(50) DEFAULT NULL,
   `monto_combustible` int(11) DEFAULT NULL,
-  `monto_vehiculo` int(11) DEFAULT NULL
+  `monto_vehiculo` int(11) DEFAULT NULL,
+  `flota` varchar(25) DEFAULT NULL,
+  `id_seguro_medico` int(11) DEFAULT NULL,
+  `numero_cuenta` varchar(30) DEFAULT NULL,
+  `id_banco` int(11) DEFAULT NULL,
+  `id_sucursal` int(11) DEFAULT NULL,
+  `path_foto` varchar(150) DEFAULT 'cliente_foto/fotodefault.png',
+  `id_cartera` int(11) DEFAULT NULL,
+  `fecha_regitro` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `jr_empleado`
 --
 
-INSERT INTO `jr_empleado` (`id_empleado`, `cedula`, `nombres`, `apellidos`, `usuario`, `codigo`, `tarjeta_punto`, `id_empresa`, `id_departamento`, `id_puesto`, `email_personal`, `fecha_nacimiento`, `tel`, `cel`, `sexo`, `estado_civil`, `nhijos`, `id_provincia`, `id_municipio`, `id_sector`, `direccion`, `email_institucional`, `id_estado`, `id_grado_ac`, `id_nivel`, `id_encargado`, `fecha_entrada`, `id_grado`, `id_sueldo`, `id_tipo_empleado`, `id_nacionalidad`, `contacto_emergencia`, `id_relacion`, `tel_emergencia`, `cel_emergencia`, `enfermedad`, `tipo_enfermedad`, `alergia`, `tipo_alergia`, `medicacion`, `tipo_medicamento`, `tarjeta_combustible`, `monto_combustible`, `monto_vehiculo`) VALUES
-(1, '039004451', 'American', 'Fidelium', '039004451', 'AFG-6654', 4564, 1, 1, 1, 'americanfidelium@gmail.com', '1983-08-15', '809548455', '809-454-6877', 'M', 'casado', 2, '11', '1101', '1101040302400', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Jhobnatan Rosario', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '', 0, 0),
-(19, '03900441', 'Jhobnatan', 'Rosario Santos', '03900441', 'AFG-66', 454, 1, 4, 17, 'jhobnatanrs@gmail.com', '2022-09-08', '8095048455', '809-454-6877', 'M', 'casado', 2, '11', '0', '0', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 1, '2022-09-09', 2, 13, 1, 155, 'Estefani Santos', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '566654', 5000, 5000),
-(20, '5497459', 'Mr. Steven', 'Segal', '5497459', 'AWM-963', 456, 3, 2, 0, 'stevensi@gmail.com', '2022-08-17', '809-545-7894', '829-456-4561', 'M', 'casado', 1, '18', '0', '0', 'C/Oeste Sur #5', 'stevensigal@awm.com', 2, 0, 0, 0, '2022-09-11', 1, 12, 2, 0, 'Silva Sigal', 1, '809-745-3021', '809-789-6584', 'no', 'nada', 'no', 'nada', 'no', 'nada', '', 0, 0);
+INSERT INTO `jr_empleado` (`id_empleado`, `cedula`, `nombres`, `apellidos`, `usuario`, `codigo`, `tarjeta_punto`, `id_negocio`, `id_departamento`, `id_puesto`, `email_personal`, `fecha_nacimiento`, `tel`, `cel`, `sexo`, `estado_civil`, `nhijos`, `id_provincia`, `id_municipio`, `id_sector`, `direccion`, `email_institucional`, `id_estado`, `id_grado_ac`, `id_nivel`, `id_encargado`, `fecha_entrada`, `id_grado`, `id_sueldo`, `id_tipo_empleado`, `id_nacionalidad`, `contacto_emergencia`, `id_relacion`, `tel_emergencia`, `cel_emergencia`, `enfermedad`, `tipo_enfermedad`, `alergia`, `tipo_alergia`, `medicacion`, `tipo_medicamento`, `tarjeta_combustible`, `monto_combustible`, `monto_vehiculo`, `flota`, `id_seguro_medico`, `numero_cuenta`, `id_banco`, `id_sucursal`, `path_foto`, `id_cartera`, `fecha_regitro`) VALUES
+(1, '039004451', 'American', 'Fidelium', '039004451', 'jr-6654', '4564', 1, 1, 4, 'americanfidelium@gmail.com', '1983-08-15', '809548455', '809-454-6877', 'M', 'casado', 2, '11', '1101', '1101040302400', 'C/Duarte #10', 'jhobnatanrs1@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Jhobnatan Rosario', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '', 0, 0, '', 0, '', 0, 1, 'empleado_foto\\1-1683301364539.jpg', NULL, '2023-05-05 15:50:24'),
+(2, '984-3729582-7', 'Suleyka', 'Santos', '984-3729582-7', 'jr-6654', '1', 1, 1, 25, 'americanfidelium@gmail.com', '1983-08-15', '809548455', '809-454-6877', 'F', 'casado', 2, '11', '1101', '1101040302400', 'C/Duarte #10', 'jhobnatanrs1@gmail.com', 2, 4, 2, 6, '2022-09-09', 2, 13, 1, 155, 'Jhobnatan Rosario', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '', 0, 0, '', 0, '', 1, 1, 'empleado_foto\\2-1689030812127.JPG', NULL, '2023-05-05 15:50:24'),
+(3, '0236', 'Ruth Maria', 'Minaya Santos', '0236', 'jr-66', '2', 1, 4, 2, 'jhobnatanrs@gmail.com', '2022-09-08', '8095048455', '809-454-6877', 'F', 'casado', 3, '11', '0', '0', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Estefani Santos', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '566654', 5000, 5000, '809-780-1069', 0, '', 0, 1, 'empleado_foto\\3-1683327964548.jpg', NULL, '2023-05-05 15:50:24'),
+(4, '095', 'Mr. Steven', 'Segal', '095', 'AWM-963', '3', 1, 4, 7, 'stevensi@gmail.com', '2022-08-17', '809-545-7894', '829-456-4561', 'M', 'casado', 1, '18', '0', '0', 'C/Oeste Sur #5', 'stevensigal@awm.com', 2, 3, 2, 0, '2022-09-11', 1, 12, 2, 155, 'Silva Sigal', 1, '809-745-3021', '809-789-6584', 'no', 'nada', 'no', 'nada', 'no', 'nada', '', 0, 0, '', 0, '', 0, 1, 'empleado_foto\\4-1689008151337.JPG', NULL, '2023-05-05 15:50:24'),
+(5, '225-7458724-3', 'Adela', 'Olmos', '225-7458724-3', 'jr-101', '4', 1, 1, 11, 'americanfidelium@gmail.com', '1983-08-15', '809548455', '809-454-6877', 'M', 'casado', 2, '11', '1101', '1101040302400', 'C/Duarte #10', 'jhobnatanrs1@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Jhobnatan Rosario', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '', 0, 0, '', 0, '', 1, 1, 'empleado_foto\\5-1683318772985.jpeg', NULL, '2023-05-05 15:50:24'),
+(6, '225-3221340-2', 'Abel', 'Ulloa', '225-3221340-2', 'jr-66', '5', 1, 4, 15, 'jhobnatanrs@gmail.com', '2022-09-08', '8095048455', '809-454-6877', 'M', 'casado', 2, '11', '0', '0', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Estefani Santos', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '566654', 5000, 5000, '', 2, '543253', 4, 1, 'empleado_foto\\6-1698599689659.png', NULL, '2023-05-05 15:50:24'),
+(7, '412', 'Mr. Steven', 'Segal', '412', 'AWM-963', '6', 1, 4, 7, 'stevensi@gmail.com', '2022-08-17', '809-545-7894', '829-456-4561', 'M', 'casado', 1, '18', '0', '0', 'C/Oeste Sur #5', 'stevensigal@awm.com', 1, 3, 2, 0, '2022-09-11', 1, 12, 2, 155, 'Silva Sigal', 1, '809-745-3021', '809-789-6584', 'no', 'nada', 'no', 'nada', 'no', 'nada', '', 0, 0, '', 0, '', 0, 1, NULL, NULL, '2023-05-05 15:50:24'),
+(8, '031-4750087-7', 'Isabel', 'Valdez', '031-4750087-7', 'jr-102', '7', 1, 1, 9, 'americanfidelium@gmail.com', '1983-08-15', '809548455', '809-454-6877', 'M', 'casado', 2, '11', '1101', '1101040302400', 'C/Duarte #10', 'jhobnatanrs1@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Jhobnatan Rosario', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '', 0, 0, '', 0, '', 1, NULL, NULL, NULL, '2023-05-05 15:50:24'),
+(9, '123', 'Jhobnatan', 'Rosario Santos', '8', 'jr-66', '8', 1, 4, 2, 'jhobnatanrs@gmail.com', '2022-09-08', '8095048455', '809-454-6877', 'M', 'casado', 2, '11', '0', '0', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 0, '2022-09-09', 2, 13, 1, 155, 'Estefani Santos', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '566654', 5000, 5000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-05 15:50:24'),
+(10, '564', 'Juana', 'Mendez', '564', 'jr-963', '9', 1, 4, 9, 'stevensi@gmail.com', '2022-08-17', '809-545-7894', '829-456-4561', 'M', 'casado', 1, '18', '0', '0', 'C/Oeste Sur #5', 'stevensigal@awm.com', 2, 3, 2, 0, '2022-09-11', 1, 12, 2, 155, 'Silva Sigal', 1, '809-745-3021', '809-789-6584', 'no', 'nada', 'no', 'nada', 'no', 'nada', '', 0, 0, '', 0, '', 0, 1, NULL, NULL, '2023-05-05 15:50:24'),
+(19, '03900441', 'Jhobnatan', 'Rosario Santos', '03900441', 'jr-66', '454', 1, 1, 9, 'jhobnatanrs@gmail.com', '2022-09-08', '8095048455', '809-454-6877', 'M', 'casado', 2, '11', '0', '0', 'C/Duarte #10', 'jhobnatanrs@gmail.com', 2, 4, 2, 4, '2022-09-09', 2, 13, 1, 155, 'Estefani Santos', 1, '809-787-6697', '809-078-9745', 'si', 'safdf', 'si', 'wqerg', 'si', 'asgg', '566654', 5000, 5000, '823-923-8382', 1, '823832838', 1, 1, 'empleado_foto\\19-1700262289886.png', NULL, '2023-05-05 15:50:24'),
+(20, '5497459', 'Mr. Steven', 'Segal', '5497459', 'AWM-963', '456', 1, 4, 7, 'stevensi@gmail.com', '2022-08-17', '809-545-7894', '829-456-4561', 'M', 'casado', 1, '18', '0', '0', 'C/Oeste Sur #5', 'stevensigal@awm.com', 3, 3, 2, 0, '2022-09-11', 1, 12, 2, 155, 'Silva Sigal', 1, '809-745-3021', '809-789-6584', 'no', 'nada', 'no', 'nada', 'no', 'nada', '', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-05-05 15:50:24'),
+(21, '039-2847571-6', 'Natanael', 'Rosario', '039-2847571-6', 'jr-NR115', '', 1, 3, 3, 'jhobnatanrs@gmail.com', '1982-01-26', '', '829-471-7467', 'M', 'casado', 2, '25', '2501', '2501010103902', 'C/6, Residencial Medina, Apto. 4-b', 'nenoband@gmail.com', 2, 3, 2, 3, '2023-02-27', 1, 11, 1, 155, 'Maria Santos', 1, '', '829-166-7382', 'no', '', 'no', '', 'no', '', '', 0, 0, '829-445-7738', 1, '223', 14, NULL, NULL, NULL, '2023-05-05 15:50:24'),
+(27, '031-0102310-4', 'Angel', 'Espinal', '031-0102310-4', '', '12345353', 1, 1, 9, 'aespinal@gmail.com', '1970-09-04', '', '829-942-5345', 'M', 'divorciado', 2, '25', '0', '0', 'Calle 20', 'aespinal@gmail.com', 2, 4, 2, 7, '2023-05-05', 1, 12, 1, 155, 'Johan Espinal', 7, '', '809-343-1234', 'no', '', 'no', '', 'no', '', '0', 0, 0, '', 1, '', 1, 1, 'cliente_foto/fotodefault.png', NULL, '2023-05-05 16:06:19'),
+(29, '012-3875724-5', 'Kriss', 'Rosario', '012-3875724-5', '', '904019', 1, 16, 25, 'krissrosario@gmail.com', '1997-05-05', '', '829-455-2003', 'F', 'soltero', 0, '25', '2501', '2501010105403', 'Por Olas pollo', '', 2, 4, 1, 0, '2023-05-02', 1, 0, 1, 155, 'Suly Rosario', 4, '', '809-328-4955', 'no', '', 'no', '', 'no', '', '', 0, 0, '', 0, '', 0, 1, 'cliente_foto/fotodefault.png', NULL, '2023-05-05 16:20:01');
 
 -- --------------------------------------------------------
 
@@ -617,6 +1373,44 @@ INSERT INTO `jr_estado` (`id_estado`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_estados`
+--
+
+CREATE TABLE `jr_estados` (
+  `id_estadoprestamo` int(11) NOT NULL,
+  `modalidad` varchar(25) NOT NULL,
+  `cuotas` int(11) NOT NULL,
+  `fechavence` date NOT NULL,
+  `importecuota` decimal(10,0) NOT NULL,
+  `fechapago` datetime NOT NULL,
+  `estadoprestamo` varchar(20) NOT NULL,
+  `diasmora` int(11) NOT NULL,
+  `alerta` varchar(50) NOT NULL,
+  `id_prestamo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_estado_cliente`
+--
+
+CREATE TABLE `jr_estado_cliente` (
+  `id_estado` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_estado_cliente`
+--
+
+INSERT INTO `jr_estado_cliente` (`id_estado`, `descripcion`) VALUES
+(1, 'Activo'),
+(2, 'Inactivo');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_estado_empleado`
 --
 
@@ -635,6 +1429,43 @@ INSERT INTO `jr_estado_empleado` (`id_estado`, `descripcion`) VALUES
 (3, 'Inactivo'),
 (4, 'Suspendido'),
 (5, 'Teletrabajo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_estado_prestamo`
+--
+
+CREATE TABLE `jr_estado_prestamo` (
+  `id_estado_prestamo` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_estudios_realizados`
+--
+
+CREATE TABLE `jr_estudios_realizados` (
+  `id_estudios_realizados` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `estado` varchar(25) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_foto`
+--
+
+CREATE TABLE `jr_foto` (
+  `id_foto` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `path` varchar(150) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -686,17 +1517,24 @@ INSERT INTO `jr_grado_academico` (`id_grado_ac`, `descripcion`) VALUES
 
 CREATE TABLE `jr_grupo` (
   `id_grupo` int(11) NOT NULL,
-  `descripcion` varchar(50) NOT NULL
+  `descripcion` varchar(50) NOT NULL,
+  `id_negocio` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `jr_grupo`
 --
 
-INSERT INTO `jr_grupo` (`id_grupo`, `descripcion`) VALUES
-(1, 'Super Usuario'),
-(2, 'Ejecutivo'),
-(3, 'RRHH');
+INSERT INTO `jr_grupo` (`id_grupo`, `descripcion`, `id_negocio`) VALUES
+(1, 'Super Usuario', 2),
+(2, 'Administrador', 0),
+(3, 'RRHH', 2),
+(4, 'Master', 1),
+(5, 'Prueba X', 1),
+(6, 'Master yi', 3),
+(7, 'Cajero', 1),
+(8, 'TI', 1),
+(9, 'Supervisor', 1);
 
 -- --------------------------------------------------------
 
@@ -726,6 +1564,73 @@ INSERT INTO `jr_informacion_bancaria` (`id_informacion_bancaria`, `banco_tipo_cu
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_ingresos`
+--
+
+CREATE TABLE `jr_ingresos` (
+  `idingreso` int(11) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `telefono` varchar(25) DEFAULT NULL,
+  `actividadeconomica` varchar(100) DEFAULT NULL,
+  `posicionqueocupa` varchar(100) DEFAULT NULL,
+  `tiempolaborando` varchar(40) DEFAULT NULL,
+  `id_moneda` int(11) DEFAULT NULL,
+  `monto` decimal(10,0) NOT NULL,
+  `id_tipo_ingreso` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_ingresos`
+--
+
+INSERT INTO `jr_ingresos` (`idingreso`, `nombre`, `telefono`, `actividadeconomica`, `posicionqueocupa`, `tiempolaborando`, `id_moneda`, `monto`, `id_tipo_ingreso`, `id_cliente`) VALUES
+(1, 'Facebook Reel', '83828', 'redes sociales', 'influencer', '1 a', 1, '3000', 2, 1),
+(3, 'Policía Nacional', '', 'Defensa Ciudadana', 'Sgto Mayor Lic en enfermería', '17 Años', 2, '31000', 1, 18),
+(4, 'Salud publica', '', 'Salud', 'Enfermera', '19 años', 2, '25000', 1, 18),
+(5, 'Policía Nacional', '', 'Defensa Ciudadana', 'Sgto Mayor Lic en enfermería', '17 Años', 2, '31000', 1, 6),
+(6, 'Salud Publica', '', 'Salud', 'Enfermera', '19 años', 2, '25000', 1, 6),
+(7, 'Remesa', '', '', '', '', 1, '1000', 2, 19);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_ingreso_producto`
+--
+
+CREATE TABLE `jr_ingreso_producto` (
+  `id_ingreso` int(11) NOT NULL,
+  `fecha_ingreso` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_empleado_ingresa` int(11) NOT NULL COMMENT 'es quien realiza el ingreso',
+  `total_itbis` varchar(15) NOT NULL,
+  `total_descuento` varchar(15) DEFAULT NULL,
+  `importe_ingreso` varchar(30) DEFAULT NULL,
+  `total_pagado` varchar(25) DEFAULT NULL,
+  `monto_pendiente` varchar(30) DEFAULT NULL,
+  `comprobante` varchar(50) DEFAULT NULL COMMENT 'comprobante de la factura del suplidor',
+  `condicion` varchar(25) DEFAULT NULL,
+  `estado_ingreso` varchar(20) NOT NULL,
+  `path_factura_suplidor` varchar(100) DEFAULT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `numero_factura` varchar(25) DEFAULT NULL,
+  `nota` text DEFAULT NULL,
+  `id_sucursal` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_ingreso_producto`
+--
+
+INSERT INTO `jr_ingreso_producto` (`id_ingreso`, `fecha_ingreso`, `id_empleado_ingresa`, `total_itbis`, `total_descuento`, `importe_ingreso`, `total_pagado`, `monto_pendiente`, `comprobante`, `condicion`, `estado_ingreso`, `path_factura_suplidor`, `id_pedido`, `numero_factura`, `nota`, `id_sucursal`) VALUES
+(1, '2023-11-15 11:20:47', 19, '0', '0', '0', '0', '0', '', '0', '0', '', 3, '', '', NULL),
+(2, '2023-11-15 12:49:18', 19, '27,210.00', '3,050.00', '176,660.00', '176,660.00', '0.00', '', 'normal', 'produccion', '', 2, '', '', NULL),
+(3, '2023-11-15 12:47:16', 19, '1,782.00', '198.00', '11,484.00', '11,484.00', '0.00', '', 'normal', 'produccion', '', 1, '', 'todo completo', NULL),
+(4, '2023-11-15 11:22:37', 19, '0', '0', '0', '0', '0', '', '0', '0', '', 4, '', '', NULL),
+(5, '2023-11-17 19:43:35', 19, '90.00', '10.00', '580.00', '580.00', '0.00', 'B0100000038', 'normal', 'produccion', '', 5, '0235', '', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_invitados`
 --
 
@@ -743,10 +1648,9 @@ CREATE TABLE `jr_invitados` (
 --
 
 INSERT INTO `jr_invitados` (`id_ejecutivo_interno`, `id_ejecutivo_banco`, `id_ejecutivo_pago`, `id_persona_sucursal`, `id_cita`, `id_invitado_externo`) VALUES
-(19, 3, 1, 0, 1, 1),
-(19, 3, 1, 0, 2, 1),
-(19, 3, 1, 0, 3, 1),
-(19, 3, 1, 0, 4, 1);
+(3, 2, 0, 0, 1, 2),
+(3, 2, 1, 0, 2, 2),
+(3, 2, 1, 0, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -788,25 +1692,110 @@ CREATE TABLE `jr_logs` (
 --
 
 INSERT INTO `jr_logs` (`id_logs`, `fecha`, `id_empleado`, `tabla`, `data`, `id_afectado`, `accion`) VALUES
-(1, '2023-02-01 15:45:59', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-02\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 2, 'update'),
-(2, '2023-02-01 17:54:33', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-02\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 2, 'update'),
-(3, '2023-02-01 17:54:49', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-02\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 2, 'update'),
-(4, '2023-02-01 17:56:09', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"6546512\",\"sap_deudor\":\"8521478\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-28\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(5, '2023-02-01 17:58:42', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"\",\"sap_deudor\":\"\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Prospecto\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-28\",\"proceso\":\"Ejecutivo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(6, '2023-02-01 17:59:32', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"\",\"sap_deudor\":\"\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-28\",\"proceso\":\"Comercial\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(7, '2023-02-01 18:01:11', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"\",\"sap_deudor\":\"\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-28\",\"proceso\":\"En revisión\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(8, '2023-02-01 18:01:51', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"\",\"sap_deudor\":\"\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-27\",\"proceso\":\"Comercial\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(9, '2023-02-01 18:03:08', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"\",\"sap_deudor\":\"\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-27\",\"proceso\":\"Finanzas\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(10, '2023-02-01 18:04:58', 19, 'jr_sucursal', '{\"sucursal\":{\"id_sucursal\":1,\"nombre_sucursal\":\"JUAN PABLO DUARTE\",\"id_empleado\":19,\"id_provincia\":25,\"id_municipio\":\"2501\",\"id_sector\":\"2501010700800\",\"direccion\":\"Av. Juan Pablo Duarte \",\"codigo_postal\":51000,\"telefono\":\"809-545-6465\",\"fax\":\"\",\"email\":\"\",\"cantidad_lectores\":0,\"codigo_fidelium\":\"AMF120\",\"descuento_redencion\":2,\"descuento_otorgado\":3,\"limite_piso\":3500,\"apertura\":\"08:00:00\",\"cierre\":\"20:00:00\",\"geo\":\"19.4664837,-70.6780132\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"referencia1\":\"r1\",\"referencia2\":\"\",\"referencia3\":\"\",\"id_negocio\":1,\"id_informacion_bancaria\":2,\"id_categoria\":2,\"estado\":\"Sin Transaccion\",\"id_zona\":1,\"zona\":\"METRO NORTE\",\"id_subzona\":2,\"subzona\":\"CENTRO PYME - METRO NORTE 2\"},\"vscarnet\":[{\"id_afiliado\":28,\"merchand_id\":654,\"id_sucursal\":1},{\"id_afiliado\":29,\"merchand_id\":874,\"id_sucursal\":1},{\"id_afiliado\":30,\"merchand_id\":458,\"id_sucursal\":1}],\"vs_sucursal\":[{\"id_empleado\":19,\"id_persona\":3,\"id_sucursal\":1,\"id_ejecutivo\":0,\"id_ejecutivo_pago\":0}],\"responsable\":[{\"id_persona\":3,\"nombre_persona_suc\":\"Jonny Negro\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"\",\"telefono_pers_suc\":\"829-546-5465\",\"correo\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"id_sucursal\":1}]}', 1, 'update'),
-(11, '2023-02-01 18:07:00', 19, 'jr_sucursal', '{\"sucursal\":{\"id_sucursal\":1,\"nombre_sucursal\":\"JUAN PABLO DUARTE\",\"id_empleado\":19,\"id_provincia\":25,\"id_municipio\":\"2501\",\"id_sector\":\"2501010700800\",\"direccion\":\"Av. Juan Pablo Duarte \",\"codigo_postal\":51000,\"telefono\":\"809-545-6465\",\"fax\":\"\",\"email\":\"\",\"cantidad_lectores\":5,\"codigo_fidelium\":\"AMF121\",\"descuento_redencion\":2,\"descuento_otorgado\":3,\"limite_piso\":3500,\"apertura\":\"08:00:00\",\"cierre\":\"20:00:00\",\"geo\":\"19.4664837,-70.6780132\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"referencia1\":\"r1\",\"referencia2\":\"\",\"referencia3\":\"\",\"id_negocio\":1,\"id_informacion_bancaria\":3,\"id_categoria\":2,\"estado\":\"Sin Transaccion\",\"id_zona\":1,\"zona\":\"METRO NORTE\",\"id_subzona\":2,\"subzona\":\"CENTRO PYME - METRO NORTE 2\"},\"vscarnet\":[{\"id_afiliado\":32,\"merchand_id\":654,\"id_sucursal\":1},{\"id_afiliado\":33,\"merchand_id\":874,\"id_sucursal\":1},{\"id_afiliado\":34,\"merchand_id\":458,\"id_sucursal\":1}],\"vs_sucursal\":[{\"id_empleado\":19,\"id_persona\":3,\"id_sucursal\":1,\"id_ejecutivo\":0,\"id_ejecutivo_pago\":0}],\"responsable\":[{\"id_persona\":3,\"nombre_persona_suc\":\"Jonny Negro\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"\",\"telefono_pers_suc\":\"829-546-5465\",\"correo\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"id_sucursal\":1}]}', 1, 'update'),
-(12, '2023-02-01 18:14:38', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"5424565\",\"sap_deudor\":\"9854625\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-27\",\"proceso\":\"Operaciones\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(13, '2023-02-01 18:14:57', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"5424565\",\"sap_deudor\":\"9854625\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-27\",\"proceso\":\"Operaciones\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(14, '2023-02-01 18:15:21', 19, 'jr_sucursal', '{\"sucursal\":{\"id_sucursal\":1,\"nombre_sucursal\":\"JUAN PABLO DUARTE\",\"id_empleado\":19,\"id_provincia\":25,\"id_municipio\":\"2501\",\"id_sector\":\"2501010700800\",\"direccion\":\"Av. Juan Pablo Duarte \",\"codigo_postal\":51000,\"telefono\":\"809-545-6465\",\"fax\":\"\",\"email\":\"\",\"cantidad_lectores\":5,\"codigo_fidelium\":\"AMF121\",\"descuento_redencion\":2,\"descuento_otorgado\":3,\"limite_piso\":3500,\"apertura\":\"08:00:00\",\"cierre\":\"20:00:00\",\"geo\":\"19.4664837,-70.6780132\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"referencia1\":\"r1\",\"referencia2\":\"\",\"referencia3\":\"\",\"id_negocio\":1,\"id_informacion_bancaria\":3,\"id_categoria\":2,\"estado\":\"Sin Transaccion\",\"id_zona\":1,\"zona\":\"METRO NORTE\",\"id_subzona\":2,\"subzona\":\"CENTRO PYME - METRO NORTE 2\"},\"vscarnet\":[{\"id_afiliado\":35,\"merchand_id\":654,\"id_sucursal\":1},{\"id_afiliado\":36,\"merchand_id\":874,\"id_sucursal\":1},{\"id_afiliado\":37,\"merchand_id\":458,\"id_sucursal\":1}],\"vs_sucursal\":[{\"id_empleado\":19,\"id_persona\":3,\"id_sucursal\":1,\"id_ejecutivo\":0,\"id_ejecutivo_pago\":0}],\"responsable\":[{\"id_persona\":3,\"nombre_persona_suc\":\"Jonny Negro\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"\",\"telefono_pers_suc\":\"829-546-5465\",\"correo\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"id_sucursal\":1}]}', 1, 'update'),
-(15, '2023-02-01 18:16:15', 19, 'jr_sucursal', '{\"sucursal\":{\"id_sucursal\":1,\"nombre_sucursal\":\"JUAN PABLO DUARTE\",\"id_empleado\":19,\"id_provincia\":25,\"id_municipio\":\"2501\",\"id_sector\":\"2501010700800\",\"direccion\":\"Av. Juan Pablo Duarte \",\"codigo_postal\":51000,\"telefono\":\"809-545-6465\",\"fax\":\"\",\"email\":\"\",\"cantidad_lectores\":5,\"codigo_fidelium\":\"AMF121\",\"descuento_redencion\":2,\"descuento_otorgado\":3,\"limite_piso\":3500,\"apertura\":\"08:00:00\",\"cierre\":\"20:00:00\",\"geo\":\"19.4664837,-70.6780132\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"referencia1\":\"r1\",\"referencia2\":\"\",\"referencia3\":\"\",\"id_negocio\":1,\"id_informacion_bancaria\":3,\"id_categoria\":2,\"estado\":\"Sin Transaccion\",\"id_zona\":1,\"zona\":\"METRO NORTE\",\"id_subzona\":2,\"subzona\":\"CENTRO PYME - METRO NORTE 2\"},\"vscarnet\":[{\"id_afiliado\":38,\"merchand_id\":654,\"id_sucursal\":1},{\"id_afiliado\":39,\"merchand_id\":874,\"id_sucursal\":1},{\"id_afiliado\":40,\"merchand_id\":458,\"id_sucursal\":1}],\"vs_sucursal\":[{\"id_empleado\":19,\"id_persona\":3,\"id_sucursal\":1,\"id_ejecutivo\":0,\"id_ejecutivo_pago\":0}],\"responsable\":[{\"id_persona\":3,\"nombre_persona_suc\":\"Jonny Negro\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"\",\"telefono_pers_suc\":\"829-546-5465\",\"correo\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"id_sucursal\":1}]}', 1, 'update'),
-(16, '2023-02-01 19:19:25', 19, 'jr_cita', '{\"cita\":[{\"id_cita\":4,\"titulo\":\"Seguimiento\",\"fecha\":\"2023-02-02\",\"hora_inicio\":\"10:00:00\",\"hora_fin\":\"11:00:00\",\"color\":\"#ffdd00\",\"motivo\":\"Seguimiento de afiliación\",\"estado\":\"Agendada\",\"recordatorio\":\"09:13:00\",\"minuta\":\"\",\"fecha_registro\":\"2023-02-01 09:55:18\",\"registrada_por\":19,\"lugar\":\"McDonal de la 27\",\"geo\":\"19.4664837,-70.6780132\",\"empresa\":\"McDonald SRL\"}],\"invitados\":[{\"id_ejecutivo_interno\":19,\"id_ejecutivo_banco\":3,\"id_ejecutivo_pago\":1,\"id_persona_sucursal\":0,\"id_cita\":4,\"id_invitado_externo\":1}],\"invitados_externo\":[[{\"id_persona\":1,\"nombre_persona_suc\":\"Nito Ynoa\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"000\",\"telefono_pers_suc\":\"829-456-4561\",\"correo\":\"nitgo@gmail.com\",\"empresa\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-18 14:52:09\"}]]}', 4, 'update'),
-(17, '2023-02-01 19:25:37', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":1,\"razon_social\":\"McDonald SRL\",\"rnc\":\"845611\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@mcdonalds\",\"sap_acreedor\":\"5424565\",\"sap_deudor\":\"9854625\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":2,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-27\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1}]}', 1, 'update'),
-(18, '2023-02-01 19:25:51', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-02-02\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1},{\"id_producto\":2}]}', 2, 'update'),
-(19, '2023-02-01 19:44:48', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-03-01\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1},{\"id_producto\":2}]}', 2, 'update');
+(1, '2023-10-30 19:24:49', 5, 'jr_cita', '{\"cita\":[{\"id_cita\":1,\"titulo\":\"Seguimiento\",\"fecha\":\"2023-10-31\",\"hora_inicio\":\"18:00:00\",\"hora_fin\":\"19:00:00\",\"color\":\"#ffdd00\",\"motivo\":\"l\",\"estado\":\"Agendada\",\"recordatorio\":\"16:50:00\",\"minuta\":\"\",\"fecha_registro\":\"2023-10-30 14:45:26\",\"registrada_por\":5,\"lugar\":\"La empresa\",\"geo\":\"\",\"empresa\":\"JHOBROSOFT\"}],\"invitados\":[{\"id_ejecutivo_interno\":3,\"id_ejecutivo_banco\":2,\"id_ejecutivo_pago\":0,\"id_persona_sucursal\":0,\"id_cita\":1,\"id_invitado_externo\":2}],\"invitados_externo\":[[{\"id_persona\":2,\"nombre_persona_suc\":\"Jaime Ynoa\",\"cargo_pers_suc\":\"Asistente de Gerencia\",\"cedula\":\"000\",\"telefono_pers_suc\":\"809-856-4443\",\"correo\":\"jynoa@gmail.com\",\"empresa\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-18 14:54:37\"}]]}', 1, 'update'),
+(2, '2023-11-09 22:08:55', 5, 'jr_sucursal', '{\"sucursal\":{\"id_sucursal\":1,\"nombre_sucursal\":\"JUAN PABLO DUARTE\",\"id_empleado\":19,\"id_provincia\":25,\"id_municipio\":\"2501\",\"id_sector\":\"2501010101601\",\"direccion\":\"Av. Juan Pablo Duarte Esq. Sol\",\"codigo_postal\":51000,\"telefono\":\"809-545-6465\",\"fax\":\"\",\"email\":\"juanpabloduarte@jhobrosoft.com\",\"cantidad_lectores\":5,\"codigo_fidelium\":\"AMF122\",\"descuento_redencion\":2,\"descuento_otorgado\":3,\"limite_piso\":3500,\"apertura\":\"08:00:00\",\"cierre\":\"20:00:00\",\"geo\":\"19.4664837,-70.6780132\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"referencia1\":\"r1\",\"referencia2\":\"\",\"referencia3\":\"\",\"id_negocio\":1,\"id_informacion_bancaria\":3,\"id_categoria\":2,\"estado\":\"Sin Transaccion\",\"id_zona\":1,\"zona\":\"METRO NORTE\",\"id_subzona\":2,\"subzona\":\"CENTRO PYME - METRO NORTE 2\"},\"vscarnet\":[],\"vs_sucursal\":[{\"id_empleado\":3,\"id_persona\":3,\"id_sucursal\":1,\"id_ejecutivo\":0,\"id_ejecutivo_pago\":0}],\"responsable\":[{\"id_persona\":3,\"nombre_persona_suc\":\"Jonny Negro\",\"cargo_pers_suc\":\"Gerente\",\"cedula\":\"\",\"telefono_pers_suc\":\"829-546-5465\",\"correo\":\"\",\"estado\":\"Activo\",\"fecha_creacion\":\"2023-01-23 09:38:47\",\"id_sucursal\":1}]}', 1, 'update'),
+(3, '2023-11-09 23:46:51', 19, 'jr_negocio_general', '{\"negocio_general\":[{\"id_negocio\":2,\"razon_social\":\"OCHOA SRL\",\"rnc\":\"845612\",\"id_empleado\":19,\"cant_sucursales\":5,\"red_social\":\"@OCHOA\",\"sap_acreedor\":\"658246\",\"sap_deudor\":\"876284\",\"fecha_creacion\":\"2023-02-01 09:39:06\",\"estado\":\"Afiliado\",\"id_tipo_afiliacion\":3,\"id_pago_electronico\":1,\"editado_por\":19,\"rm_vence\":\"2023-03-02\",\"proceso\":\"Mercadeo\"}],\"productos_negocio\":[{\"id_producto\":1},{\"id_producto\":2}]}', 2, 'update');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_marca`
+--
+
+CREATE TABLE `jr_marca` (
+  `id_marca` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_marca`
+--
+
+INSERT INTO `jr_marca` (`id_marca`, `nombre`, `descripcion`) VALUES
+(1, 'Samsung', 'Marca reconocida'),
+(2, 'Redmi', 'Marca China'),
+(3, 'Iphone', 'Celular'),
+(4, 'Motorola', 'Celulares'),
+(5, 'Logitech', 'calidad media'),
+(6, 'Honda', 'Marca de vehiculo'),
+(7, 'Morena', 'es una azucar');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_mesa`
+--
+
+CREATE TABLE `jr_mesa` (
+  `id_mesa` int(11) NOT NULL,
+  `mesa` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_mesa`
+--
+
+INSERT INTO `jr_mesa` (`id_mesa`, `mesa`) VALUES
+(1, '01'),
+(2, '02'),
+(3, '03'),
+(4, '04');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_modalidad_prestamo`
+--
+
+CREATE TABLE `jr_modalidad_prestamo` (
+  `id_modalidad` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL COMMENT 'si es semanal'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_moneda`
+--
+
+CREATE TABLE `jr_moneda` (
+  `id_moneda` int(11) NOT NULL,
+  `descripcion` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_moneda`
+--
+
+INSERT INTO `jr_moneda` (`id_moneda`, `descripcion`) VALUES
+(1, 'USD $'),
+(2, 'DOP $');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_movimiento_caja`
+--
+
+CREATE TABLE `jr_movimiento_caja` (
+  `id_movimiento` int(11) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_supervisor` int(11) NOT NULL COMMENT 'es quien autoriza el movimiento',
+  `tipo_movimiento` varchar(15) NOT NULL,
+  `monto` decimal(10,0) NOT NULL,
+  `detalle` varchar(255) NOT NULL,
+  `id_caja_detalle` int(11) NOT NULL,
+  `id_cajero` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_movimiento_caja`
+--
+
+INSERT INTO `jr_movimiento_caja` (`id_movimiento`, `fecha`, `id_supervisor`, `tipo_movimiento`, `monto`, `detalle`, `id_caja_detalle`, `id_cajero`) VALUES
+(1, '2023-11-17 17:51:42', 19, 'entrada', '500', 'menudo para devolver', 1, 5),
+(2, '2023-11-17 17:54:23', 19, 'salida', '240', 'Para entregarselo a ruth', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -823,6 +1812,15 @@ CREATE TABLE `jr_movimiento_empleado` (
   `fecha` date NOT NULL,
   `accion` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `jr_movimiento_empleado`
+--
+
+INSERT INTO `jr_movimiento_empleado` (`id_salida_empleado`, `id_salida`, `id_empleado`, `motivo`, `realizadopor`, `fecha`, `accion`) VALUES
+(1, 1, 20, 'No quizo continuar', 19, '2023-05-05', 'salida'),
+(2, 5, 20, 'reingreso', 19, '2023-05-05', 'reingreso'),
+(3, 1, 20, 'No se llego a un acuerdo', 19, '2023-05-06', 'salida');
 
 -- --------------------------------------------------------
 
@@ -1223,6 +2221,37 @@ INSERT INTO `jr_nacionalidad` (`id_nacionalidad`, `pais`, `gentilicio`, `iso`) V
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_ncf`
+--
+
+CREATE TABLE `jr_ncf` (
+  `codncf` int(11) NOT NULL,
+  `descncf` varchar(100) NOT NULL,
+  `tipncf` varchar(2) NOT NULL,
+  `parfij` varchar(20) NOT NULL,
+  `estado` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_ncf`
+--
+
+INSERT INTO `jr_ncf` (`codncf`, `descncf`, `tipncf`, `parfij`, `estado`) VALUES
+(1, 'Facturas de Crédito Fiscal', 'B', '01', 'Activo'),
+(2, 'Factura de Consumo', 'B', '02', 'Activo'),
+(3, 'Notas de Débito', 'B', '03', 'Activo'),
+(4, 'Notas de Crédito', 'B', '04', 'Activo'),
+(5, 'Comprobante de Compras', 'B', '11', 'Activo'),
+(6, 'Comprobante de Registro Único de Ingresos', 'B', '12', 'Activo'),
+(7, 'Comprobante para Gastos Menores', 'B', '13', 'Activo'),
+(8, 'Comprobante para Regímenes Especiales', 'B', '14', 'Activo'),
+(9, 'Comprobante Gubernamental', 'B', '15', 'Activo'),
+(10, 'Comprobante para Exportaciones', 'B', '16', 'Activo'),
+(11, 'Comprobante para Pagos al Exterior', 'B', '17', 'Activo');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_negocio_general`
 --
 
@@ -1249,8 +2278,8 @@ CREATE TABLE `jr_negocio_general` (
 --
 
 INSERT INTO `jr_negocio_general` (`id_negocio`, `razon_social`, `rnc`, `id_empleado`, `cant_sucursales`, `red_social`, `sap_acreedor`, `sap_deudor`, `fecha_creacion`, `estado`, `id_tipo_afiliacion`, `id_pago_electronico`, `editado_por`, `rm_vence`, `proceso`) VALUES
-(1, 'McDonald SRL', '845611', 19, 5, '@mcdonalds', '5424565', '9854625', '2023-01-23 09:38:47', 'Afiliado', 2, 1, 19, '2023-03-01', 'Mercadeo'),
-(2, 'OCHOA SRL', '845612', 19, 5, '@OCHOA', '658246', '876284', '2023-02-01 09:39:06', 'Afiliado', 3, 1, 19, '2023-03-02', 'Mercadeo');
+(1, 'JHOBROSOFT', '845611', 19, 5, 'jhobrosoft.com', '5424565', '9854625', '2023-01-23 09:38:47', 'Afiliado', 2, 1, 5, '2023-03-01', 'Mercadeo'),
+(2, 'OSCAR HOTDOG', '845612', 19, 1, '@osecarhotdog', '658246', '876284', '2023-02-01 09:39:06', 'Afiliado', 3, 1, 19, '2023-03-02', 'Mercadeo');
 
 -- --------------------------------------------------------
 
@@ -1269,8 +2298,8 @@ CREATE TABLE `jr_negocio_vs_producto` (
 
 INSERT INTO `jr_negocio_vs_producto` (`id_producto`, `id_negocio`) VALUES
 (1, 1),
-(2, 2),
-(1, 2);
+(1, 2),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -1294,6 +2323,25 @@ INSERT INTO `jr_nivel` (`id_nivel`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_ocupacion`
+--
+
+CREATE TABLE `jr_ocupacion` (
+  `id_ocupacion` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL COMMENT 'si es hipotecario'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_ocupacion`
+--
+
+INSERT INTO `jr_ocupacion` (`id_ocupacion`, `descripcion`) VALUES
+(1, 'Ingeniero(a)'),
+(2, 'Doctor(a)');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_pago_electronico`
 --
 
@@ -1312,6 +2360,35 @@ INSERT INTO `jr_pago_electronico` (`id_pago_electronico`, `tipo_pago_electronico
 (3, 'Azul'),
 (4, 'Proceso de Afiliación Cardnet'),
 (5, 'No Tiene');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_pedido`
+--
+
+CREATE TABLE `jr_pedido` (
+  `id_pedido` int(11) NOT NULL,
+  `fecha_pedido` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_requerida` date NOT NULL,
+  `id_empleado_pide` int(11) NOT NULL COMMENT 'es quien realiza el pedido',
+  `condicion` varchar(10) NOT NULL,
+  `nota` text NOT NULL,
+  `estado` varchar(25) NOT NULL,
+  `numero_de_orden` int(11) NOT NULL,
+  `id_suplidor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_pedido`
+--
+
+INSERT INTO `jr_pedido` (`id_pedido`, `fecha_pedido`, `fecha_requerida`, `id_empleado_pide`, `condicion`, `nota`, `estado`, `numero_de_orden`, `id_suplidor`) VALUES
+(1, '2023-11-15 11:12:24', '2023-11-15', 19, 'normal', 'para recibir lo antes posible', 'completado', 7, 2),
+(2, '2023-11-15 11:14:07', '2023-11-15', 19, 'normal', 'primera compra de computadoras', 'completado', 6, 1),
+(3, '2023-11-15 11:20:36', '2023-11-15', 19, 'normal', 'para vender hoy', 'pendiente', 12, 3),
+(4, '2023-11-15 11:22:30', '2023-11-15', 19, 'normal', 'para vender hoy y completar 15', 'pendiente', 13, 3),
+(5, '2023-11-17 19:36:02', '2023-11-17', 19, 'normal', 'Se necesita para hoy', 'completado', 14, 3);
 
 -- --------------------------------------------------------
 
@@ -1364,7 +2441,8 @@ INSERT INTO `jr_persona_sucursal` (`id_persona`, `nombre_persona_suc`, `cargo_pe
 (1, 'Nito Ynoa', 'Gerente', '000', '829-456-4561', 'nitgo@gmail.com', '', 'Activo', '2023-01-18 14:52:09'),
 (2, 'Jaime Ynoa', 'Asistente de Gerencia', '000', '809-856-4443', 'jynoa@gmail.com', '', 'Activo', '2023-01-18 14:54:37'),
 (3, 'Jonny Negro', 'Gerente', '', '829-546-5465', '', '', 'Activo', '2023-01-23 09:38:47'),
-(4, 'Jonny Negro', 'Gerente', '', '829-546-5465', 'stevens@gmail.com', '', 'Activo', '2023-02-01 09:39:06');
+(4, 'Jonny Negro', 'Gerente', '', '829-546-5465', 'stevens@gmail.com', '', 'Activo', '2023-02-01 09:39:06'),
+(5, 'Wellinton Sanchez', 'Gerente', '000', '803-432-4324', 'wsanchez@gmail.com', '', 'Activo', '2023-11-17 20:15:51');
 
 -- --------------------------------------------------------
 
@@ -1386,7 +2464,60 @@ CREATE TABLE `jr_persona_vs_sucursal` (
 
 INSERT INTO `jr_persona_vs_sucursal` (`id_empleado`, `id_persona`, `id_sucursal`, `id_ejecutivo`, `id_ejecutivo_pago`) VALUES
 (19, 4, 2, 3, 1),
-(19, 3, 1, 0, 0);
+(3, 3, 1, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_preparado`
+--
+
+CREATE TABLE `jr_preparado` (
+  `id_preparado` int(11) NOT NULL,
+  `fecha_preparacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_empleado` int(11) NOT NULL COMMENT 'es quien ordena preparar',
+  `id_producto` int(11) NOT NULL,
+  `cantidad` decimal(10,4) NOT NULL,
+  `id_unidad` int(11) NOT NULL,
+  `id_almacen` int(11) NOT NULL,
+  `estado` varchar(25) NOT NULL,
+  `fecha_completada` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_preparado`
+--
+
+INSERT INTO `jr_preparado` (`id_preparado`, `fecha_preparacion`, `id_empleado`, `id_producto`, `cantidad`, `id_unidad`, `id_almacen`, `estado`, `fecha_completada`) VALUES
+(1, '2023-11-16 17:35:43', 19, 7, '1.0000', 1, 1, 'Ordenado', NULL),
+(2, '2023-11-16 17:48:07', 19, 7, '1.0000', 1, 1, 'Ordenado', NULL),
+(3, '2023-11-16 18:04:24', 5, 7, '2.0000', 1, 1, 'Ordenado', NULL),
+(4, '2023-11-16 18:10:22', 5, 7, '3.0000', 1, 1, 'Ordenado', NULL),
+(5, '2023-11-16 18:50:02', 5, 7, '5.0000', 1, 1, 'Ordenado', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_prestamo`
+--
+
+CREATE TABLE `jr_prestamo` (
+  `id_prestamo` int(11) NOT NULL,
+  `codigo` varchar(25) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `hora_inicio` time NOT NULL,
+  `importe_credito` decimal(10,0) NOT NULL COMMENT 'cuantos se desembolsaron',
+  `tasadeinteres` decimal(10,0) NOT NULL,
+  `cantidad_cuota` int(11) NOT NULL COMMENT 'cuantas cuotas son',
+  `monto_cuota` decimal(10,0) NOT NULL,
+  `nota` varchar(255) DEFAULT NULL,
+  `id_empleado` int(11) NOT NULL COMMENT 'quien crea el prestamo',
+  `fecha_final` date NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_estado_prestamo` int(11) NOT NULL,
+  `id_modalidad` int(11) NOT NULL,
+  `id_tipo_pago` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1406,6 +2537,102 @@ CREATE TABLE `jr_producto` (
 INSERT INTO `jr_producto` (`id_producto`, `producto`) VALUES
 (1, 'Fidelium Club'),
 (2, 'Bono');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_productox`
+--
+
+CREATE TABLE `jr_productox` (
+  `id_producto` int(11) NOT NULL,
+  `codigo` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `referencia` varchar(200) DEFAULT NULL,
+  `factor_conversion` decimal(10,4) DEFAULT NULL,
+  `existencia` decimal(10,4) DEFAULT NULL,
+  `precio_compra` decimal(10,4) DEFAULT NULL,
+  `precio_detalle` decimal(10,4) DEFAULT NULL,
+  `precio_al_por_mayor` decimal(10,4) DEFAULT NULL,
+  `precio_especial` decimal(10,2) DEFAULT NULL,
+  `con_itbis` int(1) DEFAULT NULL,
+  `itbis` decimal(10,0) DEFAULT NULL,
+  `con_descuento` int(1) DEFAULT NULL,
+  `descuento` decimal(10,0) DEFAULT NULL,
+  `margen_ganancia` decimal(10,0) DEFAULT NULL,
+  `cantidad_minima` decimal(10,0) DEFAULT NULL,
+  `cantidad_maxima` decimal(10,0) DEFAULT NULL,
+  `ubicacion` varchar(100) DEFAULT NULL,
+  `color` varchar(30) DEFAULT NULL,
+  `id_estado` int(11) DEFAULT NULL,
+  `idmarca` int(11) NOT NULL,
+  `idcategoria` int(11) NOT NULL,
+  `id_clase` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_productox`
+--
+
+INSERT INTO `jr_productox` (`id_producto`, `codigo`, `descripcion`, `referencia`, `factor_conversion`, `existencia`, `precio_compra`, `precio_detalle`, `precio_al_por_mayor`, `precio_especial`, `con_itbis`, `itbis`, `con_descuento`, `descuento`, `margen_ganancia`, `cantidad_minima`, `cantidad_maxima`, `ubicacion`, `color`, `id_estado`, `idmarca`, `idcategoria`, `id_clase`) VALUES
+(1, '123456789121', 'Teclado Gamer', 'Gamer New', '1.0000', '0.0000', '150.0000', '300.0000', '250.0000', '200.00', 1, '18', 1, '2', '100', '3', '50', 'Tramo 3 pasillo 1', NULL, 1, 5, 1, 1),
+(2, '123456789122', 'Mouse', 'M02', '1.0000', '0.0000', '100.0000', '200.0000', '150.0000', '130.00', 1, '18', 1, '2', '20', '4', '100', 'Tramo 2 pasillo 1', NULL, 1, 5, 1, 1),
+(3, '123456789123', 'Computadora Gaming', 'CGAMING', '1.0000', '0.0000', '15000.0000', '35000.0000', '30000.0000', '28000.00', 1, '18', 1, '2', '100', '3', '50', 'Tramo 3 pasillo 2', NULL, 1, 5, 1, 1),
+(4, '09283059458', 'Carro X', 'Carro', '1.0000', '0.0000', '40.0000', '350000.0000', '300000.0000', '275000.00', 1, '18', 1, '2', '25000', '1', '30', 'Parqueo principal', NULL, 1, 6, 2, 2),
+(5, '013009852', 'Azucar Crema', 'acm', '1.0000', '0.0000', '25.0000', '35.0000', '30.0000', '28.00', 1, '18', 1, '2', '2', '1', '2', 'Tramo 1 pasillo 1', NULL, 1, 7, 3, 3),
+(6, '123456789125', 'Malta Morena 8 OZ', '435', '1.0000', '120.0000', '15.0000', '25.0000', '22.0000', '20.00', 1, '18', 1, '2', '5', '6', '300', 'Indefinida', NULL, 1, 7, 4, 3),
+(7, '35245', 'Chimi de pierna', 'Chimi', '1.0000', '3.0000', '5.4000', '200.0000', '180.0000', '170.00', 1, '18', 1, '2', '100', '10', '30', 'Indefinida', NULL, 1, 5, 3, 3),
+(8, '8345923', 'Pan de agua', 'pa', '1.0000', '0.0000', '5.0000', '8.0000', '6.5000', '5.00', 1, '18', 1, '2', '1', '5', '300', 'Indefinida', NULL, 1, 7, 3, 3),
+(9, '9884350', 'Jabon', 'de olor', '1.0000', '0.0000', '3.0000', '20.0000', '18.0000', '15.00', 1, '18', 0, '2', '5', '3', '200', 'Indefinida', NULL, 1, 5, 4, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_producto_almacen`
+--
+
+CREATE TABLE `jr_producto_almacen` (
+  `existencia` decimal(18,4) NOT NULL,
+  `ubicacion` varchar(100) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `id_almacen` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_producto_almacen`
+--
+
+INSERT INTO `jr_producto_almacen` (`existencia`, `ubicacion`, `id_producto`, `id_almacen`) VALUES
+('189.8040', 'Tramo 1 pasillo 1', 5, 1),
+('117.0000', 'Tramo 1 pasillo 2', 6, 1),
+('96.0000', 'tramo 2 pasillo 4', 8, 1),
+('9.0000', 'Tramo 3 pasillo 2', 3, 1),
+('9.0000', 'Tramo 2 pasillo 1', 2, 1),
+('9.0000', 'Tramo 3 pasillo 1', 1, 1),
+('12.0000', 'Bitrina 2', 7, 1),
+('147.0000', 'Pasillo 3 tramo 2', 9, 1),
+('100.0000', 'tramo 3 pasillo 2', 5, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_producto_componente`
+--
+
+CREATE TABLE `jr_producto_componente` (
+  `id_producto` int(11) NOT NULL,
+  `id_componente` int(11) NOT NULL COMMENT 'es el id del producto materia prima que se usara para la elaboración de otro',
+  `cantidad` decimal(10,4) NOT NULL,
+  `id_unidad` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_producto_componente`
+--
+
+INSERT INTO `jr_producto_componente` (`id_producto`, `id_componente`, `cantidad`, `id_unidad`) VALUES
+(7, 5, '0.0160', 2),
+(7, 8, '1.0000', 1);
 
 -- --------------------------------------------------------
 
@@ -1468,14 +2695,14 @@ CREATE TABLE `jr_puesto` (
   `id_puesto` int(11) NOT NULL,
   `descripcion` varchar(45) NOT NULL,
   `id_puesto_supervisor` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL DEFAULT 1
+  `id_negocio` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `jr_puesto`
 --
 
-INSERT INTO `jr_puesto` (`id_puesto`, `descripcion`, `id_puesto_supervisor`, `id_empresa`) VALUES
+INSERT INTO `jr_puesto` (`id_puesto`, `descripcion`, `id_puesto_supervisor`, `id_negocio`) VALUES
 (1, 'Presidente', 0, 1),
 (2, 'Director', 1, 1),
 (3, 'Gerente', 2, 1),
@@ -1484,7 +2711,7 @@ INSERT INTO `jr_puesto` (`id_puesto`, `descripcion`, `id_puesto_supervisor`, `id
 (6, 'Analista', 5, 1),
 (7, 'Ejecutivo De Negocios', 16, 1),
 (8, 'Desarrollador', 16, 1),
-(9, 'Call Center', 16, 1),
+(9, 'Call Center', 7, 1),
 (10, 'Soporte Técnico', 16, 1),
 (11, 'Mensajero', 6, 1),
 (12, 'Promotor', 6, 1),
@@ -1496,7 +2723,11 @@ INSERT INTO `jr_puesto` (`id_puesto`, `descripcion`, `id_puesto_supervisor`, `id
 (19, 'Seguridad', 16, 1),
 (20, 'Conserje', 16, 1),
 (21, 'Presidente', 0, 3),
-(22, 'Director', 21, 3);
+(22, 'Director', 21, 3),
+(23, 'Desarrollador Lider', 0, 2),
+(24, 'Desarrollador web', 23, 2),
+(25, 'Camarero', 15, 1),
+(26, 'Auxiliar de Soporte', 10, 1);
 
 -- --------------------------------------------------------
 
@@ -1537,12 +2768,12 @@ CREATE TABLE `jr_recibir_correo_vs_empleado` (
 --
 
 INSERT INTO `jr_recibir_correo_vs_empleado` (`id_empleado`, `id_recibir`) VALUES
-('19', 1),
+('19', 6),
 ('19', 2),
-('19', 3),
 ('19', 4),
+('19', 1),
 ('19', 5),
-('19', 6);
+('19', 3);
 
 -- --------------------------------------------------------
 
@@ -1570,6 +2801,38 @@ CREATE TABLE `jr_reclutamiento` (
   `fecha_solicitud` datetime NOT NULL DEFAULT current_timestamp(),
   `id_estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_referencia`
+--
+
+CREATE TABLE `jr_referencia` (
+  `id_referencia` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `telefono` varchar(25) DEFAULT NULL,
+  `extension` int(11) DEFAULT NULL,
+  `celular` varchar(15) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `id_relacion` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_referencia`
+--
+
+INSERT INTO `jr_referencia` (`id_referencia`, `nombre`, `empresa`, `telefono`, `extension`, `celular`, `correo`, `id_relacion`, `id_cliente`) VALUES
+(1, 'Maria Santos', 'ninguna', '938', 0, '829-317-2837', 'nada@gmail.com', 1, 1),
+(3, 'Ruth Maria Minaya S', '', '', 0, '829-383-8213', '', 4, 1),
+(4, 'Johan Bautista', 'Banreservas', '', 0, '829-384-3824', '', 5, 2),
+(5, 'Juan Peña', '', '', 0, '829-384-7577', '', 5, 5),
+(6, 'Ruth Maria Minaya', '', '', 0, '809-231-4574', '', 6, 5),
+(23, 'Miguel Almonte', '', '', 0, '809-123-4124', '', 2, 6),
+(24, 'Maria Santos', '', '', 0, '829-383-8213', '', 1, 6),
+(25, 'Maria Santos', '', '', 0, '809-932-3086', '', 4, 19);
 
 -- --------------------------------------------------------
 
@@ -16997,6 +18260,119 @@ INSERT INTO `jr_sector` (`id_sector`, `sector`, `id_municipio`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_secuencia`
+--
+
+CREATE TABLE `jr_secuencia` (
+  `id_sucursal` int(11) NOT NULL,
+  `fecncf` date NOT NULL DEFAULT current_timestamp(),
+  `vigencia_desde` date NOT NULL,
+  `vigencia_hasta` date NOT NULL,
+  `fecha_uso` date DEFAULT NULL,
+  `secncf` varchar(15) NOT NULL,
+  `estncf` varchar(20) NOT NULL,
+  `codncf` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_secuencia`
+--
+
+INSERT INTO `jr_secuencia` (`id_sucursal`, `fecncf`, `vigencia_desde`, `vigencia_hasta`, `fecha_uso`, `secncf`, `estncf`, `codncf`) VALUES
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0100000001', 'Usado', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-15', 'B0100000002', 'Usado', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-17', 'B0100000003', 'Usado', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000004', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000005', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000006', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000007', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000008', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000009', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000010', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000011', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000012', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000013', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000014', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000015', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000016', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000017', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000018', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000019', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0100000020', 'Disponible', 1),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0200000001', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0200000002', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0200000003', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0200000004', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0200000005', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-11', 'B0200000006', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-11', 'B0200000007', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-11', 'B0200000008', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-15', 'B0200000009', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-15', 'B0200000010', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-15', 'B0200000011', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-15', 'B0200000012', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-17', 'B0200000013', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-17', 'B0200000014', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-17', 'B0200000015', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-17', 'B0200000016', 'Usado', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000017', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000018', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000019', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000020', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000021', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000022', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000023', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000024', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000025', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000026', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000027', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000028', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000029', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000030', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000031', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000032', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000033', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000034', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000035', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000036', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000037', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000038', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000039', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000040', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000041', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000042', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000043', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000044', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000045', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000046', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000047', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000048', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000049', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0200000050', 'Disponible', 2),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', '2023-11-09', 'B0400000001', 'Usado', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000002', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000003', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000004', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000005', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000006', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000007', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000008', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000009', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B0400000010', 'Disponible', 4),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000001', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000002', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000003', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000004', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000005', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000006', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000007', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000008', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000009', 'Disponible', 9),
+(1, '2023-11-03', '2023-11-03', '2023-11-30', NULL, 'B1500000010', 'Disponible', 9);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_seguro_medico`
 --
 
@@ -17004,6 +18380,14 @@ CREATE TABLE `jr_seguro_medico` (
   `id_seguro_medico` int(11) NOT NULL,
   `seguro` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_seguro_medico`
+--
+
+INSERT INTO `jr_seguro_medico` (`id_seguro_medico`, `seguro`) VALUES
+(1, 'SENASA'),
+(2, 'HUMANO');
 
 -- --------------------------------------------------------
 
@@ -17078,7 +18462,7 @@ CREATE TABLE `jr_sucursal` (
 --
 
 INSERT INTO `jr_sucursal` (`id_sucursal`, `nombre_sucursal`, `id_empleado`, `id_provincia`, `id_municipio`, `id_sector`, `direccion`, `codigo_postal`, `telefono`, `fax`, `email`, `cantidad_lectores`, `codigo_fidelium`, `descuento_redencion`, `descuento_otorgado`, `limite_piso`, `apertura`, `cierre`, `geo`, `fecha_creacion`, `referencia1`, `referencia2`, `referencia3`, `id_negocio`, `id_informacion_bancaria`, `id_categoria`, `estado`, `id_zona`, `id_subzona`) VALUES
-(1, 'JUAN PABLO DUARTE', 19, 25, '2501', '2501010700800', 'Av. Juan Pablo Duarte ', 51000, '809-545-6465', '', '', 5, 'AMF122', 2, 3, 3500, '08:00:00', '20:00:00', '19.4664837,-70.6780132', '2023-01-23 09:38:47', 'r1', '', '', 1, 3, 2, 'Sin Transaccion', 1, 2),
+(1, 'JUAN PABLO DUARTE', 19, 25, '2501', '2501010101601', 'Av. Juan Pablo Duarte Esq. Sol X', 51000, '809-545-6465', '', 'juanpabloduarte@jhobrosoft.com', 5, 'AMF122', 2, 3, 3500, '08:00:00', '20:00:00', '19.4664837,-70.6780132', '2023-01-23 09:38:47', 'r1', '', '', 1, 3, 2, 'Sin Transaccion', 1, 2),
 (2, 'IMBERT', 19, 25, '2501', '2501010101000', 'AV. imvert #12', 51000, '809-545-6465', '809-554-6546', 'jhobnatanrs@gmail.com', 1, 'AMF259', 2, 3, 3500, '08:00:00', '19:00:00', '19.463873,-70.6573578', '2023-02-01 09:39:06', 'r1', '', '', 2, 4, 10, 'Sin Transaccion', 9, 12);
 
 -- --------------------------------------------------------
@@ -17117,6 +18501,34 @@ INSERT INTO `jr_sueldo` (`id_sueldo`, `sueldo`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_suplidor`
+--
+
+CREATE TABLE `jr_suplidor` (
+  `id_suplidor` int(11) NOT NULL,
+  `empresa_sup` varchar(100) NOT NULL,
+  `direccion_sup` varchar(100) NOT NULL,
+  `rnc_sup` varchar(20) DEFAULT NULL,
+  `representante` varchar(100) NOT NULL,
+  `flota` varchar(15) NOT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `extension` int(11) DEFAULT NULL,
+  `numero_de_orden` int(11) DEFAULT 0,
+  `fecha_regitro` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_suplidor`
+--
+
+INSERT INTO `jr_suplidor` (`id_suplidor`, `empresa_sup`, `direccion_sup`, `rnc_sup`, `representante`, `flota`, `telefono`, `extension`, `numero_de_orden`, `fecha_regitro`) VALUES
+(1, 'La Famosa Claro', 'Av. Estrella Sadahla', '88435', 'Jande Rosario', '823-923-8382', '8495438543', 843, 6, '2023-05-13 19:24:32'),
+(2, 'Banreservas', 'Av 27 de febrero', '100239483', 'Johan Felix', '809-492-3482', '8099602121', 2019, 7, '2023-05-20 22:39:49'),
+(3, 'Robert SRL', 'La 27 frente a Castro Soport', '83247823', 'Robert De niro', '8093281764', '8093482923', 238, 14, '2023-07-10 19:26:35');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_tipo_afiliacion`
 --
 
@@ -17133,6 +18545,26 @@ INSERT INTO `jr_tipo_afiliacion` (`id_tipo_afiliacion`, `tipo_afiliacion`) VALUE
 (1, 'AFG'),
 (2, 'Banco'),
 (3, 'Ambos');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_tipo_contacto`
+--
+
+CREATE TABLE `jr_tipo_contacto` (
+  `idtipo_contacto` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_tipo_contacto`
+--
+
+INSERT INTO `jr_tipo_contacto` (`idtipo_contacto`, `descripcion`) VALUES
+(1, 'Celular'),
+(2, 'Teléfono'),
+(3, 'Correo electronico');
 
 -- --------------------------------------------------------
 
@@ -17158,6 +18590,25 @@ INSERT INTO `jr_tipo_empleado` (`id_tipo_empleado`, `tipo_empleado`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_tipo_ingreso`
+--
+
+CREATE TABLE `jr_tipo_ingreso` (
+  `id_tipo_ingreso` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_tipo_ingreso`
+--
+
+INSERT INTO `jr_tipo_ingreso` (`id_tipo_ingreso`, `descripcion`) VALUES
+(1, 'Salario'),
+(2, 'Remesa');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_tipo_licencia`
 --
 
@@ -17173,6 +18624,17 @@ CREATE TABLE `jr_tipo_licencia` (
 INSERT INTO `jr_tipo_licencia` (`id_tipo_licencia`, `descripcion`) VALUES
 (1, 'Enfermedad común'),
 (2, 'Accidente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_tipo_pago`
+--
+
+CREATE TABLE `jr_tipo_pago` (
+  `id_tipo_pago` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL COMMENT 'si es interes o cuota'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -17196,6 +18658,83 @@ INSERT INTO `jr_tipo_permiso` (`id_tipo_permiso`, `tipo_permiso`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `jr_tipo_prestamo`
+--
+
+CREATE TABLE `jr_tipo_prestamo` (
+  `id_tipo_prestamo` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL COMMENT 'si es hipotecario',
+  `id_prestamo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_unidad_producto`
+--
+
+CREATE TABLE `jr_unidad_producto` (
+  `id_unidad` int(11) NOT NULL,
+  `unidad` varchar(50) NOT NULL COMMENT 'aqui va si es caja, galon, sixpack, unidad',
+  `estado` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_unidad_producto`
+--
+
+INSERT INTO `jr_unidad_producto` (`id_unidad`, `unidad`, `estado`) VALUES
+(1, 'Unidad', 1),
+(2, 'Libra', 1),
+(3, 'Saco', 1),
+(4, 'Sixpack', 1),
+(5, 'Docena', 1),
+(6, 'Caja', 1),
+(7, '5 Libras', 1),
+(8, 'Onza', 1),
+(9, 'Funda', 1),
+(10, '3 Pack', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_unidad_vs_producto`
+--
+
+CREATE TABLE `jr_unidad_vs_producto` (
+  `factor_conversion` decimal(10,4) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `id_unidad` int(11) NOT NULL,
+  `codigo_barras` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_unidad_vs_producto`
+--
+
+INSERT INTO `jr_unidad_vs_producto` (`factor_conversion`, `id_producto`, `id_unidad`, `codigo_barras`) VALUES
+('24.0000', 1, 6, ''),
+('12.0000', 1, 5, ''),
+('1.0000', 0, 1, ''),
+('100.0000', 5, 3, '123456789012'),
+('1.0000', 5, 2, '013009852'),
+('1.0000', 3, 1, '123456789123'),
+('1.0000', 2, 1, '123456789122'),
+('1.0000', 1, 1, '123456789121'),
+('25.0000', 5, 6, '5397256200892'),
+('1.0000', 4, 1, '09283059458'),
+('5.0000', 5, 7, '123456789057'),
+('1.0000', 6, 1, '00134574'),
+('6.0000', 6, 4, '123456789125'),
+('24.0000', 6, 6, '123456789126'),
+('1.0000', 8, 1, '123456789128'),
+('12.0000', 8, 9, '123456789129'),
+('1.0000', 7, 1, '43845432587'),
+('3.0000', 9, 10, '123456789133');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `jr_usuario`
 --
 
@@ -17212,7 +18751,28 @@ CREATE TABLE `jr_usuario` (
 
 INSERT INTO `jr_usuario` (`id_usuario`, `usuario`, `clave`, `id_empleado`) VALUES
 (1, 'admin', '123', 1),
-(2, 'jhobnatan', '123', 19);
+(2, 'jhobnatan', '123', 19),
+(3, '', '', 20),
+(4, 'neno', '123', 21),
+(5, 'adela', '123', 5),
+(6, 'synoa', '123', 4),
+(7, 'suly', '123', 2),
+(8, 'juana', '123', 10),
+(9, 'abel', '123', 6),
+(10, 'loys', '123', 27);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_usuario_cliente`
+--
+
+CREATE TABLE `jr_usuario_cliente` (
+  `id_usuario` int(11) NOT NULL,
+  `usuario` varchar(50) NOT NULL,
+  `clave` varchar(150) NOT NULL,
+  `id_cliente` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -17230,8 +18790,80 @@ CREATE TABLE `jr_usuario_vs_grupo` (
 --
 
 INSERT INTO `jr_usuario_vs_grupo` (`id_grupo`, `id_usuario`) VALUES
+(1, 3),
 (1, 1),
-(1, 2);
+(2, 4),
+(4, 4),
+(7, 6),
+(4, 7),
+(7, 7),
+(7, 8),
+(9, 9),
+(2, 10),
+(4, 10),
+(7, 5),
+(4, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jr_venta`
+--
+
+CREATE TABLE `jr_venta` (
+  `id_venta` int(11) NOT NULL,
+  `id_caja` int(11) DEFAULT NULL,
+  `id_caja_detalle` int(11) DEFAULT NULL,
+  `id_turno` int(11) DEFAULT NULL,
+  `id_supervisor` int(11) DEFAULT NULL,
+  `id_empresa` int(11) DEFAULT NULL,
+  `id_sucursal` int(11) DEFAULT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_empleado` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_mesa` int(11) NOT NULL,
+  `mesa` varchar(25) NOT NULL,
+  `id_camarero` int(11) NOT NULL,
+  `subtotal` decimal(18,2) NOT NULL,
+  `total_itbis` decimal(10,2) NOT NULL,
+  `total_descuento` decimal(10,2) NOT NULL,
+  `monto_servicio` decimal(10,2) NOT NULL,
+  `total_costo` decimal(18,2) DEFAULT NULL,
+  `total_importe` decimal(18,2) NOT NULL,
+  `secncf` varchar(25) NOT NULL,
+  `comprobante` varchar(50) DEFAULT NULL,
+  `fecha_vencimiento` date NOT NULL,
+  `tarjeta_debito` decimal(18,2) NOT NULL,
+  `tarjeta_credito` decimal(18,2) NOT NULL,
+  `cheque` decimal(18,2) NOT NULL,
+  `nota_credito` varchar(30) NOT NULL,
+  `monto_nota` decimal(18,2) NOT NULL,
+  `bono` decimal(18,2) NOT NULL,
+  `efectivo` decimal(18,2) NOT NULL,
+  `devolver` decimal(18,2) NOT NULL,
+  `cuenta_por_cobrar` decimal(18,2) NOT NULL,
+  `comentario` varchar(255) NOT NULL,
+  `condicion` varchar(50) NOT NULL,
+  `estatusventa` varchar(20) NOT NULL,
+  `descuento_general` decimal(18,2) NOT NULL,
+  `motivo_descuento_general` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `jr_venta`
+--
+
+INSERT INTO `jr_venta` (`id_venta`, `id_caja`, `id_caja_detalle`, `id_turno`, `id_supervisor`, `id_empresa`, `id_sucursal`, `fecha`, `id_empleado`, `id_cliente`, `id_mesa`, `mesa`, `id_camarero`, `subtotal`, `total_itbis`, `total_descuento`, `monto_servicio`, `total_costo`, `total_importe`, `secncf`, `comprobante`, `fecha_vencimiento`, `tarjeta_debito`, `tarjeta_credito`, `cheque`, `nota_credito`, `monto_nota`, `bono`, `efectivo`, `devolver`, `cuenta_por_cobrar`, `comentario`, `condicion`, `estatusventa`, `descuento_general`, `motivo_descuento_general`) VALUES
+(1, 1, 1, 1, 19, 1, 1, '2023-11-15 12:54:37', 5, 1, 0, 'Caja', 0, '70.00', '12.60', '1.40', '0.00', '50.00', '81.20', 'B0200000009', 'FACTURA DE CONSUMO (B02)', '2023-11-15', '0.00', '0.00', '0.00', '', '0.00', '0.00', '100.00', '18.80', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(2, 1, 1, 1, 19, 1, 1, '2023-11-15 12:55:21', 5, 1, 0, 'Caja', 0, '216.00', '38.88', '4.32', '0.00', '150.00', '250.56', 'B0200000010', 'FACTURA DE CONSUMO (B02)', '2023-11-15', '0.00', '0.00', '0.00', '', '0.00', '0.00', '300.00', '49.44', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(3, 1, 1, 1, 19, 1, 1, '2023-11-15 12:56:47', 5, 24, 0, 'Caja', 0, '35500.00', '6390.00', '710.00', '0.00', '15250.00', '41180.00', 'B0100000002', 'FACTURAS DE CRÉDITO FISCAL (B01)', '2023-11-15', '0.00', '41180.00', '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(4, 1, 1, 1, 19, 1, 1, '2023-11-15 17:13:23', 5, 24, 0, 'Caja', 0, '40.00', '7.20', '0.80', '0.00', '25.00', '46.40', 'B0200000011', 'FACTURA DE CONSUMO (B02)', '2023-11-15', '0.00', '0.00', '0.00', '', '0.00', '0.00', '50.00', '3.60', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(5, 1, 1, 1, 19, 1, 1, '2023-11-15 17:40:14', 5, 26, 1, '01', 2, '35.00', '6.30', '0.70', '0.00', '25.00', '40.60', 'B0200000012', 'FACTURA DE CONSUMO (B02)', '2023-11-15', '0.00', '0.00', '0.00', '', '0.00', '0.00', '50.00', '9.40', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(6, 1, 4, 1, 19, 1, 1, '2023-11-17 19:17:11', 5, 1, 0, 'Caja', 0, '8.00', '1.44', '0.16', '0.00', '5.00', '9.28', 'B0200000013', 'FACTURA DE CONSUMO (B02)', '2023-11-17', '9.28', '0.00', '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(7, 1, 4, 1, 19, 1, 1, '2023-11-17 19:24:13', 5, 1, 0, 'Caja', 0, '32.00', '5.76', '0.64', '0.00', '20.00', '37.12', 'B0100000003', 'FACTURAS DE CRÉDITO FISCAL (B01)', '2023-11-17', '0.00', '37.12', '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(8, 1, 4, 1, 19, 1, 1, '2023-11-17 19:48:49', 5, 24, 0, '01', 2, '70.00', '12.60', '1.40', '0.00', '50.00', '81.20', 'B0200000014', 'FACTURA DE CONSUMO (B02)', '2023-11-17', '0.00', '0.00', '0.00', '', '0.00', '0.00', '0.00', '0.00', '81.20', 'El cliente debe de pagar antes de 15 días', '15', 'Procesada', '0.00', ''),
+(9, 1, 4, 1, 19, 1, 1, '2023-11-17 19:51:07', 5, 1, 0, 'Caja', 0, '60.00', '10.80', '0.00', '0.00', '9.00', '70.80', 'B0200000015', 'FACTURA DE CONSUMO (B02)', '2023-11-17', '0.00', '0.00', '0.00', '', '0.00', '0.00', '100.00', '29.20', '0.00', '', 'CONTADO', 'Procesada', '0.00', ''),
+(10, 1, 4, 1, 19, 1, 1, '2023-11-17 20:21:37', 5, 1, 1, '01', 2, '250.00', '45.00', '5.00', '0.00', '35.40', '290.00', 'B0200000016', 'FACTURA DE CONSUMO (B02)', '2023-11-18', '0.00', '290.00', '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '', 'CONTADO', 'Procesada', '0.00', '');
 
 -- --------------------------------------------------------
 
@@ -17291,11 +18923,18 @@ CREATE TABLE `vista_cita_invitados` (
 --
 DROP TABLE IF EXISTS `vista_cita_invitados`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_cita_invitados`  AS SELECT `jr_cita`.`id_cita` AS `id_cita`, `jr_cita`.`titulo` AS `titulo`, `jr_cita`.`fecha` AS `fecha`, `jr_cita`.`hora_inicio` AS `hora_inicio`, `jr_cita`.`hora_fin` AS `hora_fin`, `jr_cita`.`color` AS `color`, `jr_cita`.`motivo` AS `motivo`, `jr_cita`.`estado` AS `estado`, `jr_cita`.`recordatorio` AS `recordatorio`, `jr_cita`.`minuta` AS `minuta`, `jr_cita`.`fecha_registro` AS `fecha_registro`, `jr_cita`.`registrada_por` AS `registrada_por`, `jr_cita`.`lugar` AS `lugar`, `jr_cita`.`geo` AS `geo`, `jr_cita`.`empresa` AS `empresa`, `jr_invitados`.`id_ejecutivo_interno` AS `id_ejecutivo_interno` FROM (`jr_cita` join `jr_invitados` on(`jr_cita`.`id_cita` = `jr_invitados`.`id_cita`))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_cita_invitados`  AS  select `jr_cita`.`id_cita` AS `id_cita`,`jr_cita`.`titulo` AS `titulo`,`jr_cita`.`fecha` AS `fecha`,`jr_cita`.`hora_inicio` AS `hora_inicio`,`jr_cita`.`hora_fin` AS `hora_fin`,`jr_cita`.`color` AS `color`,`jr_cita`.`motivo` AS `motivo`,`jr_cita`.`estado` AS `estado`,`jr_cita`.`recordatorio` AS `recordatorio`,`jr_cita`.`minuta` AS `minuta`,`jr_cita`.`fecha_registro` AS `fecha_registro`,`jr_cita`.`registrada_por` AS `registrada_por`,`jr_cita`.`lugar` AS `lugar`,`jr_cita`.`geo` AS `geo`,`jr_cita`.`empresa` AS `empresa`,`jr_invitados`.`id_ejecutivo_interno` AS `id_ejecutivo_interno` from (`jr_cita` join `jr_invitados` on(`jr_cita`.`id_cita` = `jr_invitados`.`id_cita`)) ;
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `archivo`
+--
+ALTER TABLE `archivo`
+  ADD PRIMARY KEY (`idarchivo`),
+  ADD KEY `id_prestamo` (`id_prestamo`);
 
 --
 -- Indices de la tabla `jr_acceso`
@@ -17325,6 +18964,12 @@ ALTER TABLE `jr_ajuste_empleado`
   ADD PRIMARY KEY (`id_ajuste_empleado`);
 
 --
+-- Indices de la tabla `jr_almacen`
+--
+ALTER TABLE `jr_almacen`
+  ADD PRIMARY KEY (`id_almacen`);
+
+--
 -- Indices de la tabla `jr_amonestacion`
 --
 ALTER TABLE `jr_amonestacion`
@@ -17345,6 +18990,30 @@ ALTER TABLE `jr_banco`
   ADD KEY `digit_index` (`digit`);
 
 --
+-- Indices de la tabla `jr_caja`
+--
+ALTER TABLE `jr_caja`
+  ADD PRIMARY KEY (`id_caja`);
+
+--
+-- Indices de la tabla `jr_caja_detalle`
+--
+ALTER TABLE `jr_caja_detalle`
+  ADD PRIMARY KEY (`id_caja_detalle`);
+
+--
+-- Indices de la tabla `jr_cartera`
+--
+ALTER TABLE `jr_cartera`
+  ADD PRIMARY KEY (`id_cartera`);
+
+--
+-- Indices de la tabla `jr_categoria_articulo`
+--
+ALTER TABLE `jr_categoria_articulo`
+  ADD PRIMARY KEY (`id_categoria`);
+
+--
 -- Indices de la tabla `jr_categoria_empresa`
 --
 ALTER TABLE `jr_categoria_empresa`
@@ -17363,10 +19032,89 @@ ALTER TABLE `jr_cita`
   ADD PRIMARY KEY (`id_cita`);
 
 --
+-- Indices de la tabla `jr_clase`
+--
+ALTER TABLE `jr_clase`
+  ADD PRIMARY KEY (`id_clase`);
+
+--
+-- Indices de la tabla `jr_cliente`
+--
+ALTER TABLE `jr_cliente`
+  ADD PRIMARY KEY (`id_cliente`),
+  ADD KEY `id_estado` (`id_estado`);
+
+--
+-- Indices de la tabla `jr_contacto`
+--
+ALTER TABLE `jr_contacto`
+  ADD PRIMARY KEY (`idcontacto`),
+  ADD KEY `idtipo_contacto` (`idtipo_contacto`),
+  ADD KEY `id_cliente` (`id_cliente`);
+
+--
 -- Indices de la tabla `jr_departamento`
 --
 ALTER TABLE `jr_departamento`
   ADD PRIMARY KEY (`id_departamento`);
+
+--
+-- Indices de la tabla `jr_desglose_dinero`
+--
+ALTER TABLE `jr_desglose_dinero`
+  ADD PRIMARY KEY (`id_desglose`);
+
+--
+-- Indices de la tabla `jr_detalle_devolucion`
+--
+ALTER TABLE `jr_detalle_devolucion`
+  ADD PRIMARY KEY (`id_detalle_devolucion`),
+  ADD KEY `id_devolucion` (`id_devolucion`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `jr_detalle_ingreso`
+--
+ALTER TABLE `jr_detalle_ingreso`
+  ADD PRIMARY KEY (`id_detalle_ingreso`),
+  ADD KEY `id_ingreso` (`id_ingreso`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `jr_detalle_pedido`
+--
+ALTER TABLE `jr_detalle_pedido`
+  ADD PRIMARY KEY (`id_detalle_pedido`),
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `id_pedido` (`id_pedido`);
+
+--
+-- Indices de la tabla `jr_detalle_pedido_temporal`
+--
+ALTER TABLE `jr_detalle_pedido_temporal`
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `id_suplidor` (`id_suplidor`);
+
+--
+-- Indices de la tabla `jr_detalle_venta`
+--
+ALTER TABLE `jr_detalle_venta`
+  ADD PRIMARY KEY (`id_detalle_venta`),
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `id_venta` (`id_venta`);
+
+--
+-- Indices de la tabla `jr_detalle_venta_temporal`
+--
+ALTER TABLE `jr_detalle_venta_temporal`
+  ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `jr_devolucion`
+--
+ALTER TABLE `jr_devolucion`
+  ADD PRIMARY KEY (`id_devolucion`),
+  ADD KEY `id_venta` (`id_venta`);
 
 --
 -- Indices de la tabla `jr_documentos_cita`
@@ -17374,6 +19122,20 @@ ALTER TABLE `jr_departamento`
 ALTER TABLE `jr_documentos_cita`
   ADD PRIMARY KEY (`id_documento`),
   ADD KEY `id_cita` (`id_cita`);
+
+--
+-- Indices de la tabla `jr_documentos_cliente`
+--
+ALTER TABLE `jr_documentos_cliente`
+  ADD PRIMARY KEY (`id_documento`),
+  ADD KEY `id_negocio` (`id_cliente`);
+
+--
+-- Indices de la tabla `jr_documentos_empleado`
+--
+ALTER TABLE `jr_documentos_empleado`
+  ADD PRIMARY KEY (`id_documento`),
+  ADD KEY `id_negocio` (`id_empleado`);
 
 --
 -- Indices de la tabla `jr_documentos_negocio`
@@ -17399,8 +19161,8 @@ ALTER TABLE `jr_ejecutivo_externo`
 --
 ALTER TABLE `jr_empleado`
   ADD PRIMARY KEY (`id_empleado`),
-  ADD UNIQUE KEY `tarjeta_punto` (`tarjeta_punto`),
   ADD UNIQUE KEY `cedula` (`cedula`),
+  ADD UNIQUE KEY `tarjeta_fidelium` (`tarjeta_punto`),
   ADD UNIQUE KEY `usuario` (`usuario`);
 
 --
@@ -17422,10 +19184,43 @@ ALTER TABLE `jr_estado`
   ADD PRIMARY KEY (`id_estado`);
 
 --
+-- Indices de la tabla `jr_estados`
+--
+ALTER TABLE `jr_estados`
+  ADD PRIMARY KEY (`id_estadoprestamo`),
+  ADD KEY `id_prestamo` (`id_prestamo`);
+
+--
+-- Indices de la tabla `jr_estado_cliente`
+--
+ALTER TABLE `jr_estado_cliente`
+  ADD PRIMARY KEY (`id_estado`);
+
+--
 -- Indices de la tabla `jr_estado_empleado`
 --
 ALTER TABLE `jr_estado_empleado`
   ADD PRIMARY KEY (`id_estado`);
+
+--
+-- Indices de la tabla `jr_estado_prestamo`
+--
+ALTER TABLE `jr_estado_prestamo`
+  ADD PRIMARY KEY (`id_estado_prestamo`);
+
+--
+-- Indices de la tabla `jr_estudios_realizados`
+--
+ALTER TABLE `jr_estudios_realizados`
+  ADD PRIMARY KEY (`id_estudios_realizados`),
+  ADD KEY `id_cliente` (`id_cliente`);
+
+--
+-- Indices de la tabla `jr_foto`
+--
+ALTER TABLE `jr_foto`
+  ADD PRIMARY KEY (`id_foto`),
+  ADD KEY `id_cliente` (`id_cliente`);
 
 --
 -- Indices de la tabla `jr_grado`
@@ -17454,6 +19249,21 @@ ALTER TABLE `jr_informacion_bancaria`
   ADD KEY `id_negocio` (`id_negocio`);
 
 --
+-- Indices de la tabla `jr_ingresos`
+--
+ALTER TABLE `jr_ingresos`
+  ADD PRIMARY KEY (`idingreso`),
+  ADD KEY `id_tipo_ingreso` (`id_tipo_ingreso`),
+  ADD KEY `id_cliente` (`id_cliente`);
+
+--
+-- Indices de la tabla `jr_ingreso_producto`
+--
+ALTER TABLE `jr_ingreso_producto`
+  ADD PRIMARY KEY (`id_ingreso`),
+  ADD KEY `id_pedido` (`id_pedido`);
+
+--
 -- Indices de la tabla `jr_invitados`
 --
 ALTER TABLE `jr_invitados`
@@ -17473,6 +19283,36 @@ ALTER TABLE `jr_logs`
   ADD PRIMARY KEY (`id_logs`);
 
 --
+-- Indices de la tabla `jr_marca`
+--
+ALTER TABLE `jr_marca`
+  ADD PRIMARY KEY (`id_marca`);
+
+--
+-- Indices de la tabla `jr_mesa`
+--
+ALTER TABLE `jr_mesa`
+  ADD PRIMARY KEY (`id_mesa`);
+
+--
+-- Indices de la tabla `jr_modalidad_prestamo`
+--
+ALTER TABLE `jr_modalidad_prestamo`
+  ADD PRIMARY KEY (`id_modalidad`);
+
+--
+-- Indices de la tabla `jr_moneda`
+--
+ALTER TABLE `jr_moneda`
+  ADD PRIMARY KEY (`id_moneda`);
+
+--
+-- Indices de la tabla `jr_movimiento_caja`
+--
+ALTER TABLE `jr_movimiento_caja`
+  ADD PRIMARY KEY (`id_movimiento`);
+
+--
 -- Indices de la tabla `jr_movimiento_empleado`
 --
 ALTER TABLE `jr_movimiento_empleado`
@@ -17489,6 +19329,12 @@ ALTER TABLE `jr_municipio`
 --
 ALTER TABLE `jr_nacionalidad`
   ADD PRIMARY KEY (`id_nacionalidad`);
+
+--
+-- Indices de la tabla `jr_ncf`
+--
+ALTER TABLE `jr_ncf`
+  ADD PRIMARY KEY (`codncf`);
 
 --
 -- Indices de la tabla `jr_negocio_general`
@@ -17511,10 +19357,23 @@ ALTER TABLE `jr_nivel`
   ADD PRIMARY KEY (`id_nivel`);
 
 --
+-- Indices de la tabla `jr_ocupacion`
+--
+ALTER TABLE `jr_ocupacion`
+  ADD PRIMARY KEY (`id_ocupacion`);
+
+--
 -- Indices de la tabla `jr_pago_electronico`
 --
 ALTER TABLE `jr_pago_electronico`
   ADD PRIMARY KEY (`id_pago_electronico`) USING BTREE;
+
+--
+-- Indices de la tabla `jr_pedido`
+--
+ALTER TABLE `jr_pedido`
+  ADD PRIMARY KEY (`id_pedido`),
+  ADD KEY `id_suplidor` (`id_suplidor`);
 
 --
 -- Indices de la tabla `jr_permiso`
@@ -17537,10 +19396,41 @@ ALTER TABLE `jr_persona_vs_sucursal`
   ADD KEY `id_ejecutivo` (`id_ejecutivo`);
 
 --
+-- Indices de la tabla `jr_preparado`
+--
+ALTER TABLE `jr_preparado`
+  ADD PRIMARY KEY (`id_preparado`);
+
+--
+-- Indices de la tabla `jr_prestamo`
+--
+ALTER TABLE `jr_prestamo`
+  ADD PRIMARY KEY (`id_prestamo`),
+  ADD KEY `id_cliente` (`id_cliente`),
+  ADD KEY `id_estado_prestamo` (`id_estado_prestamo`),
+  ADD KEY `id_modalidad` (`id_modalidad`),
+  ADD KEY `id_tipo_pago` (`id_tipo_pago`);
+
+--
 -- Indices de la tabla `jr_producto`
 --
 ALTER TABLE `jr_producto`
   ADD PRIMARY KEY (`id_producto`);
+
+--
+-- Indices de la tabla `jr_productox`
+--
+ALTER TABLE `jr_productox`
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `idmarca` (`idmarca`),
+  ADD KEY `idcategoria` (`idcategoria`);
+
+--
+-- Indices de la tabla `jr_producto_almacen`
+--
+ALTER TABLE `jr_producto_almacen`
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `id_almacen` (`id_almacen`);
 
 --
 -- Indices de la tabla `jr_provincia`
@@ -17573,6 +19463,13 @@ ALTER TABLE `jr_reclutamiento`
   ADD PRIMARY KEY (`id_reclutamiento`);
 
 --
+-- Indices de la tabla `jr_referencia`
+--
+ALTER TABLE `jr_referencia`
+  ADD PRIMARY KEY (`id_referencia`),
+  ADD KEY `id_cliente` (`id_cliente`);
+
+--
 -- Indices de la tabla `jr_relacion`
 --
 ALTER TABLE `jr_relacion`
@@ -17595,6 +19492,12 @@ ALTER TABLE `jr_salida`
 --
 ALTER TABLE `jr_sector`
   ADD PRIMARY KEY (`id_sector`);
+
+--
+-- Indices de la tabla `jr_secuencia`
+--
+ALTER TABLE `jr_secuencia`
+  ADD KEY `codncf` (`codncf`);
 
 --
 -- Indices de la tabla `jr_seguro_medico`
@@ -17623,10 +19526,22 @@ ALTER TABLE `jr_sueldo`
   ADD PRIMARY KEY (`id_sueldo`);
 
 --
+-- Indices de la tabla `jr_suplidor`
+--
+ALTER TABLE `jr_suplidor`
+  ADD PRIMARY KEY (`id_suplidor`);
+
+--
 -- Indices de la tabla `jr_tipo_afiliacion`
 --
 ALTER TABLE `jr_tipo_afiliacion`
   ADD PRIMARY KEY (`id_tipo_afiliacion`);
+
+--
+-- Indices de la tabla `jr_tipo_contacto`
+--
+ALTER TABLE `jr_tipo_contacto`
+  ADD PRIMARY KEY (`idtipo_contacto`);
 
 --
 -- Indices de la tabla `jr_tipo_empleado`
@@ -17635,10 +19550,22 @@ ALTER TABLE `jr_tipo_empleado`
   ADD PRIMARY KEY (`id_tipo_empleado`);
 
 --
+-- Indices de la tabla `jr_tipo_ingreso`
+--
+ALTER TABLE `jr_tipo_ingreso`
+  ADD PRIMARY KEY (`id_tipo_ingreso`);
+
+--
 -- Indices de la tabla `jr_tipo_licencia`
 --
 ALTER TABLE `jr_tipo_licencia`
   ADD PRIMARY KEY (`id_tipo_licencia`);
+
+--
+-- Indices de la tabla `jr_tipo_pago`
+--
+ALTER TABLE `jr_tipo_pago`
+  ADD PRIMARY KEY (`id_tipo_pago`);
 
 --
 -- Indices de la tabla `jr_tipo_permiso`
@@ -17647,10 +19574,37 @@ ALTER TABLE `jr_tipo_permiso`
   ADD PRIMARY KEY (`id_tipo_permiso`);
 
 --
+-- Indices de la tabla `jr_tipo_prestamo`
+--
+ALTER TABLE `jr_tipo_prestamo`
+  ADD PRIMARY KEY (`id_tipo_prestamo`),
+  ADD KEY `id_prestamo` (`id_prestamo`);
+
+--
+-- Indices de la tabla `jr_unidad_producto`
+--
+ALTER TABLE `jr_unidad_producto`
+  ADD PRIMARY KEY (`id_unidad`);
+
+--
+-- Indices de la tabla `jr_unidad_vs_producto`
+--
+ALTER TABLE `jr_unidad_vs_producto`
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `id_tipo` (`id_unidad`);
+
+--
 -- Indices de la tabla `jr_usuario`
 --
 ALTER TABLE `jr_usuario`
   ADD PRIMARY KEY (`id_usuario`);
+
+--
+-- Indices de la tabla `jr_usuario_cliente`
+--
+ALTER TABLE `jr_usuario_cliente`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD KEY `id_cliente` (`id_cliente`);
 
 --
 -- Indices de la tabla `jr_usuario_vs_grupo`
@@ -17658,6 +19612,12 @@ ALTER TABLE `jr_usuario`
 ALTER TABLE `jr_usuario_vs_grupo`
   ADD KEY `id_grupo` (`id_grupo`),
   ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `jr_venta`
+--
+ALTER TABLE `jr_venta`
+  ADD PRIMARY KEY (`id_venta`);
 
 --
 -- Indices de la tabla `jr_zona`
@@ -17670,10 +19630,16 @@ ALTER TABLE `jr_zona`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `archivo`
+--
+ALTER TABLE `archivo`
+  MODIFY `idarchivo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_acceso`
 --
 ALTER TABLE `jr_acceso`
-  MODIFY `id_acceso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id_acceso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_afiliados_cardnet`
@@ -17688,6 +19654,12 @@ ALTER TABLE `jr_ajuste_empleado`
   MODIFY `id_ajuste_empleado` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_almacen`
+--
+ALTER TABLE `jr_almacen`
+  MODIFY `id_almacen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_amonestacion`
 --
 ALTER TABLE `jr_amonestacion`
@@ -17697,13 +19669,37 @@ ALTER TABLE `jr_amonestacion`
 -- AUTO_INCREMENT de la tabla `jr_area`
 --
 ALTER TABLE `jr_area`
-  MODIFY `id_area` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_area` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_banco`
 --
 ALTER TABLE `jr_banco`
   MODIFY `id_banco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_caja`
+--
+ALTER TABLE `jr_caja`
+  MODIFY `id_caja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_caja_detalle`
+--
+ALTER TABLE `jr_caja_detalle`
+  MODIFY `id_caja_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_cartera`
+--
+ALTER TABLE `jr_cartera`
+  MODIFY `id_cartera` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_categoria_articulo`
+--
+ALTER TABLE `jr_categoria_articulo`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_categoria_empresa`
@@ -17715,13 +19711,67 @@ ALTER TABLE `jr_categoria_empresa`
 -- AUTO_INCREMENT de la tabla `jr_cita`
 --
 ALTER TABLE `jr_cita`
-  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_cita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_clase`
+--
+ALTER TABLE `jr_clase`
+  MODIFY `id_clase` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_cliente`
+--
+ALTER TABLE `jr_cliente`
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_contacto`
+--
+ALTER TABLE `jr_contacto`
+  MODIFY `idcontacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_departamento`
 --
 ALTER TABLE `jr_departamento`
-  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_desglose_dinero`
+--
+ALTER TABLE `jr_desglose_dinero`
+  MODIFY `id_desglose` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_detalle_devolucion`
+--
+ALTER TABLE `jr_detalle_devolucion`
+  MODIFY `id_detalle_devolucion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_detalle_ingreso`
+--
+ALTER TABLE `jr_detalle_ingreso`
+  MODIFY `id_detalle_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_detalle_pedido`
+--
+ALTER TABLE `jr_detalle_pedido`
+  MODIFY `id_detalle_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_detalle_venta`
+--
+ALTER TABLE `jr_detalle_venta`
+  MODIFY `id_detalle_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_devolucion`
+--
+ALTER TABLE `jr_devolucion`
+  MODIFY `id_devolucion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_documentos_cita`
@@ -17730,10 +19780,22 @@ ALTER TABLE `jr_documentos_cita`
   MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_documentos_cliente`
+--
+ALTER TABLE `jr_documentos_cliente`
+  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_documentos_empleado`
+--
+ALTER TABLE `jr_documentos_empleado`
+  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_documentos_negocio`
 --
 ALTER TABLE `jr_documentos_negocio`
-  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_documento_lic`
@@ -17745,13 +19807,13 @@ ALTER TABLE `jr_documento_lic`
 -- AUTO_INCREMENT de la tabla `jr_ejecutivo_externo`
 --
 ALTER TABLE `jr_ejecutivo_externo`
-  MODIFY `id_ejecutivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_ejecutivo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_empleado`
 --
 ALTER TABLE `jr_empleado`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_empresa`
@@ -17766,6 +19828,36 @@ ALTER TABLE `jr_estado`
   MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_estados`
+--
+ALTER TABLE `jr_estados`
+  MODIFY `id_estadoprestamo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_estado_cliente`
+--
+ALTER TABLE `jr_estado_cliente`
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_estado_prestamo`
+--
+ALTER TABLE `jr_estado_prestamo`
+  MODIFY `id_estado_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_estudios_realizados`
+--
+ALTER TABLE `jr_estudios_realizados`
+  MODIFY `id_estudios_realizados` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_foto`
+--
+ALTER TABLE `jr_foto`
+  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_grado_academico`
 --
 ALTER TABLE `jr_grado_academico`
@@ -17775,13 +19867,25 @@ ALTER TABLE `jr_grado_academico`
 -- AUTO_INCREMENT de la tabla `jr_grupo`
 --
 ALTER TABLE `jr_grupo`
-  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_grupo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_informacion_bancaria`
 --
 ALTER TABLE `jr_informacion_bancaria`
   MODIFY `id_informacion_bancaria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_ingresos`
+--
+ALTER TABLE `jr_ingresos`
+  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_ingreso_producto`
+--
+ALTER TABLE `jr_ingreso_producto`
+  MODIFY `id_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_licencia`
@@ -17793,13 +19897,49 @@ ALTER TABLE `jr_licencia`
 -- AUTO_INCREMENT de la tabla `jr_logs`
 --
 ALTER TABLE `jr_logs`
-  MODIFY `id_logs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_logs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_marca`
+--
+ALTER TABLE `jr_marca`
+  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_mesa`
+--
+ALTER TABLE `jr_mesa`
+  MODIFY `id_mesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_modalidad_prestamo`
+--
+ALTER TABLE `jr_modalidad_prestamo`
+  MODIFY `id_modalidad` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_moneda`
+--
+ALTER TABLE `jr_moneda`
+  MODIFY `id_moneda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_movimiento_caja`
+--
+ALTER TABLE `jr_movimiento_caja`
+  MODIFY `id_movimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_movimiento_empleado`
 --
 ALTER TABLE `jr_movimiento_empleado`
-  MODIFY `id_salida_empleado` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_salida_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_ncf`
+--
+ALTER TABLE `jr_ncf`
+  MODIFY `codncf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_negocio_general`
@@ -17814,10 +19954,22 @@ ALTER TABLE `jr_nivel`
   MODIFY `id_nivel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_ocupacion`
+--
+ALTER TABLE `jr_ocupacion`
+  MODIFY `id_ocupacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_pago_electronico`
 --
 ALTER TABLE `jr_pago_electronico`
   MODIFY `id_pago_electronico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_pedido`
+--
+ALTER TABLE `jr_pedido`
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_permiso`
@@ -17829,7 +19981,19 @@ ALTER TABLE `jr_permiso`
 -- AUTO_INCREMENT de la tabla `jr_persona_sucursal`
 --
 ALTER TABLE `jr_persona_sucursal`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_preparado`
+--
+ALTER TABLE `jr_preparado`
+  MODIFY `id_preparado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_prestamo`
+--
+ALTER TABLE `jr_prestamo`
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_producto`
@@ -17838,10 +20002,16 @@ ALTER TABLE `jr_producto`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_productox`
+--
+ALTER TABLE `jr_productox`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_puesto`
 --
 ALTER TABLE `jr_puesto`
-  MODIFY `id_puesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_puesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_recibir_correo`
@@ -17854,6 +20024,12 @@ ALTER TABLE `jr_recibir_correo`
 --
 ALTER TABLE `jr_reclutamiento`
   MODIFY `id_reclutamiento` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_referencia`
+--
+ALTER TABLE `jr_referencia`
+  MODIFY `id_referencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_relacion`
@@ -17877,7 +20053,7 @@ ALTER TABLE `jr_salida`
 -- AUTO_INCREMENT de la tabla `jr_seguro_medico`
 --
 ALTER TABLE `jr_seguro_medico`
-  MODIFY `id_seguro_medico` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_seguro_medico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_subzona`
@@ -17892,16 +20068,64 @@ ALTER TABLE `jr_sucursal`
   MODIFY `id_sucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_suplidor`
+--
+ALTER TABLE `jr_suplidor`
+  MODIFY `id_suplidor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_tipo_contacto`
+--
+ALTER TABLE `jr_tipo_contacto`
+  MODIFY `idtipo_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_tipo_ingreso`
+--
+ALTER TABLE `jr_tipo_ingreso`
+  MODIFY `id_tipo_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_tipo_licencia`
 --
 ALTER TABLE `jr_tipo_licencia`
   MODIFY `id_tipo_licencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `jr_tipo_pago`
+--
+ALTER TABLE `jr_tipo_pago`
+  MODIFY `id_tipo_pago` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_tipo_prestamo`
+--
+ALTER TABLE `jr_tipo_prestamo`
+  MODIFY `id_tipo_prestamo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_unidad_producto`
+--
+ALTER TABLE `jr_unidad_producto`
+  MODIFY `id_unidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT de la tabla `jr_usuario`
 --
 ALTER TABLE `jr_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_usuario_cliente`
+--
+ALTER TABLE `jr_usuario_cliente`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jr_venta`
+--
+ALTER TABLE `jr_venta`
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `jr_zona`
